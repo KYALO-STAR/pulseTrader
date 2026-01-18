@@ -223,6 +223,23 @@
         }
     }
 
+    &--blue {
+        background: #60A5FA;
+
+        &:hover:not([disabled]) {
+            background: #3B82F6;
+        }
+
+        &:active:not([disabled]) {
+            background: #60A5FA;
+        }
+
+        .dc-btn__text,
+        .dc-btn__icon {
+            color: #FFFFFF;
+        }
+    }
+
     &--black {
         background: var(--button-get-started-bg);
 

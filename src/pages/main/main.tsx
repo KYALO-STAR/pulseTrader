@@ -45,6 +45,7 @@ const ProTool = lazy(() => import('../pro-tool'));
 const Dtrader = lazy(() => import('../dtrader'));
 // Import FreeBots directly instead of lazy loading for faster access
 import FreeBots from '../free-bots';
+const Dcircles = lazy(() => import('../dcircles'));
 
 const AppWrapper = observer(() => {
     const { connectionStatus } = useApiBase();
@@ -74,9 +75,9 @@ const AppWrapper = observer(() => {
         [key: string]: string;
     };
     const { clear } = summary_card;
-    const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
+    const { DASHBOARD, BOT_BUILDER, SMART_TRADER } = DBOT_TABS;
     const init_render = React.useRef(true);
-    const hash = ['dashboard', 'bot_builder', 'chart', 'free_bots', 'copy_trading', 'smart_trader', 'dtrader'];
+    const hash = ['dashboard', 'bot_builder', 'chart', 'free_bots', 'dcircles', 'copy_trading', 'smart_trader', 'dtrader'];
     const { isDesktop } = useDevice();
     const location = useLocation();
     const navigate = useNavigate();
@@ -308,6 +309,25 @@ const AppWrapper = observer(() => {
                             <div
                                 label={
                                     <>
+                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Dcircles' />
+                                    </>
+                                }
+                                id='id-dcircles'
+                            >
+                                <Suspense
+                                    fallback={<ChunkLoader message={localize('Please wait, loading Dcircles...')} />}
+                                >
+                                    <Dcircles />
+                                </Suspense>
+                            </div>
+                            <div
+                                label={
+                                    <>
                                         <LabelPairedSignalCaptionRegularIcon
                                             height='24px'
                                             width='24px'
@@ -446,7 +466,7 @@ const AppWrapper = observer(() => {
                 <ChartModal />
                 <TradingViewModal />
             </DesktopWrapper>
-            <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
+            <MobileWrapper>{!is_open && active_tab !== DBOT_TABS.SMART_TRADER && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}
                 className='dc-dialog__wrapper--fixed'

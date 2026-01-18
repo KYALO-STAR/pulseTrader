@@ -2,6 +2,9 @@
 @use 'components/shared/styles/mixins' as *;
 
 .app-header {
+    background-color: #000000 !important; // Black background like friend's design
+    border-bottom: 1px solid #333333;
+    
     &__account-settings {
         padding-inline-end: 1.2rem;
         border-inline-end: 0.1rem solid var(--general-section-1);

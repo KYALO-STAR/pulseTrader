@@ -14,11 +14,11 @@
     display: flex;
     overflow: hidden;
     width: 100%;
-    height: calc(100vh - 9rem);
-    padding: 1.6rem;
+    height: calc(100vh - 5rem); // Further reduced from 7rem to 5rem for more compact layout
+    padding: 0.4rem; // Further reduced padding from 0.8rem
 
     @include mobile-or-tablet-screen {
-        height: calc(100vh - 6rem);
+        height: calc(100vh - 4rem); // Further reduced from 5rem to 4rem
         padding: 0;
     }
 
@@ -52,32 +52,47 @@
 
         .dc-tabs {
             &__active-line {
-                background-color: #FFA500;
+                background-color: #60A5FA; // Blue active line
                 transition: none;
             }
 
             &__active {
-                background: #FFA500;
-                color: var(--text-prominent) !important;
+                background: transparent !important; // Remove grey background
+                color: #60A5FA !important; // Blue text for active tab
+                position: relative;
 
-                // Ensure active tab text uses theme-aware color
+                // Ensure active tab text uses blue color
                 * {
-                    color: var(--text-prominent) !important;
+                    color: #60A5FA !important;
                 }
 
-                // Ensure active tab icons use theme-aware color
+                // Ensure active tab icons use blue color
                 svg,
                 svg > path,
                 svg > g > path {
-                    fill: var(--text-prominent) !important;
+                    fill: #60A5FA !important;
+                }
+
+                // Add blue dash below active tab
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 30px;
+                    height: 3px;
+                    background-color: #60A5FA;
+                    border-radius: 2px;
                 }
             }
 
-
-
             &__list {
-                background: #FFA500;
+                background: #000000; // Black background like friend's design
                 justify-content: start;
+                border-bottom: 1px solid #333333; // Subtle border
+                padding: 0.2rem 0; // Reduced padding for more compact layout
+                margin: 0; // Remove any margins
 
                 @include mobile-or-tablet-screen {
                     overflow-x: auto;
@@ -757,130 +772,81 @@
     justify-content: center;
 }
 
-// Theme-aware navigation tabs for improved visibility
-// Higher specificity to override any conflicting styles
-body.theme--light .main__container .main__tabs .dc-tabs__item,
-body.theme--dark .main__container .main__tabs .dc-tabs__item {
-    // Use theme-aware text color for better visibility
-    color: var(--text-prominent) !important;
+// Navigation tabs styling to match friend's design
+.main__container .main__tabs .dc-tabs__item {
+    // All tabs use the same blue color - no grey!
+    color: #60A5FA !important;
+    font-weight: 500 !important;
+    background: transparent !important; // No background for any tab
 
     * {
-        color: var(--text-prominent) !important;
-        font-weight: bold !important;
+        color: #60A5FA !important;
+        font-weight: 500 !important;
     }
 
     svg,
     svg > path,
     svg > g > path {
-        fill: var(--text-prominent) !important;
+        fill: #60A5FA !important;
     }
 
-    &:not(.dc-tabs__active) {
-        // Inactive tabs with reduced opacity for better hierarchy
-        color: var(--text-less-prominent) !important;
-
-        * {
-            color: var(--text-less-prominent) !important;
-        }
-
-        svg,
-        svg > path,
-        svg > g > path {
-            fill: var(--text-less-prominent) !important;
-        }
-
-        &:hover {
-            // Full prominence on hover for better UX
-            color: var(--text-prominent) !important;
-
-            * {
-                color: var(--text-prominent) !important;
-            }
-
-            svg,
-            svg > path,
-            svg > g > path {
-                fill: var(--text-prominent) !important;
-            }
-        }
-    }
-
-    // Special handling for active tabs to ensure maximum visibility
+    // Active tab - no background, just blue dash
     &.dc-tabs__active {
-        color: var(--text-prominent) !important;
+        background: transparent !important;
+        color: #60A5FA !important;
 
         * {
-            color: var(--text-prominent) !important;
-            font-weight: bold !important;
+            color: #60A5FA !important;
         }
 
         svg,
         svg > path,
         svg > g > path {
-            fill: var(--text-prominent) !important;
+            fill: #60A5FA !important;
+        }
+    }
+
+    // Hover effect for all tabs - no background change
+    &:hover {
+        color: #60A5FA !important;
+        background: transparent !important;
+        transition: all 0.2s ease;
+
+        * {
+            color: #60A5FA !important;
+        }
+
+        svg,
+        svg > path,
+        svg > g > path {
+            fill: #60A5FA !important;
         }
     }
 }
 
-// Fallback for cases where body classes might not be applied
-.main__container .main__tabs .dc-tabs__item {
-    // Use theme-aware text color for better visibility
-    color: var(--text-prominent) !important;
-
-    * {
-        color: var(--text-prominent) !important;
-        font-weight: bold !important;
+// Force all tab text to be blue - override any default styles
+.dc-tabs__item {
+    color: #60A5FA !important;
+    
+    span, div, p, * {
+        color: #60A5FA !important;
     }
-
-    svg,
-    svg > path,
-    svg > g > path {
-        fill: var(--text-prominent) !important;
+    
+    svg, svg * {
+        fill: #60A5FA !important;
     }
+}
 
-    &:not(.dc-tabs__active) {
-        // Inactive tabs with reduced opacity for better hierarchy
-        color: var(--text-less-prominent) !important;
-
-        * {
-            color: var(--text-less-prominent) !important;
-        }
-
-        svg,
-        svg > path,
-        svg > g > path {
-            fill: var(--text-less-prominent) !important;
-        }
-
-        &:hover {
-            // Full prominence on hover for better UX
-            color: var(--text-prominent) !important;
-
-            * {
-                color: var(--text-prominent) !important;
-            }
-
-            svg,
-            svg > path,
-            svg > g > path {
-                fill: var(--text-prominent) !important;
-            }
-        }
+// Override any theme-based colors
+body.theme--light .dc-tabs__item,
+body.theme--dark .dc-tabs__item {
+    color: #60A5FA !important;
+    
+    span, div, p, * {
+        color: #60A5FA !important;
     }
-
-    // Special handling for active tabs to ensure maximum visibility
-    &.dc-tabs__active {
-        color: var(--text-prominent) !important;
-
-        * {
-            color: var(--text-prominent) !important;
-            font-weight: bold !important;
-        }
-
-        svg,
-        svg > path,
-        svg > g > path {
-            fill: var(--text-prominent) !important;
-        }
+    
+    svg, svg * {
+        fill: #60A5FA !important;
     }
 }

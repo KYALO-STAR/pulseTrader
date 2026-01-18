@@ -1,14 +1,14 @@
 import React from 'react';
-import './pro-tool.scss';
+import './dcircles.scss';
 
-const ProTool = () => {
+const Dcircles = () => {
     return (
-        <div className='pro-tool'>
-            <div className='pro-tool__container'>
+        <div className='dcircles'>
+            <div className='dcircles__container'>
                 <iframe
-                    src="/pro-tools/index.html"
-                    title="Pro Tools"
-                    className='pro-tool__iframe'
+                    src="/circles/index.html"
+                    title="Xenon Tick Analyser"
+                    className='dcircles__iframe'
                     frameBorder="0"
                     style={{ 
                         width: '100%', 
@@ -22,4 +22,4 @@ const ProTool = () => {
     );
 };
 
-export default ProTool;
+export default Dcircles;

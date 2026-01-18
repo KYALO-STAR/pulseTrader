@@ -6,6 +6,7 @@ import { generateDerivApiInstance, V2GetActiveClientId, V2GetActiveToken } from 
 // import { tradeOptionToBuy } from '@/external/bot-skeleton/services/tradeEngine/utils/helpers';
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
+import IframeWrapper from '@/components/iframe-wrapper';
 import './smart-trader.scss';
 
 // Minimal trade types we will support initially
@@ -82,6 +83,15 @@ const SmartTrader = observer(() => {
 
     const [is_running, setIsRunning] = useState(false);
     const stopFlagRef = useRef<boolean>(false);
+
+    // Trading mode dropdown state
+    const [tradingMode, setTradingMode] = useState<string>('trade-every-tick');
+    
+    // Trading mode options
+    const TRADING_MODES = [
+        { value: 'trade-every-tick', label: 'Trade Every Tick' },
+        { value: 'signals', label: 'Signals' },
+    ];
 
 
     const getHintClass = (d: number) => {
@@ -375,8 +385,18 @@ const SmartTrader = observer(() => {
 
 
                 <div className='smart-trader__topbar'>
-                    <div className='smart-trader__title'>
-                        {localize('Trade Every Tick')}
+                    <div className='smart-trader__mode-selector'>
+                        <select
+                            value={tradingMode}
+                            onChange={(e) => setTradingMode(e.target.value)}
+                            className='smart-trader__mode-dropdown'
+                        >
+                            {TRADING_MODES.map((mode) => (
+                                <option key={mode.value} value={mode.value}>
+                                    {mode.label}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className='smart-trader__actions-inline'>
                         <button type='button' className='smart-trader__chip smart-trader__chip--green'>
@@ -389,7 +409,14 @@ const SmartTrader = observer(() => {
                 </div>
 
                 <div className='smart-trader__content'>
-                    <div className='smart-trader__card'>
+                    {tradingMode === 'signals' ? (
+                        <IframeWrapper
+                            src='https://signals-scanner.vercel.app/'
+                            title='Trading Signals'
+                            className='smart-trader__signals-iframe'
+                        />
+                    ) : (
+                        <div className='smart-trader__card'>
                         <div className='smart-trader__row smart-trader__row--two'>
                             <div className='smart-trader__field'>
                                 <label htmlFor='st-symbol'>{localize('Volatility')}</label>
@@ -540,7 +567,8 @@ const SmartTrader = observer(() => {
                                 </Text>
                             </div>
                         )}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
