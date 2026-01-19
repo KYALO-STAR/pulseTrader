@@ -37,6 +37,37 @@
 
     <div class="separator"></div>
 
+    <!-- Even/Odd section moved to top -->
+    <div class="eo-section">
+      <div class="eo-header">
+        <span>Odd/Even Analysis</span>
+      </div>
+      
+      <!-- Recent E/O digits grid moved up -->
+      <div class="eo-seq">
+        <div class="eo-seq-header">
+          <span>Recent E/O</span>
+          <!-- More button removed - showing all 50 by default -->
+        </div>
+        <div id="eo-seq-chips" class="eo-chips"></div>
+      </div>
+      
+      <!-- Bars moved below the recent digits -->
+      <div class="eo-cards">
+        <div class="eo-card eo-card-even">
+          <div class="eo-card-value"><span id="eo-even-pct" class="muted">(0%)</span></div>
+          <div class="eo-barline"><div id="eo-even-fill" class="eo-fill eo-fill-even" style="width:0%"></div></div>
+        </div>
+        <div class="eo-card eo-card-odd">
+          <div class="eo-card-value"><span id="eo-odd-pct" class="muted">(0%)</span></div>
+          <div class="eo-barline"><div id="eo-odd-fill" class="eo-fill eo-fill-odd" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <!-- Over/Under section moved below Even/Odd -->
     <div class="ou-section">
       <div class="ou-header">
         <label id="label-ou" for="ou-threshold">Over/Under:</label>
@@ -45,17 +76,17 @@
       <div class="ou-cards">
         <div class="ou-card ou-card-under">
           <div class="ou-card-title">Under</div>
-          <div class="ou-card-value"><span id="ou-under-count">0</span> <span id="ou-under-pct" class="muted">(0%)</span></div>
+          <div class="ou-card-value"><span id="ou-under-pct" class="muted">(0%)</span></div>
           <div class="ou-barline"><div id="ou-under-fill" class="ou-fill ou-fill-under" style="width:0%"></div></div>
         </div>
         <div class="ou-card ou-card-equal">
           <div class="ou-card-title">Equal</div>
-          <div class="ou-card-value"><span id="ou-equal-count">0</span> <span id="ou-equal-pct" class="muted">(0%)</span></div>
+          <div class="ou-card-value"><span id="ou-equal-pct" class="muted">(0%)</span></div>
           <div class="ou-barline"><div id="ou-equal-fill" class="ou-fill ou-fill-equal" style="width:0%"></div></div>
         </div>
         <div class="ou-card ou-card-over">
           <div class="ou-card-title">Over</div>
-          <div class="ou-card-value"><span id="ou-over-count">0</span> <span id="ou-over-pct" class="muted">(0%)</span></div>
+          <div class="ou-card-value"><span id="ou-over-pct" class="muted">(0%)</span></div>
           <div class="ou-barline"><div id="ou-over-fill" class="ou-fill ou-fill-over" style="width:0%"></div></div>
         </div>
       </div>
@@ -78,12 +109,12 @@
       <div class="md-cards">
         <div class="md-card md-card-match">
           <div class="md-card-title">Matches</div>
-          <div class="md-card-value"><span id="md-match-count">0</span> <span id="md-match-pct" class="muted">(0%)</span></div>
+          <div class="md-card-value"><span id="md-match-pct" class="muted">(0%)</span></div>
           <div class="md-barline"><div id="md-match-fill" class="md-fill md-fill-match" style="width:0%"></div></div>
         </div>
         <div class="md-card md-card-differ">
           <div class="md-card-title">Differs</div>
-          <div class="md-card-value"><span id="md-differ-count">0</span> <span id="md-differ-pct" class="muted">(0%)</span></div>
+          <div class="md-card-value"><span id="md-differ-pct" class="muted">(0%)</span></div>
           <div class="md-barline"><div id="md-differ-fill" class="md-fill md-fill-differ" style="width:0%"></div></div>
         </div>
       </div>
@@ -93,33 +124,6 @@
           <button id="md-more" type="button">More</button>
         </div>
         <div id="md-seq-chips" class="md-chips"></div>
-      </div>
-    </div>
-
-    <div class="separator"></div>
-
-    <div class="eo-section">
-      <div class="eo-header">
-        <span>Even/Odd</span>
-      </div>
-      <div class="eo-cards">
-        <div class="eo-card eo-card-even">
-          <div class="eo-card-title">Even</div>
-          <div class="eo-card-value"><span id="eo-even-count">0</span> <span id="eo-even-pct" class="muted">(0%)</span></div>
-          <div class="eo-barline"><div id="eo-even-fill" class="eo-fill eo-fill-even" style="width:0%"></div></div>
-        </div>
-        <div class="eo-card eo-card-odd">
-          <div class="eo-card-title">Odd</div>
-          <div class="eo-card-value"><span id="eo-odd-count">0</span> <span id="eo-odd-pct" class="muted">(0%)</span></div>
-          <div class="eo-barline"><div id="eo-odd-fill" class="eo-fill eo-fill-odd" style="width:0%"></div></div>
-        </div>
-      </div>
-      <div class="eo-seq">
-        <div class="eo-seq-header">
-          <span>Recent E/O</span>
-          <button id="eo-more" type="button">More</button>
-        </div>
-        <div id="eo-seq-chips" class="eo-chips"></div>
       </div>
     </div>
   </div>

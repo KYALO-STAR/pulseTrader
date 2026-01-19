@@ -61,18 +61,29 @@ class DerivClient {
     }
     this.status = 'connected';
     this.loginId = authorize?.loginid;
-    // subscribe to balance
-    const res = await this.api.send({ balance: 1, account: 'all', subscribe: 1 });
-    this.balance = res?.balance?.balance;
-    if (res?.subscription?.id) {
-      this.balanceSub = this.api
-        .onMessage()
-        ?.subscribe(({ data }: any) => {
-          if (data?.msg_type === 'balance') {
-            this.balance = data?.balance?.balance;
+    
+    // Try to subscribe to balance (optional - don't fail connection if this fails)
+    try {
+      const res = await this.api.send({ balance: 1, account: 'all', subscribe: 1 });
+      if (res?.error) {
+        // Balance subscription failed, but connection is still valid
+      } else {
+        this.balance = res?.balance?.balance;
+        if (res?.subscription?.id) {
+          this.balanceSub = this.api
+            .onMessage()
+            ?.subscribe(({ data }: any) => {
+              if (data?.msg_type === 'balance') {
+                this.balance = data?.balance?.balance;
+              }
+            });
+        }
+      }
+          } catch (balanceError: any) {
+            // Balance subscription failed, but connection is still valid
+            // Connection is still successful even if balance fails
           }
-        });
-    }
+    
     return authorize;
   }
 
@@ -184,6 +195,31 @@ export class CopyTradingManager {
   disconnectMaster() {
     this.masterClient?.disconnect();
     this.master.status = 'disconnected';
+    this.masterClient = null;
+  }
+  
+  // Public method to get connected clients for replicator
+  getConnectedClients(): Array<{ id: string; client: DerivClient }> {
+    const clients: Array<{ id: string; client: DerivClient }> = [];
+    
+    // Add master client if connected
+    if (this.masterClient && this.master.status === 'connected') {
+      clients.push({ id: 'master', client: this.masterClient });
+    }
+    
+    // Add copier clients if connected
+    for (const [id, client] of this.copierClients.entries()) {
+      const copier = this.copiers.find(c => c.id === id);
+      if (copier && copier.status === 'connected' && copier.enabled) {
+        clients.push({ id, client });
+      }
+    }
+    
+    return clients;
+  }
+  
+  getConnectedClientsCount(): number {
+    return this.getConnectedClients().length;
   }
 
   addCopier(token: string) {
@@ -221,14 +257,16 @@ export class CopyTradingManager {
       copier.status = 'connected';
       copier.loginId = client.loginId;
       copier.balance = client.balance;
-      copier.lastErrorCode = undefined;
-      copier.lastErrorMsg = undefined;
-      this.copierClients.set(id, client);
-      void this.saveState();
-    } catch (e: any) {
-      copier.status = 'error';
-      copier.lastErrorCode = e?.code || e?.error?.code || 'Error';
-      copier.lastErrorMsg = e?.message || e?.error?.message || 'Authorization failed';
+            copier.lastErrorCode = undefined;
+            copier.lastErrorMsg = undefined;
+            this.copierClients.set(id, client);
+            void this.saveState();
+          } catch (e: any) {
+            const errorCode = e?.code || e?.error?.code || e?.error?.code || 'Unknown';
+            const errorMsg = e?.message || e?.error?.message || e?.error?.message || 'Authorization failed';
+            copier.status = 'error';
+      copier.lastErrorCode = errorCode;
+      copier.lastErrorMsg = errorMsg;
       void this.saveState();
       throw e;
     }

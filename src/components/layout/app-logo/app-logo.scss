@@ -4,8 +4,9 @@
         align-items: center;
         padding-inline-start: 1.2rem;
         padding-inline-end: 2rem;
-        border-inline-end: 1px solid var(--general-section-1);
+        border-inline-end: 1px solid rgba(255, 255, 255, 0.1);
         gap: 1rem;
+        overflow: visible; /* allow dropdowns to extend outside */
 
         // Responsive adjustments for mobile and tablet
         @media (max-width: 768px) {
@@ -16,45 +17,89 @@
         }
     }
 
-    // Deltawave Synthetics Branding Styles
-    .deltawave-branding {
+    /* ensure header doesn't clip popovers */
+    &{
+        overflow: visible;
+    }
+
+    // Deriv Insider Branding Styles
+    .deriv-insider-branding {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        color: #FFFFFF;
-        font-weight: 600;
-        font-size: 1.1rem;
-        letter-spacing: 0.5px;
-
-        @media (max-width: 768px) {
-            font-size: 1rem;
-            gap: 0.5rem;
-        }
-
-        @media (max-width: 480px) {
-            font-size: 0.9rem;
-            gap: 0.4rem;
-        }
     }
 
-    .deltawave-icon {
-        display: flex;
+    /* Message dropdown */
+    .brand-message {
+        position: relative;
+    }
+    .brand-message__btn {
+        display: inline-flex;
         align-items: center;
         justify-content: center;
+        background: transparent;
+        border: none;
+        color: var(--text-prominent);
+        padding: 0.2rem;
         width: 28px;
         height: 28px;
         border-radius: 6px;
-        background: rgba(96, 165, 250, 0.1);
-        transition: all 0.3s ease;
+        cursor: pointer;
+        transition: background-color 0.2s ease, opacity 0.2s ease;
+    }
+    .brand-message__btn:hover { background-color: var(--general-hover); opacity: 0.9; }
 
-        &:hover {
-            background: rgba(96, 165, 250, 0.2);
-            transform: scale(1.05);
-        }
+    /* Ringing animation for red phone */
+    .brand-message__btn--phone {
+        animation: phoneRing 0.7s ease-in-out infinite;
+        transform-origin: 50% 10%;
+    }
+    @keyframes phoneRing {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(-12deg); }
+        50% { transform: rotate(0deg); }
+        75% { transform: rotate(12deg); }
+        100% { transform: rotate(0deg); }
+    }
 
-        svg {
-            filter: drop-shadow(0 2px 4px rgba(96, 165, 250, 0.3));
-        }
+    .brand-message__menu {
+        position: absolute;
+        top: 120%;
+        left: 0; /* open to the right of the phone icon */
+        right: auto;
+        min-width: 200px;
+        padding: 0.4rem 0.2rem;
+        background: rgba(17,24,39,0.98);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        z-index: 1000;
+        overflow: visible;
+        white-space: nowrap;
+    }
+
+    /* If too close to right edge, shift left a bit on small screens */
+    @media (max-width: 480px) {
+        .brand-message__menu { left: 8px; right: auto; }
+    }
+    .brand-message__item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.6rem;
+        cursor: pointer;
+        color: var(--text-prominent);
+        transition: background-color 0.15s ease;
+    }
+    .brand-message__item:hover { background-color: var(--general-hover); }
+    .brand-message__item svg { flex-shrink: 0; }
+
+    .brand-image {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        object-fit: cover;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
         @media (max-width: 768px) {
             width: 24px;
@@ -69,10 +114,11 @@
 
     .brand-text {
         font-family: 'Roboto', sans-serif;
-        font-weight: 600;
-        color: #FFFFFF;
+        font-weight: 700; // Bold for stronger heading
+        color: var(--text-prominent);
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         white-space: nowrap;
+        font-size: 1.4rem; // Explicitly set larger font size for PC view
 
         @media (max-width: 768px) {
             font-size: 0.95rem;
@@ -83,52 +129,7 @@
         }
     }
 
-    .phone-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: rgba(96, 165, 250, 0.1);
-        transition: all 0.3s ease;
-        cursor: pointer;
-
-        &:hover {
-            background: rgba(96, 165, 250, 0.2);
-            transform: scale(1.05);
-        }
-
-        &.ringing {
-            animation: phoneRing 0.5s ease-in-out infinite alternate;
-            background: rgba(96, 165, 250, 0.3);
-            box-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
-        }
-
-        svg {
-            filter: drop-shadow(0 1px 2px rgba(96, 165, 250, 0.4));
-        }
-
-        @media (max-width: 768px) {
-            width: 28px;
-            height: 28px;
-        }
-
-        @media (max-width: 480px) {
-            width: 24px;
-            height: 24px;
-        }
-    }
-
-    // Phone ringing animation
-    @keyframes phoneRing {
-        0% {
-            transform: rotate(-5deg) scale(1);
-        }
-        100% {
-            transform: rotate(5deg) scale(1.05);
-        }
-    }
+    // Removed phone dropdown styles for simplified header
 
     &__logo {
         height: 32px;

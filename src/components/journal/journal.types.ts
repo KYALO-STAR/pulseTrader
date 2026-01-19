@@ -19,6 +19,7 @@ export type TFilterMessageValues = {
     message_type: string;
     time: string;
     unique_id: string;
+    display_id?: number;
 };
 
 type TFilterMessageProps = Array<TFilterMessageValues> | TFilterMessageValues;

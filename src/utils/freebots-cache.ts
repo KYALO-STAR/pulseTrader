@@ -71,16 +71,25 @@ export const fetchXmlWithCache = async (file: string): Promise<string | null> =>
             res = await fetch(fallbackUrl);
         }
 
-        if (!res.ok) throw new Error(`Failed to fetch ${file}: ${res.status}`);
+        if (!res.ok) {
+            // Silently handle 404s for missing files (don't spam console)
+            if (res.status === 404) {
+                return null;
+            }
+            throw new Error(`Failed to fetch ${file}: ${res.status}`);
+        }
         const xml = await res.text();
 
         // Store in both caches
         memoryCache.set(file, xml);
         await setCachedXml(file, xml);
         return xml;
-    } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error('freebots-cache:fetchXmlWithCache error', e);
+    } catch (e: any) {
+        // Only log non-404 errors to reduce console noise
+        if (e?.message && !e.message.includes('404')) {
+            // eslint-disable-next-line no-console
+            console.warn('freebots-cache:fetchXmlWithCache error', e);
+        }
         return null;
     }
 };

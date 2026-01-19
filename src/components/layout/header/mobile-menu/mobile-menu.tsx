@@ -6,6 +6,8 @@ import { useTranslations } from '@deriv-com/translations';
 import { Drawer, MobileLanguagesDrawer, useDevice } from '@deriv-com/ui';
 import NetworkStatus from './../../footer/NetworkStatus';
 import ServerTime from './../../footer/ServerTime';
+
+
 import BackButton from './back-button';
 import MenuContent from './menu-content';
 import MenuHeader from './menu-header';
@@ -18,7 +20,7 @@ export interface MobileMenuRef {
 const MobileMenu = forwardRef<MobileMenuRef>((props, ref) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [, setActiveSubmenu] = useState<string | null>(null);
-    const { currentLang = 'EN', localize, switchLanguage } = useTranslations();
+        const { currentLang = 'EN', localize, switchLanguage } = useTranslations();
     const { hideModal, isModalOpenFor, showModal } = useModalManager();
     const { isDesktop } = useDevice();
 
@@ -39,7 +41,7 @@ const MobileMenu = forwardRef<MobileMenuRef>((props, ref) => {
 
     const openSubmenu = (submenu: string) => setActiveSubmenu(submenu);
 
-    if (isDesktop) return null;
+                if (isDesktop) return null;
     return (
         <div className='mobile-menu'>
             <Drawer isOpen={isDrawerOpen} onCloseDrawer={closeDrawer} width='29.5rem'>
@@ -51,7 +53,7 @@ const MobileMenu = forwardRef<MobileMenuRef>((props, ref) => {
                 </Drawer.Header>
 
                 <Drawer.Content>
-                    {isLanguageSettingVisible ? (
+                    isLanguageSettingVisible ? (
                         <>
                             <div className='mobile-menu__back-btn'>
                                 <BackButton buttonText={localize('Language')} onClick={hideModal} />
@@ -78,7 +80,7 @@ const MobileMenu = forwardRef<MobileMenuRef>((props, ref) => {
                 <Drawer.Footer className='mobile-menu__footer'>
                     <ServerTime />
                     <NetworkStatus />
-                </Drawer.Footer>
+                                    </Drawer.Footer>
             </Drawer>
         </div>
     );
@@ -87,3 +89,4 @@ const MobileMenu = forwardRef<MobileMenuRef>((props, ref) => {
 MobileMenu.displayName = 'MobileMenu';
 
 export default MobileMenu;
+

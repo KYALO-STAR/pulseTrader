@@ -304,15 +304,30 @@
         &__info-panel {
             position: relative;
             background-color: var(--general-main-1);
-            padding: 2.4rem;
-            margin-inline-start: 1.6rem;
+            padding: 1.6rem;
+            margin-inline-start: 1rem;
             display: none;
             height: calc(100vh - 16.7rem);
             overflow-y: auto;
+            max-width: 360px;
+            flex-shrink: 0;
+
+            @include tablet-screen {
+                display: none !important;
+            }
+
+            @include mobile-screen {
+                display: none !important;
+            }
 
             &--active {
                 display: block;
-                width: 30%;
+                width: 100%;
+
+                @include desktop-screen {
+                    width: auto;
+                    max-width: 360px;
+                }
             }
         }
 

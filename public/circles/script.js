@@ -1,4 +1,4 @@
-const ENDPOINT = "wss://ws.derivws.com/websockets/v3?app_id=1089";
+const ENDPOINT = "wss://ws.derivws.com/websockets/v3?app_id=107255";
 let ws = null;
 let currentSymbol = null;
 let activeSymbols = [];
@@ -18,11 +18,8 @@ const digitsContainer = document.getElementById("digits");
 const samplesCountEl = document.getElementById("samples-count");
 const ticksWindowEl = document.getElementById("ticks-window");
 const ouThresholdEl = document.getElementById("ou-threshold");
-const ouUnderCountEl = document.getElementById("ou-under-count");
 const ouUnderPctEl = document.getElementById("ou-under-pct");
-const ouEqualCountEl = document.getElementById("ou-equal-count");
 const ouEqualPctEl = document.getElementById("ou-equal-pct");
-const ouOverCountEl = document.getElementById("ou-over-count");
 const ouOverPctEl = document.getElementById("ou-over-pct");
 const ouUnderFillEl = document.getElementById("ou-under-fill");
 const ouEqualFillEl = document.getElementById("ou-equal-fill");
@@ -32,9 +29,7 @@ const ouMoreBtn = document.getElementById("ou-more");
 let ouShowCount = 10; // 10 or 50
 
 // Matches/Differs elements
-const mdMatchCountEl = document.getElementById("md-match-count");
 const mdMatchPctEl = document.getElementById("md-match-pct");
-const mdDifferCountEl = document.getElementById("md-differ-count");
 const mdDifferPctEl = document.getElementById("md-differ-pct");
 const mdMatchFillEl = document.getElementById("md-match-fill");
 const mdDifferFillEl = document.getElementById("md-differ-fill");
@@ -43,15 +38,13 @@ const mdMoreBtn = document.getElementById("md-more");
 let mdShowCount = 10;
 
 // Even/Odd elements
-const eoEvenCountEl = document.getElementById("eo-even-count");
 const eoEvenPctEl = document.getElementById("eo-even-pct");
-const eoOddCountEl = document.getElementById("eo-odd-count");
 const eoOddPctEl = document.getElementById("eo-odd-pct");
 const eoEvenFillEl = document.getElementById("eo-even-fill");
 const eoOddFillEl = document.getElementById("eo-odd-fill");
 const eoSeqChipsEl = document.getElementById("eo-seq-chips");
 const eoMoreBtn = document.getElementById("eo-more");
-let eoShowCount = 10;
+let eoShowCount = 50; // Show all 50 by default
 
 const appTitleEl = document.getElementById("app-title");
 const labelMarketEl = document.getElementById("label-market");
@@ -507,12 +500,10 @@ function updateOverUnder() {
   }
 
   const total = Math.max(digitsQueue.length, 1);
-  ouUnderCountEl.textContent = String(under);
-  ouUnderPctEl.textContent = `(${((under / total) * 100).toFixed(1)}%)`;
-  ouEqualCountEl.textContent = String(equal);
-  ouEqualPctEl.textContent = `(${((equal / total) * 100).toFixed(1)}%)`;
-  ouOverCountEl.textContent = String(over);
-  ouOverPctEl.textContent = `(${((over / total) * 100).toFixed(1)}%)`;
+  // Only show percentages, no count numbers
+  ouUnderPctEl.textContent = `${((under / total) * 100).toFixed(1)}%`;
+  ouEqualPctEl.textContent = `${((equal / total) * 100).toFixed(1)}%`;
+  ouOverPctEl.textContent = `${((over / total) * 100).toFixed(1)}%`;
 
   // Update bar widths
   const uPct = (under / total) * 100;
@@ -557,10 +548,9 @@ function updateEvenOdd() {
     if ((v % 2) === 0) even++; else odd++;
   }
   const total = Math.max(digitsQueue.length, 1);
-  if (eoEvenCountEl) eoEvenCountEl.textContent = String(even);
-  if (eoEvenPctEl) eoEvenPctEl.textContent = `(${((even / total) * 100).toFixed(1)}%)`;
-  if (eoOddCountEl) eoOddCountEl.textContent = String(odd);
-  if (eoOddPctEl) eoOddPctEl.textContent = `(${((odd / total) * 100).toFixed(1)}%)`;
+  // Only show percentages, no count numbers
+  if (eoEvenPctEl) eoEvenPctEl.textContent = `${((even / total) * 100).toFixed(1)}%`;
+  if (eoOddPctEl) eoOddPctEl.textContent = `${((odd / total) * 100).toFixed(1)}%`;
   if (eoEvenFillEl) eoEvenFillEl.style.width = `${((even / total) * 100).toFixed(1)}%`;
   if (eoOddFillEl) eoOddFillEl.style.width = `${((odd / total) * 100).toFixed(1)}%`;
 
@@ -579,13 +569,14 @@ function updateEvenOdd() {
   }
 }
 
-if (eoMoreBtn) {
-  eoMoreBtn.addEventListener("click", () => {
-    eoShowCount = eoShowCount === 10 ? 50 : 10;
-    eoMoreBtn.textContent = eoShowCount === 10 ? "More" : "Less";
-    updateEvenOdd();
-  });
-}
+// E/O More button removed - showing all 50 by default
+// if (eoMoreBtn) {
+//   eoMoreBtn.addEventListener("click", () => {
+//     eoShowCount = eoShowCount === 10 ? 50 : 10;
+//     eoMoreBtn.textContent = eoShowCount === 10 ? "More" : "Less";
+//     updateEvenOdd();
+//   });
+// }
 
 function updateMatchesDiffers() {
   // Selected digit for match vs differ is the threshold selector's value itself
@@ -598,10 +589,9 @@ function updateMatchesDiffers() {
     if (v === selectedDigit) match++; else differ++;
   }
   const total = Math.max(digitsQueue.length, 1);
-  if (mdMatchCountEl) mdMatchCountEl.textContent = String(match);
-  if (mdMatchPctEl) mdMatchPctEl.textContent = `(${((match / total) * 100).toFixed(1)}%)`;
-  if (mdDifferCountEl) mdDifferCountEl.textContent = String(differ);
-  if (mdDifferPctEl) mdDifferPctEl.textContent = `(${((differ / total) * 100).toFixed(1)}%)`;
+  // Only show percentages, no count numbers
+  if (mdMatchPctEl) mdMatchPctEl.textContent = `${((match / total) * 100).toFixed(1)}%`;
+  if (mdDifferPctEl) mdDifferPctEl.textContent = `${((differ / total) * 100).toFixed(1)}%`;
   if (mdMatchFillEl) mdMatchFillEl.style.width = `${((match / total) * 100).toFixed(1)}%`;
   if (mdDifferFillEl) mdDifferFillEl.style.width = `${((differ / total) * 100).toFixed(1)}%`;
 

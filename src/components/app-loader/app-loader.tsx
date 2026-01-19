@@ -8,46 +8,85 @@ interface AppLoaderProps {
 
 const AppLoader: React.FC<AppLoaderProps> = ({ onLoadingComplete, duration = 12000 }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  const messages = [
+    { title: 'Initializing' },
+    { title: 'Connecting to trading server...' },
+    { title: 'Loading charts' },
+    { title: 'Loading Blocky' },
+    { title: 'Preparing dashboard' },
+  ];
 
   // Initialize loading timer
+  // Total loader duration fixed at 6 seconds
+  const effectiveDuration = 6000;
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(onLoadingComplete, 300); // Wait for fade out animation
-    }, duration);
+    }, effectiveDuration);
 
     return () => clearTimeout(timer);
-  }, [onLoadingComplete, duration]);
+  }, [onLoadingComplete, effectiveDuration]);
+
+  // Progress bar and message advancement
+  useEffect(() => {
+    if (!isVisible) return;
+
+    setProgress(0);
+    // Evenly split the 6s across all messages
+    const totalPerMessageMs = Math.max(200, Math.floor(effectiveDuration / messages.length));
+    const stepMs = totalPerMessageMs / 100;
+    let current = 0;
+
+    const interval = setInterval(() => {
+      current += 1;
+      if (current > 100) {
+        clearInterval(interval);
+        // move to next message if any, and restart
+        setMessageIndex(prev => {
+          const next = prev + 1;
+          if (next < messages.length) {
+            // trigger next cycle
+            setProgress(0);
+            return next;
+          }
+          return prev;
+        });
+        return;
+      }
+      setProgress(current);
+    }, Math.max(4, stepMs));
+
+    return () => clearInterval(interval);
+  }, [isVisible, messageIndex, duration]);
 
   if (!isVisible) return null;
 
   return (
-    <div className="georgetown-loader">
-      <div className="chart-container">
-        <img 
-          alt="Stock chart with green and red candlesticks and glowing line graphs on a dark blue background" 
-          className="chart-image" 
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlwZ8gCMl3KRFHNdk8aoezPXwir7eQp_t2gQqEZKth9w5FgHRG9IBataRrooqJA-hkppcqoKFPaX3uqldjanLaD3HVMUSiLybRMCFlfelzHz3on8_6VHW1KOhDITdkHCR2ZhsaDtrA368dKpOgdb7LPvOxsBCVYJiITGy1g-NayDqfpNZC2NjTTHHqRdhKOvGpayvau4L06gKjOQzjWWhx-TGEeP6U29mZChFVpctavS8a7WR-vMHuWG2XrQzdJ4FBVetapjyuJ_I"
-        />
-        <div className="chart-overlay"></div>
-      </div>
+    <div
+      className="georgetown-loader"
+      style={{
+        backgroundImage: "url('/assets/images/pulsetrader-logo.png')",
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      <div className="chart-container"></div>
       
       <div className="content-overlay">
-        <div className="main-content">
-          <h1 className="title-line">GEORGETOWN</h1>
-          <h2 className="title-line">DELTAWAVE</h2>
-          <h3 className="title-line">SYNTHETICS</h3>
-        </div>
-        
-        <div className="footer-content">
-          <div className="footer-left">
-            <p className="footer-text">TELEGRMAMM MARKING</p>
-            <p className="footer-text">1xCOSROOUS</p>
-          </div>
-          <div className="footer-icon">
-            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7 11l5-5m0 0l5 5m-5-5v12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"></path>
-            </svg>
+        <div className="maroon-banner">
+          <h1 className="banner-title">PULSE TRADER</h1>
+          <p className="banner-message">{messages[messageIndex]?.title || 'Connecting to trading server...'}</p>
+          <div className="progress-wrapper">
+            <div className="progress-track">
+              <div className="loading-bar-glow" style={{ width: `${progress}%` }} />
+            </div>
+            <div className="progress-counter">{progress}%</div>
           </div>
         </div>
       </div>

@@ -1,9 +1,10 @@
 const lightMode = () => {
     const workspace = Blockly;
     workspace.Colours.RootBlock = {
-        colour: '#064e72',
-        colourSecondary: '#064e72',
-        colourTertiary: '#6d7278',
+        // Softer mid-blue to improve contrast with the workspace background
+        colour: '#0d5db8',
+        colourSecondary: '#0d5db8',
+        colourTertiary: '#0c4c99',
     };
 
     workspace.Colours.Base = {

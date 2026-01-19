@@ -29,6 +29,25 @@
         }
     }
 
+    &__g-button {
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.4rem;
+        cursor: pointer;
+
+        &-dot {
+            width: 0.9rem;
+            height: 0.9rem;
+            border-radius: 50%;
+            background: #dc2626;
+            box-shadow: 0 0 6px rgba(220, 38, 38, 0.6);
+            display: block;
+        }
+    }
+
     &__vertical-line {
         width: 0.1rem;
         height: 1.6rem;
@@ -74,24 +93,6 @@
         &-text {
             color: $color-blue;
             text-decoration: underline;
-        }
-    }
-}
-
-.languages-modal__body {
-    padding-inline: 1.6rem;
-
-    &-button {
-        height: 8.8rem;
-        width: 13.3rem;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 0.8rem;
-
-        &-selected {
-            border-radius: 4px;
-            border: 1px solid var(--brand-blue, $color-green);
         }
     }
 }

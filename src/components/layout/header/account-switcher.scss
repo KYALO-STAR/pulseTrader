@@ -115,6 +115,10 @@
         user-select: none;
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
+
+        @include mobile-screen {
+            margin-right: 0.4rem; // Reduce margin on mobile to prevent edge alignment
+        }
     }
 
     &__id {
@@ -186,6 +190,14 @@
             &--no-currency {
                 white-space: nowrap;
             }
+        }
+
+        &__wrapper {
+            margin-right: 0.4rem; // Add margin to wrapper on mobile to prevent edge alignment
+        }
+
+        &__account-type-and-balance {
+            padding: 0 0.8rem 0.1rem 0; // Add right padding to prevent edge alignment
         }
     }
 

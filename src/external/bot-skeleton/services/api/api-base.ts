@@ -13,7 +13,8 @@ import {
     setIsAuthorizing,
 } from './observables/connection-status-stream';
 import ApiHelpers from './api-helpers';
-import { generateDerivApiInstance, V2GetActiveClientId, V2GetActiveToken } from './appId';
+import { generateDerivApiInstance, getCurrentConnectionAppId, hasAppIdChanged, V2GetActiveClientId, V2GetActiveToken } from './appId';
+import { getAppId } from '@/components/shared';
 import chart_api from './chart-api';
 
 type CurrentSubscription = {
@@ -82,6 +83,7 @@ class APIBase {
         this.reconnectIfNotConnected();
     }
 
+
     async init(force_create_connection = false) {
         this.toggleRunButton(true);
 
@@ -125,6 +127,153 @@ class APIBase {
             return socket_state[ready_state as keyof typeof socket_state] || 'Unknown';
         }
         return 'Socket not initialized';
+    }
+
+    /**
+     * Ensure the WebSocket connection is using the current app_id from localStorage
+     * If app_id has changed, reconnect safely (only when no active trades)
+     */
+    async ensureCurrentAppId() {
+        // Only check if we have an active connection
+        if (!this.api || this.api?.connection.readyState !== 1) {
+            return;
+        }
+
+        // Check if app_id has changed
+        if (hasAppIdChanged()) {
+            const oldAppId = getCurrentConnectionAppId();
+            const newAppId = getAppId();
+            
+            console.log(`🔌 [APP ID] App ID changed: ${oldAppId} → ${newAppId}`);
+            
+            // Check if we're currently running trades - if so, don't reconnect (causes logout)
+            if (this.is_running) {
+                console.log(`⚠️ [APP ID] Bot is running, cannot reconnect. New app_id ${newAppId} will be used on next connection.`);
+                return;
+            }
+            
+            // Safe to reconnect - no active trades
+            console.log(`🔄 [APP ID] Reconnecting with new app_id ${newAppId} (safe - no active trades)...`);
+            const token = V2GetActiveToken();
+            const savedAccountId = this.account_id;
+            
+            if (!token) {
+                console.warn('⚠️ [APP ID] No token found, cannot reconnect');
+                return;
+            }
+            
+            try {
+                // Save token before reconnecting
+                this.token = token;
+                
+                // Reconnect
+                await this.init(true);
+                
+                // Wait for connection to be ready
+                if (this.api && this.api.connection) {
+                    await new Promise<void>((resolve) => {
+                        if (this.api?.connection.readyState === 1) {
+                            resolve();
+                        } else {
+                            const onOpen = () => {
+                                this.api?.connection?.removeEventListener('open', onOpen);
+                                resolve();
+                            };
+                            this.api?.connection?.addEventListener('open', onOpen);
+                            setTimeout(() => resolve(), 5000); // Timeout after 5 seconds
+                        }
+                    });
+                }
+                
+                // Re-authorize with saved token
+                if (this.api && this.api.connection.readyState === 1) {
+                    const { authorize, error } = await this.api.authorize(token);
+                    if (error) {
+                        console.error('❌ [APP ID] Re-authorization failed:', error);
+                        throw error;
+                    } else {
+                        console.log(`✅ [APP ID] Reconnected and re-authorized with App ID ${newAppId}`);
+                        this.account_id = savedAccountId;
+                        this.account_info = authorize;
+                        setAccountList(authorize?.account_list || []);
+                        setAuthData(authorize);
+                        setIsAuthorized(true);
+                        this.is_authorized = true;
+                    }
+                }
+            } catch (err) {
+                console.error('❌ [APP ID] Reconnection error:', err);
+                // If reconnection fails, the old connection should still work
+            }
+        }
+    }
+
+    /**
+     * Reconnect WebSocket with new app_id after trade completion
+     * This is safe because:
+     * - Trade is already complete
+     * - We're between trades (no active trade to interrupt)
+     * - We preserve the token and re-authorize automatically
+     */
+    async reconnectWithNewAppId() {
+        if (!hasAppIdChanged()) {
+            return; // No change needed
+        }
+
+        const oldAppId = getCurrentConnectionAppId();
+        const newAppId = getAppId();
+        const token = V2GetActiveToken();
+        
+        if (!token) {
+            console.warn('⚠️ [WEBSOCKET] No token found, cannot reconnect');
+            return;
+        }
+
+        console.log(`🔄 [WEBSOCKET] Reconnecting: ${oldAppId} → ${newAppId} (after trade completion)`);
+        
+        // Save token before reconnecting
+        const savedToken = token;
+        const savedAccountId = this.account_id;
+        
+        // Reconnect with new app_id
+        await this.init(true);
+        
+        // Wait for connection to be ready
+        if (this.api?.connection) {
+            await new Promise<void>((resolve) => {
+                if (this.api?.connection.readyState === 1) {
+                    resolve();
+                } else {
+                    const onOpen = () => {
+                        this.api?.connection?.removeEventListener('open', onOpen);
+                        resolve();
+                    };
+                    this.api?.connection?.addEventListener('open', onOpen);
+                    setTimeout(() => resolve(), 5000); // Timeout after 5 seconds
+                }
+            });
+        }
+        
+        // Re-authorize with saved token (init() should do this, but ensure it happens)
+        if (savedToken && this.api && this.api.connection.readyState === 1) {
+            try {
+                const { authorize, error } = await this.api.authorize(savedToken);
+                if (error) {
+                    console.error('❌ [WEBSOCKET] Re-authorization failed:', error);
+                } else {
+                    console.log(`✅ [WEBSOCKET] Reconnected and re-authorized with App ID ${newAppId}`);
+                    this.account_id = savedAccountId;
+                    // Restore account info
+                    this.account_info = authorize;
+                    setAccountList(authorize?.account_list || []);
+                    setAuthData(authorize);
+                    setIsAuthorized(true);
+                    this.is_authorized = true;
+                }
+            } catch (err) {
+                console.error('❌ [WEBSOCKET] Re-authorization error:', err);
+            }
+        }
     }
 
     terminate() {

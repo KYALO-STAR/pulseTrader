@@ -74,6 +74,13 @@
             height: calc(100% - 7.2rem);
         }
 
+        &-id {
+            font-size: var(--text-size--xxxs);
+            color: var(--text-less-prominent);
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
         &-content {
             > * {
                 width: 100%;

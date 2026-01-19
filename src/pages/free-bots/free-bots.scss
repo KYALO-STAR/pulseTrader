@@ -49,10 +49,10 @@
     background: #1A1A1A; // Dark grey card background
     border: 1px solid #333333; // Subtle border
     border-radius: 16px; // More rounded corners
-    padding: 24px;
+    padding: 20px; // Reduced from 24px to 20px
     display: flex;
     flex-direction: column;
-    min-height: 240px;
+    min-height: 200px; // Reduced from 240px to 200px
     transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); // Darker shadow
     position: relative;
@@ -71,7 +71,7 @@
     &:hover {
         transform: translateY(-4px);
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-        border-color: #60A5FA;
+        border-color: #ef4444;
     }
 
     // Premium ribbon tag
@@ -93,7 +93,7 @@
     }
 
     &__header {
-        margin-bottom: 16px;
+        margin-bottom: 12px; // Reduced from 16px to 12px
         margin-top: 20px; // Space for premium tag
     }
 
@@ -124,7 +124,7 @@
     &__rating {
         display: flex;
         justify-content: center;
-        margin-bottom: 16px;
+        margin-bottom: 8px; // Reduced from 16px to 8px
         gap: 2px;
 
         .star {
@@ -183,17 +183,17 @@
         font-weight: 700;
         font-size: 14px;
         transition: all 0.3s ease;
-        background: linear-gradient(135deg, #00BCD4, #0097A7) !important; // Cyan gradient like the premium design
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important; // Purple gradient
         color: #FFFFFF !important;
         border: none !important;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 
         &:hover:not(:disabled) {
             transform: translateY(-2px);
-            background: linear-gradient(135deg, #00ACC1, #00838F) !important;
-            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+            background: linear-gradient(135deg, #7C3AED, #6D28D9) !important;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
         }
 
         &:active:not(:disabled) {

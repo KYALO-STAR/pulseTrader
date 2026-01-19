@@ -22,13 +22,13 @@ import {
     LabelPairedChartLineCaptionRegularIcon,
     LabelPairedObjectsColumnCaptionRegularIcon,
     LabelPairedPuzzlePieceTwoCaptionBoldIcon,
-    LabelPairedSignalCaptionRegularIcon,
 } from '@deriv/quill-icons/LabelPaired';
 import { LegacyChartsIcon, LegacyGuide1pxIcon, LegacyIndicatorsIcon } from '@deriv/quill-icons/Legacy';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import RunPanel from '../../components/run-panel';
+import SpeedBotFloatingStop from '../../components/speedbot-floating-stop';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
@@ -38,14 +38,15 @@ const ChartWrapper = lazy(() => import('../chart/chart-wrapper'));
 
 const TradingView = lazy(() => import('../tradingview'));
 const AnalysisTool = lazy(() => import('../analysis-tool'));
-const Signals = lazy(() => import('../signals'));
 const CopyTrading = lazy(() => import('../copy-trading'));
 const SmartTrader = lazy(() => import('../smart-trader'));
+const DpTools = lazy(() => import('../dp-tools'));
 const ProTool = lazy(() => import('../pro-tool'));
 const Dtrader = lazy(() => import('../dtrader'));
 // Import FreeBots directly instead of lazy loading for faster access
 import FreeBots from '../free-bots';
-const Dcircles = lazy(() => import('../dcircles'));
+import HybridBots from '../hybrid-bots';
+const Dcircles = lazy(() => import('../dtrader/dcircles'));
 
 const AppWrapper = observer(() => {
     const { connectionStatus } = useApiBase();
@@ -75,9 +76,22 @@ const AppWrapper = observer(() => {
         [key: string]: string;
     };
     const { clear } = summary_card;
-    const { DASHBOARD, BOT_BUILDER, SMART_TRADER } = DBOT_TABS;
+    const { DASHBOARD, BOT_BUILDER, SMART_TRADER, HYBRID_BOTS } = DBOT_TABS;
     const init_render = React.useRef(true);
-    const hash = ['dashboard', 'bot_builder', 'chart', 'free_bots', 'dcircles', 'copy_trading', 'smart_trader', 'dtrader'];
+    const hash = [
+        'dashboard',
+        'bot_builder',
+        'chart',
+        'hybrid_bots',
+        'free_bots',
+        'dcircles',
+        'copy_trading',
+        'smart_trader',
+        'dp_tools',
+        'dtrader',
+        'tradingview',
+        'analysis_tool',
+    ];
     const { isDesktop } = useDevice();
     const location = useLocation();
     const navigate = useNavigate();
@@ -176,6 +190,14 @@ const AppWrapper = observer(() => {
             if (timer) clearTimeout(timer);
         };
     }, [dashboard_strategies, active_tab]);
+
+    // When on SpeedBot tab, auto-open run panel drawer so trades are visible (matches other bots)
+    useEffect(() => {
+        if (active_tab === DBOT_TABS.SPEEDBOT) {
+            run_panel.toggleDrawer(true);
+            run_panel.setActiveTabIndex(1);
+        }
+    }, [active_tab, run_panel]);
 
     const handleTabChange = React.useCallback(
         (tab_index: number) => {
@@ -290,7 +312,22 @@ const AppWrapper = observer(() => {
                                     <ChartWrapper show_digits_stats={false} />
                                 </Suspense>
                             </div>
-
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='SpeedBots' />
+                                        <span className='nav-speedbots-rocket' aria-hidden='true'>🚀</span>
+                                    </>
+                                }
+                                id='id-hybrid-bots'
+                            >
+                                <HybridBots />
+                            </div>
                             <div
                                 label={
                                     <>
@@ -328,7 +365,7 @@ const AppWrapper = observer(() => {
                             <div
                                 label={
                                     <>
-                                        <LabelPairedSignalCaptionRegularIcon
+                                        <LabelPairedObjectsColumnCaptionRegularIcon
                                             height='24px'
                                             width='24px'
                                             fill='var(--text-general)'
@@ -368,20 +405,16 @@ const AppWrapper = observer(() => {
                             <div
                                 label={
                                     <>
-                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
-                                            height='24px'
-                                            width='24px'
-                                            fill='var(--text-general)'
-                                        />
-                                        <Localize i18n_default_text='pRO TOOL' />
+                                        <LegacyIndicatorsIcon height='16px' width='16px' fill='var(--text-general)' />
+                                        <Localize i18n_default_text='DP Tools' />
                                     </>
                                 }
-                                id='id-pro-tool'
+                                id='id-dp-tools'
                             >
                                 <Suspense
-                                    fallback={<ChunkLoader message={localize('Please wait, loading pRO TOOL...')} />}
+                                    fallback={<ChunkLoader message={localize('Please wait, loading DP Tools...')} />}
                                 >
-                                    <ProTool />
+                                    <DpTools />
                                 </Suspense>
                             </div>
                             <div
@@ -435,38 +468,31 @@ const AppWrapper = observer(() => {
                                     <AnalysisTool />
                                 </Suspense>
                             </div>
-                            <div
-                                label={
-                                    <>
-                                        <LabelPairedSignalCaptionRegularIcon
-                                            height='16px'
-                                            width='16px'
-                                            fill='var(--text-general)'
-                                        />
-                                        <Localize i18n_default_text='Signals' />
-                                    </>
-                                }
-                                id='id-signals'
-                            >
-                                <Suspense
-                                    fallback={<ChunkLoader message={localize('Please wait, loading Signals...')} />}
-                                >
-                                    <Signals />
-                                </Suspense>
-                            </div>
                         </Tabs>
                     </div>
                 </div>
             </div>
             <DesktopWrapper>
-                <div className='main__run-strategy-wrapper'>
-                    <RunStrategy />
-                    <RunPanel />
-                </div>
+                {/* Hide RunStrategy and RunPanel on DTrader tab (manual trading only) */}
+                {/* Match deriv-insider behaviour: also skip RunStrategy on Matches and SpeedBot tabs */}
+                {active_tab !== DBOT_TABS.DTRADER && (
+                    <div className='main__run-strategy-wrapper'>
+                        {active_tab !== DBOT_TABS.MATCHES && active_tab !== DBOT_TABS.SPEEDBOT && (
+                            <RunStrategy />
+                        )}
+                        <RunPanel />
+                    </div>
+                )}
                 <ChartModal />
                 <TradingViewModal />
             </DesktopWrapper>
-            <MobileWrapper>{!is_open && active_tab !== DBOT_TABS.SMART_TRADER && <RunPanel />}</MobileWrapper>
+            <MobileWrapper>
+                {!is_open &&
+                    active_tab !== DBOT_TABS.SMART_TRADER &&
+                    active_tab !== DBOT_TABS.DTRADER &&
+                    active_tab !== DBOT_TABS.SPEEDBOT && <RunPanel />}
+            </MobileWrapper>
+            <SpeedBotFloatingStop />
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}
                 className='dc-dialog__wrapper--fixed'

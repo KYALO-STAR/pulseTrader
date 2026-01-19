@@ -27,20 +27,20 @@ const FreeBots = observer(() => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Manifest-driven list for instant load and prefetch
+    // Show selected bots from public/xml (explicit curated list)
     const getXmlFiles = () => {
         return [
-            '$DollarprinterbotOrignal$.xml',
-            'Candle-Mine Version 2  (2).xml',
-            'DIFFERS KILLER BOT.xml',
-            'Digits Switcher Bot.xml',
-            'MKOREAN SV6 BOT (1).xml',
-            'Titans V3.xml (1).xml',
-            'MATRIX V5 SPEEDBOT.xml (1).xml',
-            'NEXUS SPEEDBOT V5.xml (1).xml',
-            'EXPERT SPEED MATCH BOT.xml (1).xml',
-            'RISE AND FALL AUTO BOT.xml (1).xml',
-            'EVEN ODD PERCENTAGE ANALYSER.xml (1).xml',
+            '2 Prediction O&U M7 Bot..xml',
+            '16. Double Differs Exclude Red and Green.xml',
+            'AK Entry Point Software 003.xml',
+            'Alpha System 001.xml',
+            'Digit Flux by Kim (1).xml',
+            'Dollar Guard S1.xml',
+            'Genesis Version 1 by Kim.xml',
+            'Money Gram V1 AUTO..xml',
+            'OVER1 BOT WITH OVER3 REVOVERY  (1).xml', // Note: double space before (1)
+            'Pesa Flip G1.xml',
+            'Pesa Flow S3.xml',
         ];
     };
 
@@ -107,22 +107,10 @@ const FreeBots = observer(() => {
             setIsLoading(false); // hide "Loading free bots..." right away
 
             try {
-                // 1) Fetch manifest with timeout; fallback to initial list if slow
-                const withTimeout = <T,>(p: Promise<T>, ms = 800): Promise<T | null> =>
-                    new Promise(resolve => {
-                        const t = setTimeout(() => resolve(null), ms);
-                        p.then(r => {
-                            clearTimeout(t);
-                            resolve(r);
-                        }).catch(() => {
-                            clearTimeout(t);
-                            resolve(null);
-                        });
-                    });
+                // Force use of explicit list only; ignore remote manifest
+                const manifest = getXmlFiles().map(file => ({ name: file.replace('.xml',''), file }));
 
-                const manifest = (await withTimeout(getBotsManifest(), 800)) || fallback;
-
-                // 2) If manifest differs, update skeletons to match
+                // Update skeletons to our explicit list
                 const skeletonBots: BotData[] = manifest.map(item => ({
                     name: (item.name || item.file.replace('.xml', '')).replace(/[_-]/g, ' '),
                     description: `Advanced trading bot: ${(item.name || item.file.replace('.xml', '')).replace(/[_-]/g, ' ')}`,
@@ -205,15 +193,6 @@ const FreeBots = observer(() => {
                                         <span className='star'>★</span>
                                         <span className='star'>★</span>
                                         <span className='star'>★</span>
-                                    </div>
-
-                                    <div className='free-bot-card__badges'>
-                                        <span className='free-bot-card__badge free-bot-card__badge--intermediate'>
-                                            {bot.difficulty}
-                                        </span>
-                                        <span className='free-bot-card__badge free-bot-card__badge--strategy'>
-                                            {bot.strategy}
-                                        </span>
                                     </div>
                                 </div>
 

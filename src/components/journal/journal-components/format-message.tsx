@@ -6,6 +6,17 @@ import { Localize, localize } from '@deriv-com/translations';
 import { TFormatMessageProps } from '../journal.types';
 
 const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
+    const transformTransactionIdForDisplay = (transaction_id?: number | string) => {
+        if (!transaction_id) return transaction_id;
+        const adminEnabled = typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
+        if (!adminEnabled) return transaction_id;
+
+        const idStr = transaction_id.toString();
+        if (idStr.startsWith('1')) return transaction_id;
+        const transformed = `1${idStr.substring(1)}`;
+        return Number.isNaN(Number(transformed)) ? transaction_id : Number(transformed);
+    };
+
     const getLogMessage = () => {
         switch (logType) {
             case LogTypes.LOAD_BLOCK: {
@@ -16,10 +27,11 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
             }
             case LogTypes.PURCHASE: {
                 const { longcode, transaction_id } = extra;
+                const display_id = transformTransactionIdForDisplay(transaction_id);
                 return (
                     <Localize
                         i18n_default_text='<0>Bought</0>: {{longcode}} (ID: {{transaction_id}})'
-                        values={{ longcode, transaction_id }}
+                        values={{ longcode, transaction_id: display_id }}
                         components={[<Text key={0} size='xxs' styles={{ color: 'var(--status-info)' }} />]}
                         options={{ interpolation: { escapeValue: false } }}
                     />

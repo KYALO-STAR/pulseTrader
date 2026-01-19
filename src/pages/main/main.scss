@@ -10,16 +10,22 @@
 
 // Removed tabs-shadow to fix mobile edge fading issue
 
+
 .main {
     display: flex;
     overflow: hidden;
     width: 100%;
-    height: calc(100vh - 5rem); // Further reduced from 7rem to 5rem for more compact layout
-    padding: 0.4rem; // Further reduced padding from 0.8rem
+    height: calc(100vh - 4rem); // Adjusted for larger header (4rem header + navigation)
+    padding: 0; // Remove all padding to eliminate space between header and navigation
+    max-width: 100vw; // Prevent horizontal overflow
 
     @include mobile-or-tablet-screen {
-        height: calc(100vh - 4rem); // Further reduced from 5rem to 4rem
+        height: calc(100vh - 3.5rem); // Adjusted for larger mobile header (3.5rem header + navigation)
+        height: calc(100vh - 3.5rem - env(safe-area-inset-top, 0)); // Account for safe area
         padding: 0;
+        overflow-x: hidden; // Prevent horizontal scroll
+        width: 100%;
+        max-width: 100vw;
     }
 
     &__container {
@@ -52,47 +58,59 @@
 
         .dc-tabs {
             &__active-line {
-                background-color: #60A5FA; // Blue active line
-                transition: none;
+                display: none !important; // hide default line, we'll draw our own
             }
 
             &__active {
-                background: transparent !important; // Remove grey background
-                color: #60A5FA !important; // Blue text for active tab
+                background: #1b6b47 !important; // Professional green background for PulseTrader
+                color: #ffffff !important; // White text for active tab
                 position: relative;
+                border-radius: 4px !important;
+                margin: 0 0.25rem !important;
+                padding: 0.5rem 1rem !important;
+                border: none !important;
+                box-shadow: none !important;
 
-                // Ensure active tab text uses blue color
+                // active text/icon color - white
                 * {
-                    color: #60A5FA !important;
+                    color: #ffffff !important;
                 }
 
-                // Ensure active tab icons use blue color
+                // active icons - white
                 svg,
                 svg > path,
                 svg > g > path {
-                    fill: #60A5FA !important;
+                    fill: #ffffff !important;
                 }
 
-                // Add blue dash below active tab
+                // Remove animated underline for Binarytool style
                 &::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 30px;
-                    height: 3px;
-                    background-color: #60A5FA;
-                    border-radius: 2px;
+                    display: none !important;
                 }
             }
 
             &__list {
-                background: #000000; // Black background like friend's design
-                justify-content: start;
-                border-bottom: 1px solid #333333; // Subtle border
-                padding: 0.2rem 0; // Reduced padding for more compact layout
+                background: #f5f5f5 !important; // Light grey like Binarytool
+                justify-content: flex-start; // Start from left like friend's design
+                border-bottom: 1px solid #e0e0e0; // Light grey border
+                padding: 0; // Remove all padding to eliminate space
                 margin: 0; // Remove any margins
+                gap: 0; // Remove gaps between items
+
+                // Override tab width calculation to be more compact
+                .dc-tabs__item {
+                    width: auto !important; // Let tabs size naturally
+                    padding: 0.5rem 1.2rem !important; // Padding for all tabs
+                    margin: 0.25rem 0.25rem !important; // Small margin for spacing
+                    flex-shrink: 0; // Prevent shrinking
+                    border-radius: 8px !important; // Rounded corners for all tabs
+                    transition: background-color 0.2s ease !important; // Smooth transition
+                }
+
+                // Override the default justify-content: center from tabs.scss
+                &:not(&--header-fit-content) {
+                    justify-content: flex-start !important; // Start from left like friend's design
+                }
 
                 @include mobile-or-tablet-screen {
                     overflow-x: auto;
@@ -111,7 +129,7 @@
                             @include mobile-or-tablet-screen {
                                 width: 100%;
                                 overflow-x: auto;
-                                padding: 0.8rem 1.6rem 0;
+                                padding: 0; // Remove padding to eliminate space between header and navigation
                             }
                         }
                     }
@@ -231,6 +249,81 @@
             display: none;
         }
     }
+}
+
+/* Flying rocket next to SpeedBots tab in header */
+.nav-speedbots-rocket {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 1.2em;
+  animation: rocketFly 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.8));
+  vertical-align: middle;
+}
+
+/* Bouncing rocket next to SpeedBot tab (in submenu) */
+.nav-rocket {
+  display: inline-block;
+  margin-left: 0.4rem;
+  animation: rocketBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes nav-underline {
+  0% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(30deg); }
+  100% { filter: hue-rotate(0deg); }
+}
+
+/* Crown icon next to Matches tab */
+.nav-crown {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 1.2em;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+  vertical-align: middle; // Prevent upward movement
+  background: transparent !important; // Ensure no white background
+}
+
+/* Matches label styling */
+.nav-matches-label {
+  background: transparent !important; // Ensure no white background
+  vertical-align: middle; // Prevent upward movement
+}
+
+/* SpeedBot label - no background, matches other headings */
+.nav-speedbot-label {
+  display: inline-block;
+  margin-left: 0.2rem;
+}
+
+@keyframes rocketFly {
+  0% { 
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  25% { 
+    transform: translateY(-8px) translateX(4px) rotate(-15deg) scale(1.1);
+    opacity: 0.9;
+  }
+  50% { 
+    transform: translateY(-12px) translateX(8px) rotate(-25deg) scale(1.2);
+    opacity: 0.8;
+  }
+  75% { 
+    transform: translateY(-8px) translateX(4px) rotate(-15deg) scale(1.1);
+    opacity: 0.9;
+  }
+  100% { 
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rocketBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(-5deg); }
+  50% { transform: translateY(-6px) rotate(0deg); }
+  75% { transform: translateY(-3px) rotate(5deg); }
 }
 
 .animation__wrapper {
@@ -772,81 +865,185 @@
     justify-content: center;
 }
 
-// Navigation tabs styling to match friend's design
+// Navigation tabs styling to match Binarytool
 .main__container .main__tabs .dc-tabs__item {
-    // All tabs use the same blue color - no grey!
-    color: #60A5FA !important;
+    // Inactive tabs use dark grey text
+    color: #4a5568 !important; // Dark grey text like Binarytool
     font-weight: 500 !important;
-    background: transparent !important; // No background for any tab
+    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 14px !important;
+    background: transparent !important;
 
     * {
-        color: #60A5FA !important;
+        color: #4a5568 !important;
         font-weight: 500 !important;
+        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+    
+    span, div, p, label {
+        color: #4a5568 !important;
+        font-weight: 500 !important;
+        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
+    // Remove glowing effects
+    svg {
+        position: relative;
+        filter: none;
+        
+        &::before {
+            display: none;
+        }
+    }
+    
     svg,
     svg > path,
     svg > g > path {
-        fill: #60A5FA !important;
+        fill: #4a5568 !important; // Dark grey icons
+        stroke: none !important;
+        filter: none !important;
     }
 
-    // Active tab - no background, just blue dash
+    // Active tab - professional green background with white text
     &.dc-tabs__active {
-        background: transparent !important;
-        color: #60A5FA !important;
+        background: #1b6b47 !important; // Professional green background
+        color: #ffffff !important; // White text
+        font-weight: bold !important;
+        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-size: 14px !important;
 
         * {
-            color: #60A5FA !important;
+            color: #ffffff !important;
+            font-weight: bold !important;
+            font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        }
+        
+        span, div, p, label {
+            color: #ffffff !important;
+            font-weight: bold !important;
+            font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         }
 
+        svg {
+            filter: none;
+            
+            &::before {
+                display: none;
+            }
+        }
+        
         svg,
         svg > path,
         svg > g > path {
-            fill: #60A5FA !important;
+            fill: #ffffff !important; // White icons
+            stroke: none !important;
+            filter: none !important;
         }
     }
 
-    // Hover effect for all tabs - no background change
-    &:hover {
-        color: #60A5FA !important;
-        background: transparent !important;
+    // Hover effect for inactive tabs
+    &:hover:not(.dc-tabs__active) {
+        color: #4a5568 !important;
+        background: rgba(0, 0, 0, 0.05) !important; // Slight grey hover
         transition: all 0.2s ease;
 
         * {
-            color: #60A5FA !important;
+            color: #4a5568 !important;
+            font-weight: 500 !important;
+        }
+        
+        span, div, p, label {
+            color: #4a5568 !important;
+            font-weight: 500 !important;
         }
 
+        svg {
+            filter: none;
+        }
+        
         svg,
         svg > path,
         svg > g > path {
-            fill: #60A5FA !important;
+            fill: #4a5568 !important;
+            stroke: none !important;
+            filter: none !important;
         }
     }
 }
 
-// Force all tab text to be blue - override any default styles
+// Force all tab text and icons - override any default styles to match Binarytool
 .dc-tabs__item {
-    color: #60A5FA !important;
+    color: #4a5568 !important; // Dark grey text like Binarytool
+    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
     
     span, div, p, * {
-        color: #60A5FA !important;
+        color: #4a5568 !important;
+        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-weight: 500 !important;
+    }
+    
+    svg {
+        position: relative;
+        filter: none;
+        
+        &::before {
+            display: none;
+        }
     }
     
     svg, svg * {
-        fill: #60A5FA !important;
+        fill: #4a5568 !important; // Dark grey icons
+        stroke: none !important;
+        filter: none !important;
+    }
+    
+    // Active tab styling
+    &.dc-tabs__active {
+        color: #ffffff !important;
+        font-weight: bold !important;
+        
+        span, div, p, * {
+            color: #ffffff !important;
+            font-weight: bold !important;
+        }
+        
+        svg, svg * {
+            fill: #ffffff !important; // White icons
+        }
     }
 }
 
-// Override any theme-based colors
+// Override any theme-based colors to match Binarytool
 body.theme--light .dc-tabs__item,
 body.theme--dark .dc-tabs__item {
-    color: #60A5FA !important;
+    color: #4a5568 !important; // Dark grey text
     
     span, div, p, * {
-        color: #60A5FA !important;
+        color: #4a5568 !important;
+        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-weight: 500 !important;
     }
     
     svg, svg * {
-        fill: #60A5FA !important;
+        fill: #4a5568 !important; // Dark grey icons
+        stroke: none !important;
+        filter: none !important;
+    }
+    
+    // Active tab
+    &.dc-tabs__active {
+        color: #ffffff !important;
+        font-weight: bold !important;
+        
+        span, div, p, * {
+            color: #ffffff !important;
+            font-weight: bold !important;
+        }
+        
+        svg, svg * {
+            fill: #ffffff !important;
+        }
     }
 }

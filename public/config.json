@@ -1,0 +1,54 @@
+{
+  "bots": [
+    {
+      "id": "bot-1",
+      "name": "SpeedBots",
+      "description": "Automated trading bots with predefined strategies",
+      "icon": "LegacyMenuApps2pxIcon"
+    },
+    {
+      "id": "bot-2",
+      "name": "Bot Builder",
+      "description": "Create custom trading bots with visual builder",
+      "icon": "LegacyBuild2pxIcon"
+    },
+    {
+      "id": "bot-3",
+      "name": "Copy Trading",
+      "description": "Copy trades from successful traders",
+      "icon": "LegacyHomeNewIcon"
+    },
+    {
+      "id": "bot-4",
+      "name": "Free Bots",
+      "description": "Pre-configured free trading bots",
+      "icon": "LegacyMenuDots2pxIcon"
+    },
+    {
+      "id": "bot-5",
+      "name": "Circles",
+      "description": "Join trading circles and communities",
+      "icon": "LegacyHomeNewIcon"
+    },
+    {
+      "id": "bot-6",
+      "name": "Smart Trader",
+      "description": "AI-powered trading assistant",
+      "icon": "LegacyMenuApps2pxIcon"
+    },
+    {
+      "id": "bot-7",
+      "name": "DP Tools",
+      "description": "Professional trading tools",
+      "icon": "LegacyBuild2pxIcon"
+    }
+  ],
+  "channels": {
+    "whatsapp": "+1234567890",
+    "telegram": "@pulsetrader_bot",
+    "email": "support@pulsetrader.com",
+    "discord": "https://discord.gg/pulsetrader"
+  },
+  "appName": "PulseTrader",
+  "supportEmail": "support@pulsetrader.com"
+}
