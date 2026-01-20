@@ -74,7 +74,7 @@ const MobileMenu = forwardRef<MobileMenuRef>((props, ref) => {
                         </>
                     ) : (
                         <MenuContent onOpenSubmenu={openSubmenu} />
-                    )}
+                    )
                 </Drawer.Content>
 
                 <Drawer.Footer className='mobile-menu__footer'>
