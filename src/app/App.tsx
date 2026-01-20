@@ -23,6 +23,8 @@ import AdminApp from '@/pages/admin-app/AdminApp';
 import { AdminAuthProvider } from '@/contexts/AdminAuthContext';
 import { ConfigProvider } from '@/contexts/ConfigContext';
 import './app-root.scss';
+import AuthCallback from '../pages/authCallback';
+
 
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
@@ -78,6 +80,7 @@ const router = createBrowserRouter(
             <Route index element={<AppRoot />} />
             <Route path='endpoint' element={<Endpoint />} />
             <Route path='callback' element={<CallbackPage />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             {/* Catch-all route for debugging */}
             <Route
                 path='*'
