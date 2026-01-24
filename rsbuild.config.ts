@@ -49,7 +49,10 @@ export default defineConfig({
             react: path.resolve('./node_modules/react'),
             'react-dom': path.resolve('./node_modules/react-dom'),
             // Temporary shim for malformed @deriv-com/ui import path "Submenu /index.js"
-            './components/AppLayout/Submenu /index.js': path.resolve(__dirname, './src/components/shims/ui-submenu/index.js'),
+            './components/AppLayout/Submenu /index.js': path.resolve(
+                __dirname,
+                './src/components/shims/ui-submenu/index.js'
+            ),
             '../Submenu /index.js': path.resolve(__dirname, './src/components/shims/ui-submenu/index.js'),
             '@/external': path.resolve(__dirname, './src/external'),
             '@/components': path.resolve(__dirname, './src/components'),

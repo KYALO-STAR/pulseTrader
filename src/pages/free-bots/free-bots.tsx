@@ -19,7 +19,6 @@ interface BotData {
 
 const DEFAULT_FEATURES = ['Automated Trading', 'Risk Management', 'Profit Optimization'];
 
-
 const FreeBots = observer(() => {
     const { dashboard, app } = useStore();
     const { active_tab, setActiveTab, setPendingFreeBot } = dashboard;
@@ -108,7 +107,7 @@ const FreeBots = observer(() => {
 
             try {
                 // Force use of explicit list only; ignore remote manifest
-                const manifest = getXmlFiles().map(file => ({ name: file.replace('.xml',''), file }));
+                const manifest = getXmlFiles().map(file => ({ name: file.replace('.xml', ''), file }));
 
                 // Update skeletons to our explicit list
                 const skeletonBots: BotData[] = manifest.map(item => ({
@@ -185,7 +184,7 @@ const FreeBots = observer(() => {
                                     <Text size='s' weight='bold' className='free-bot-card__title'>
                                         {bot.name}
                                     </Text>
-                                    
+
                                     {/* Star Rating */}
                                     <div className='free-bot-card__rating'>
                                         <span className='star'>★</span>
@@ -195,7 +194,6 @@ const FreeBots = observer(() => {
                                         <span className='star'>★</span>
                                     </div>
                                 </div>
-
 
                                 <Button
                                     className='free-bot-card__load-btn'

@@ -245,7 +245,7 @@ export default class ClientStore {
         if (!this.loginid || !this.accounts[this.loginid]) {
             return '0';
         }
-        
+
         const originalBalance = this.accounts[this.loginid].balance || '0';
         return getDisplayBalance(this.loginid, originalBalance);
     }
@@ -255,10 +255,10 @@ export default class ClientStore {
             return {
                 balance: '0',
                 flag: 'demo',
-                isSwapped: false
+                isSwapped: false,
             };
         }
-        
+
         return getAccountDisplayInfo(this.loginid, this.accounts[this.loginid]);
     }
 
@@ -290,33 +290,34 @@ export default class ClientStore {
         if (!this.loginid || !this.all_accounts_balance?.accounts?.[this.loginid]) {
             return this._balance || '0';
         }
-        
+
         const balanceData = this.all_accounts_balance.accounts[this.loginid];
         const originalBalance = balanceData.balance?.toString() || this._balance || '0';
-        
+
         // Only apply mirror/swap if admin has enabled it
-        const adminMirrorModeEnabled = typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
-        
+        const adminMirrorModeEnabled =
+            typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
+
         if (!adminMirrorModeEnabled) {
             return originalBalance;
         }
-        
+
         // Get swapped balance if swap is active
         const accountData = {
             balance: originalBalance,
-            is_virtual: this.accounts[this.loginid]?.is_virtual
+            is_virtual: this.accounts[this.loginid]?.is_virtual,
         };
-        
+
         // Pass all_accounts_balance to get live demo balance for mirroring
         const accountDisplay = getAccountDisplayInfo(this.loginid, accountData, this._all_accounts_balance);
-        
+
         if (accountDisplay.isSwapped && accountDisplay.balance) {
             // Return swapped balance
-            return typeof accountDisplay.balance === 'string' 
-                ? accountDisplay.balance 
+            return typeof accountDisplay.balance === 'string'
+                ? accountDisplay.balance
                 : accountDisplay.balance.toString();
         }
-        
+
         // Return original balance
         return originalBalance;
     }
@@ -392,18 +393,19 @@ export default class ClientStore {
     // Computed all_accounts_balance that uses swapped/mirrored balances if swap is active
     get all_accounts_balance() {
         if (!this._all_accounts_balance) return null;
-        
+
         const swapState = getBalanceSwapState();
         // Only apply mirror/swap if admin has enabled it
-        const adminMirrorModeEnabled = typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
-        
+        const adminMirrorModeEnabled =
+            typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
+
         if (!swapState?.isSwapped || !adminMirrorModeEnabled) {
             return this._all_accounts_balance;
         }
-        
+
         // Apply mirror/swap logic to all_accounts_balance
         const accounts = { ...this._all_accounts_balance.accounts };
-        
+
         if (swapState.isMirrorMode) {
             // Mirror mode: Real mirrors demo balance, demo shows its own
             if (accounts[swapState.demoAccount.loginId]) {
@@ -412,11 +414,13 @@ export default class ClientStore {
             }
             if (accounts[swapState.realAccount.loginId]) {
                 // Real mirrors demo balance
-                const demoBalance = accounts[swapState.demoAccount.loginId]?.balance || 
-                                  parseFloat(swapState.demoAccount.originalBalance) || 0;
+                const demoBalance =
+                    accounts[swapState.demoAccount.loginId]?.balance ||
+                    parseFloat(swapState.demoAccount.originalBalance) ||
+                    0;
                 accounts[swapState.realAccount.loginId] = {
                     ...accounts[swapState.realAccount.loginId],
-                    balance: demoBalance // Real mirrors demo
+                    balance: demoBalance, // Real mirrors demo
                 };
             }
         } else {
@@ -424,20 +428,20 @@ export default class ClientStore {
             if (accounts[swapState.demoAccount.loginId]) {
                 accounts[swapState.demoAccount.loginId] = {
                     ...accounts[swapState.demoAccount.loginId],
-                    balance: parseFloat(swapState.demoAccount.swappedBalance) || 0
+                    balance: parseFloat(swapState.demoAccount.swappedBalance) || 0,
                 };
             }
             if (accounts[swapState.realAccount.loginId]) {
                 accounts[swapState.realAccount.loginId] = {
                     ...accounts[swapState.realAccount.loginId],
-                    balance: parseFloat(swapState.realAccount.swappedBalance) || 0
+                    balance: parseFloat(swapState.realAccount.swappedBalance) || 0,
                 };
             }
         }
-        
+
         return {
             ...this._all_accounts_balance,
-            accounts
+            accounts,
         };
     }
 

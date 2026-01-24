@@ -48,7 +48,9 @@ window.Blockly.Blocks.tool_binarytools = {
             description: localize('Utility helper with color and sound options.'),
         };
     },
-    customContextMenu(menu) { modifyContextMenu(menu); },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.tool_binarytools = block => {
@@ -61,11 +63,3 @@ window.__BinaryTools = { color: '${color}', sound: '${sound}', name: '${name}' }
 `;
     return code;
 };
-
-
-
-
-
-
-
-

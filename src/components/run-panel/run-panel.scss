@@ -125,11 +125,11 @@
             width: 318px;
             height: 32px !important;
             margin: 12px 24px;
-            
+
             // Make reset button text theme-responsive - multiple overrides
             color: var(--text-prominent) !important;
             font-weight: bold !important;
-            
+
             // Target all possible text elements
             .dc-btn__text,
             .dc-btn__icon,
@@ -141,14 +141,14 @@
                 color: var(--text-prominent) !important;
                 font-weight: bold !important;
             }
-            
+
             // Override any button state styling
             &:hover,
             &:focus,
             &:active,
             &:visited {
                 color: var(--text-prominent) !important;
-                
+
                 .dc-btn__text,
                 .dc-btn__icon,
                 span,
@@ -174,48 +174,57 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 padding: 0 0.8rem;
-                
+
                 // Theme-responsive text color
                 color: var(--text-prominent) !important;
                 font-weight: bold !important;
-                
+
                 * {
                     color: var(--text-prominent) !important;
                     font-weight: bold !important;
                 }
-                
-                span, div, p, label {
+
+                span,
+                div,
+                p,
+                label {
                     color: var(--text-prominent) !important;
                     font-weight: bold !important;
                 }
-                
+
                 // Specifically target non-active tabs
                 &:not(.dc-tabs__active) {
                     color: var(--text-prominent) !important;
                     font-weight: bold !important;
-                    
+
                     * {
                         color: var(--text-prominent) !important;
                         font-weight: bold !important;
                     }
-                    
-                    span, div, p, label {
+
+                    span,
+                    div,
+                    p,
+                    label {
                         color: var(--text-prominent) !important;
                         font-weight: bold !important;
                     }
                 }
             }
-            
+
             &__active {
                 color: var(--text-prominent) !important;
                 font-weight: bold !important;
-                
+
                 * {
                     color: var(--text-prominent) !important;
                     font-weight: bold !important;
                 }
-                
-                span, div, p, label {
+
+                span,
+                div,
+                p,
+                label {
                     color: var(--text-prominent) !important;
                     font-weight: bold !important;
                 }
@@ -268,18 +277,23 @@
             height: 2.6rem !important;
             min-width: 8rem;
         }
-        
+
         // Theme-responsive text color
-        &{color: var(--text-prominent) !important;
-        font-weight: bold !important;
+        & {
+            color: var(--text-prominent) !important;
+            font-weight: bold !important;
         }
         .dc-btn__text,
         .dc-btn__icon {
             color: var(--text-prominent) !important;
             font-weight: bold !important;
         }
-        
-        span, div, p, label, * {
+
+        span,
+        div,
+        p,
+        label,
+        * {
             color: var(--text-prominent) !important;
             font-weight: bold !important;
         }
@@ -293,12 +307,12 @@
 .run-panel .dc-btn {
     color: var(--text-prominent) !important;
     font-weight: bold !important;
-    
+
     * {
         color: var(--text-prominent) !important;
         font-weight: bold !important;
     }
-    
+
     .dc-btn__text,
     .dc-btn__icon,
     span,
@@ -308,18 +322,18 @@
         color: var(--text-prominent) !important;
         font-weight: bold !important;
     }
-    
+
     &:hover,
     &:focus,
     &:active,
     &:visited {
         color: var(--text-prominent) !important;
-        
+
         * {
             color: var(--text-prominent) !important;
             font-weight: bold !important;
         }
-        
+
         .dc-btn__text,
         .dc-btn__icon,
         span,
@@ -351,7 +365,7 @@
 .run-panel .dc-btn--secondary:active,
 .run-panel .dc-btn--secondary:visited {
     color: var(--text-prominent) !important;
-    
+
     .dc-btn__text,
     .dc-btn__icon,
     span,
@@ -371,7 +385,7 @@ body .run-panel .run-panel__footer .dc-btn--secondary,
 body .run-panel .dc-btn--secondary {
     color: var(--text-prominent) !important;
     font-weight: bold !important;
-    
+
     .dc-btn__text,
     .dc-btn__icon,
     span,
@@ -382,13 +396,13 @@ body .run-panel .dc-btn--secondary {
         color: var(--text-prominent) !important;
         font-weight: bold !important;
     }
-    
+
     &:hover,
     &:focus,
     &:active,
     &:visited {
         color: var(--text-prominent) !important;
-        
+
         .dc-btn__text,
         .dc-btn__icon,
         span,
@@ -408,7 +422,7 @@ body.theme--dark .run-panel .run-panel__clear-button,
 body.theme--dark .run-panel .run-panel__footer .dc-btn--secondary,
 body.theme--dark .run-panel .dc-btn--secondary {
     color: #ffffff !important;
-    
+
     .dc-btn__text,
     .dc-btn__icon,
     span,
@@ -419,13 +433,13 @@ body.theme--dark .run-panel .dc-btn--secondary {
         color: #ffffff !important;
         font-weight: bold !important;
     }
-    
+
     &:hover,
     &:focus,
     &:active,
     &:visited {
         color: #ffffff !important;
-        
+
         .dc-btn__text,
         .dc-btn__icon,
         span,
@@ -444,7 +458,7 @@ body.theme--light .run-panel .run-panel__clear-button,
 body.theme--light .run-panel .run-panel__footer .dc-btn--secondary,
 body.theme--light .run-panel .dc-btn--secondary {
     color: #000000 !important;
-    
+
     .dc-btn__text,
     .dc-btn__icon,
     span,
@@ -455,13 +469,13 @@ body.theme--light .run-panel .dc-btn--secondary {
         color: #000000 !important;
         font-weight: bold !important;
     }
-    
+
     &:hover,
     &:focus,
     &:active,
     &:visited {
         color: #000000 !important;
-        
+
         .dc-btn__text,
         .dc-btn__icon,
         span,
@@ -489,12 +503,17 @@ body.theme--light .run-panel .dc-btn--secondary {
     .dc-btn__text {
         color: var(--text-prominent) !important;
     }
-    
+
     // Override any inherited text-general color
-    &{color: var(--text-prominent) !important;
+    & {
+        color: var(--text-prominent) !important;
     }
     // Target all possible text elements
-    span, div, p, label, * {
+    span,
+    div,
+    p,
+    label,
+    * {
         color: var(--text-prominent) !important;
     }
 }
@@ -505,23 +524,31 @@ body.theme--light .run-panel .dc-btn--secondary {
 #db-run-panel__clear-button.run-panel__footer-button,
 #db-run-panel__clear-button.run-panel__clear-button {
     color: var(--text-prominent) !important;
-    
+
     .dc-btn__text,
     .dc-btn__icon,
-    span, div, p, label, * {
+    span,
+    div,
+    p,
+    label,
+    * {
         color: var(--text-prominent) !important;
         font-weight: bold !important;
     }
-    
+
     &:hover,
     &:focus,
     &:active,
     &:visited {
         color: var(--text-prominent) !important;
-        
+
         .dc-btn__text,
         .dc-btn__icon,
-        span, div, p, label, * {
+        span,
+        div,
+        p,
+        label,
+        * {
             color: var(--text-prominent) !important;
             font-weight: bold !important;
         }
@@ -532,10 +559,14 @@ body.theme--light .run-panel .dc-btn--secondary {
 body.theme--dark #db-run-panel__clear-button,
 body.theme--dark #db-run-panel__clear-button.dc-btn--secondary {
     color: #ffffff !important;
-    
+
     .dc-btn__text,
     .dc-btn__icon,
-    span, div, p, label, * {
+    span,
+    div,
+    p,
+    label,
+    * {
         color: #ffffff !important;
         font-weight: bold !important;
     }
@@ -544,10 +575,14 @@ body.theme--dark #db-run-panel__clear-button.dc-btn--secondary {
 body.theme--light #db-run-panel__clear-button,
 body.theme--light #db-run-panel__clear-button.dc-btn--secondary {
     color: #000000 !important;
-    
+
     .dc-btn__text,
     .dc-btn__icon,
-    span, div, p, label, * {
+    span,
+    div,
+    p,
+    label,
+    * {
         color: #000000 !important;
         font-weight: bold !important;
     }

@@ -33,15 +33,11 @@ window.Blockly.Blocks.btnotify = {
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.btnotify = block => {
     const type = block.getFieldValue('NOTIFICATION_TYPE') || 'info';
-    const message = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-        block,
-        'MESSAGE',
-        window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
-    ) || "''";
+    const message =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'MESSAGE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
     return `Bot.notify('${type}', String(${message}));\n`;
 };
-
-
-
-
-

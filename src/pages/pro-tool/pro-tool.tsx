@@ -6,15 +6,15 @@ const ProTool = () => {
         <div className='pro-tool'>
             <div className='pro-tool__container'>
                 <iframe
-                    src="/pro-tools/index.html"
-                    title="Pro Tools"
+                    src='/pro-tools/index.html'
+                    title='Pro Tools'
                     className='pro-tool__iframe'
-                    frameBorder="0"
-                    style={{ 
-                        width: '100%', 
-                        height: '100%', 
+                    frameBorder='0'
+                    style={{
+                        width: '100%',
+                        height: '100%',
                         border: 'none',
-                        minHeight: '600px'
+                        minHeight: '600px',
                     }}
                 />
             </div>

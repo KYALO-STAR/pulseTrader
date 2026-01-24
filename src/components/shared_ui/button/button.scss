@@ -163,12 +163,12 @@
         .dc-btn__icon {
             color: var(--text-prominent) !important; // Theme-responsive text color
         }
-        
+
         // Additional override for run panel secondary buttons
         &.run-panel__footer-button,
         &.run-panel__clear-button {
             color: var(--text-prominent) !important;
-            
+
             .dc-btn__text,
             .dc-btn__icon,
             span,
@@ -241,19 +241,19 @@
     }
 
     &--blue {
-        background: #60A5FA;
+        background: #60a5fa;
 
         &:hover:not([disabled]) {
-            background: #3B82F6;
+            background: #3b82f6;
         }
 
         &:active:not([disabled]) {
-            background: #60A5FA;
+            background: #60a5fa;
         }
 
         .dc-btn__text,
         .dc-btn__icon {
-            color: #FFFFFF;
+            color: #ffffff;
         }
     }
 

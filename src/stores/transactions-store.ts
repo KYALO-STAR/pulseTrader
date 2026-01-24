@@ -108,7 +108,7 @@ export default class TransactionsStore {
         const is_completed = isEnded(data as ProposalOpenContract);
         const { run_id } = this.root_store.run_panel;
         const current_account = this.core?.client?.loginid as string;
-        
+
         if (!this.elements[current_account]) {
             this.elements = {
                 ...this.elements,
@@ -122,36 +122,39 @@ export default class TransactionsStore {
         const same_contract_index = this.elements[current_account]?.findIndex(c => {
             if (typeof c.data === 'string') return false;
             if (c.type !== transaction_elements.CONTRACT || !c.data?.transaction_ids) return false;
-            
+
             // Check against both original and potentially transformed IDs
             const stored_buy_id = c.data.transaction_ids.buy;
-            
+
             // Direct match
             if (stored_buy_id === original_buy_id) return true;
-            
+
             // Also check if this is a transformed ID scenario (admin mirror mode)
             // If stored ID starts with 1 and original starts with 5 (or vice versa),
             // they might be the same contract (transformed for display)
             if (original_buy_id && stored_buy_id) {
                 const original_str = original_buy_id.toString();
                 const stored_str = stored_buy_id.toString();
-                
+
                 // If one starts with 5 and the other with 1, and the rest matches, it's the same contract
-                if ((original_str.startsWith('5') && stored_str.startsWith('1')) ||
-                    (original_str.startsWith('1') && stored_str.startsWith('5'))) {
+                if (
+                    (original_str.startsWith('5') && stored_str.startsWith('1')) ||
+                    (original_str.startsWith('1') && stored_str.startsWith('5'))
+                ) {
                     if (original_str.substring(1) === stored_str.substring(1)) {
                         return true;
                     }
                 }
             }
-            
+
             return false;
         });
-        
+
         // In admin mirror mode, override currency and transaction IDs to show real account info
         let displayCurrency = data.currency;
         let displayTransactionIds = data.transaction_ids;
-        const adminMirrorModeEnabled = typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
+        const adminMirrorModeEnabled =
+            typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
         if (adminMirrorModeEnabled) {
             const swapState = getBalanceSwapState();
             const current_account_data = this.core?.client?.account_list?.find(
@@ -169,12 +172,10 @@ export default class TransactionsStore {
 
                 if (data.transaction_ids) {
                     displayTransactionIds = {
-                        buy:
-                            transformTransactionIdForAdmin(data.transaction_ids.buy, true) ??
-                            data.transaction_ids.buy,
+                        buy: transformTransactionIdForAdmin(data.transaction_ids.buy, true) ?? data.transaction_ids.buy,
                         sell: data.transaction_ids.sell
-                            ? transformTransactionIdForAdmin(data.transaction_ids.sell, true) ??
-                              data.transaction_ids.sell
+                            ? (transformTransactionIdForAdmin(data.transaction_ids.sell, true) ??
+                              data.transaction_ids.sell)
                             : undefined,
                     };
                 }

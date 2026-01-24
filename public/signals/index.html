@@ -1,179 +1,186 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title id="sig-title"></title>
-  <script>
-  (function(){
-    document.getElementById('sig-title').textContent=atob('VGlja1NoYXJrIFRpY2sgRGF0YQ==');
-  })();
-  </script>
-  <style>
-    :root {
-      --bg-gradient: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --accent: #9f87ff;
-      --accent2: #00f7ff;
-      --text-primary: #ffffff;
-      --text-secondary: #cccccc;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title id="sig-title"></title>
+        <script>
+            (function () {
+                document.getElementById('sig-title').textContent = atob('VGlja1NoYXJrIFRpY2sgRGF0YQ==');
+            })();
+        </script>
+        <style>
+            :root {
+                --bg-gradient: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+                --card-bg: rgba(255, 255, 255, 0.05);
+                --accent: #9f87ff;
+                --accent2: #00f7ff;
+                --text-primary: #ffffff;
+                --text-secondary: #cccccc;
+            }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-gradient);
-      color: var(--text-primary);
-      text-align: center;
-      padding: 20px;
-      height: auto;
-      min-height: 100vh;
-      overflow-y: auto;
-    }
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: var(--bg-gradient);
+                color: var(--text-primary);
+                text-align: center;
+                padding: 20px;
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
 
-    h2 {
-      color: var(--accent2);
-      margin-top: 20px;
-      font-size: 26px;
-    }
+            h2 {
+                color: var(--accent2);
+                margin-top: 20px;
+                font-size: 26px;
+            }
 
-    table {
-      width: 90%;
-      max-width: 800px;
-      margin: 20px auto;
-      border-collapse: collapse;
-      background: var(--card-bg);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(6px);
-    }
+            table {
+                width: 90%;
+                max-width: 800px;
+                margin: 20px auto;
+                border-collapse: collapse;
+                background: var(--card-bg);
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+                backdrop-filter: blur(6px);
+            }
 
-    th, td {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 10px;
-      text-align: center;
-      font-size: 14px;
-      color: var(--text-primary);
-    }
+            th,
+            td {
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 10px;
+                text-align: center;
+                font-size: 14px;
+                color: var(--text-primary);
+            }
 
-    th {
-      background: rgba(0, 0, 0, 0.3);
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+            th {
+                background: rgba(0, 0, 0, 0.3);
+                color: var(--accent);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
 
-    .signal-box {
-      font-weight: 600;
-      border-radius: 4px;
-      padding: 6px 10px;
-      display: inline-block;
-      font-size: 14px;
-      min-width: 70px;
-    }
+            .signal-box {
+                font-weight: 600;
+                border-radius: 4px;
+                padding: 6px 10px;
+                display: inline-block;
+                font-size: 14px;
+                min-width: 70px;
+            }
 
-    .rise, .fall, .over {
-      background: linear-gradient(135deg, #9f87ff, #00f7ff);
-      color: #000;
-    }
+            .rise,
+            .fall,
+            .over {
+                background: linear-gradient(135deg, #9f87ff, #00f7ff);
+                color: #000;
+            }
 
-    .under {
-      background: linear-gradient(135deg, #00f7ff, #9f87ff);
-      color: #000;
-    }
+            .under {
+                background: linear-gradient(135deg, #00f7ff, #9f87ff);
+                color: #000;
+            }
 
-    .neutral {
-      background-color: #ffb2b2;
-      color: #000;
-    }
+            .neutral {
+                background-color: #ffb2b2;
+                color: #000;
+            }
 
-    @media (max-width: 600px) {
-      table {
-        width: 100%;
-      }
+            @media (max-width: 600px) {
+                table {
+                    width: 100%;
+                }
 
-      th, td {
-        padding: 6px;
-        font-size: 13px;
-      }
+                th,
+                td {
+                    padding: 6px;
+                    font-size: 13px;
+                }
 
-      .signal-box {
-        min-width: 60px;
-      }
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <script>
-  (function(){
-    var c={
-      bg1:atob('MGYwYzI5'),
-      bg2:atob('MzAyYjYz'),
-      bg3:atob('MjQyNDNl'),
-      accent:atob('OWY4N2Zm'),
-      accent2:atob('MDBmN2Zm')
-    };
-    var r=document.documentElement;
-    r.style.setProperty('--bg-gradient','linear-gradient(to right, #'+c.bg1+', #'+c.bg2+', #'+c.bg3+')');
-    r.style.setProperty('--accent','#'+c.accent);
-    r.style.setProperty('--accent2','#'+c.accent2);
-  })();
-  </script>
-</head>
-<body>
-  <h2 id="h2-rise"></h2>
-  <script>
-  (function(){
-    document.getElementById('h2-rise').textContent=atob('UmlzZSAvIEZhbGw=');
-  })();
-  </script>
-  <table>
-    <thead>
-      <tr>
-        <th>Market</th>
-        <th>Rise 📈</th>
-        <th>Fall 📉</th>
-      </tr>
-    </thead>
-    <tbody id="riseFallTable">
-      <!-- Example row -->
-      <tr>
-        <td>Volatility 100</td>
-        <td><span class="signal-box rise">RISE</span></td>
-        <td><span class="signal-box fall">FALL</span></td>
-      </tr>
-    </tbody>
-  </table>
+                .signal-box {
+                    min-width: 60px;
+                }
+            }
+        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+        <script>
+            (function () {
+                var c = {
+                    bg1: atob('MGYwYzI5'),
+                    bg2: atob('MzAyYjYz'),
+                    bg3: atob('MjQyNDNl'),
+                    accent: atob('OWY4N2Zm'),
+                    accent2: atob('MDBmN2Zm'),
+                };
+                var r = document.documentElement;
+                r.style.setProperty(
+                    '--bg-gradient',
+                    'linear-gradient(to right, #' + c.bg1 + ', #' + c.bg2 + ', #' + c.bg3 + ')'
+                );
+                r.style.setProperty('--accent', '#' + c.accent);
+                r.style.setProperty('--accent2', '#' + c.accent2);
+            })();
+        </script>
+    </head>
+    <body>
+        <h2 id="h2-rise"></h2>
+        <script>
+            (function () {
+                document.getElementById('h2-rise').textContent = atob('UmlzZSAvIEZhbGw=');
+            })();
+        </script>
+        <table>
+            <thead>
+                <tr>
+                    <th>Market</th>
+                    <th>Rise 📈</th>
+                    <th>Fall 📉</th>
+                </tr>
+            </thead>
+            <tbody id="riseFallTable">
+                <!-- Example row -->
+                <tr>
+                    <td>Volatility 100</td>
+                    <td><span class="signal-box rise">RISE</span></td>
+                    <td><span class="signal-box fall">FALL</span></td>
+                </tr>
+            </tbody>
+        </table>
 
-  <h2 id="h2-over"></h2>
-  <script>
-  (function(){
-    document.getElementById('h2-over').textContent=atob('T3ZlciAyIC8gVW5kZXIgNw==');
-  })();
-  </script>
-  <table>
-    <thead>
-      <tr>
-        <th>Market</th>
-        <th>Over 2</th>
-        <th>Under 7</th>
-      </tr>
-    </thead>
-    <tbody id="overUnderTable">
-      <!-- Example row -->
-      <tr>
-        <td>Volatility 75</td>
-        <td><span class="signal-box over">OVER</span></td>
-        <td><span class="signal-box under">UNDER</span></td>
-      </tr>
-    </tbody>
-  </table>
+        <h2 id="h2-over"></h2>
+        <script>
+            (function () {
+                document.getElementById('h2-over').textContent = atob('T3ZlciAyIC8gVW5kZXIgNw==');
+            })();
+        </script>
+        <table>
+            <thead>
+                <tr>
+                    <th>Market</th>
+                    <th>Over 2</th>
+                    <th>Under 7</th>
+                </tr>
+            </thead>
+            <tbody id="overUnderTable">
+                <!-- Example row -->
+                <tr>
+                    <td>Volatility 75</td>
+                    <td><span class="signal-box over">OVER</span></td>
+                    <td><span class="signal-box under">UNDER</span></td>
+                </tr>
+            </tbody>
+        </table>
 
-  <script src="signals.js" type="text/javascript"></script>
-</body>
-    </html>
+        <script src="signals.js" type="text/javascript"></script>
+    </body>
+</html>

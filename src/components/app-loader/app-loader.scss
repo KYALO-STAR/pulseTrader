@@ -1,249 +1,256 @@
 /* Georgetown Synthetics Loader Styles */
 .georgetown-loader {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #0a0e0c 0%, #1a2a1f 25%, #1b3a2f 50%, #0d1a15 75%, #0a0e0c 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 8s ease infinite;
-  min-height: 100vh;
-  color: #e0d021;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #0a0e0c 0%, #1a2a1f 25%, #1b3a2f 50%, #0d1a15 75%, #0a0e0c 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    min-height: 100vh;
+    color: #e0d021;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Chart Container with Rising Animation */
 .chart-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 120%;
-  z-index: -1;
-  animation: rise 20s linear infinite alternate;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    z-index: -1;
+    animation: rise 20s linear infinite alternate;
 }
 
 /* removed inline image; background handled on container */
 
-.chart-overlay { display: none; }
+.chart-overlay {
+    display: none;
+}
 
 /* Rising Animation */
 @keyframes rise {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-20%);
-  }
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-20%);
+    }
 }
 
 /* Gradient Shift Animation */
 @keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* Content Overlay */
 .content-overlay {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 0;
-  flex-grow: 1;
-  align-items: center; /* center horizontally */
-  justify-content: center; /* center vertically */
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+    flex-grow: 1;
+    align-items: center; /* center horizontally */
+    justify-content: center; /* center vertically */
 }
 
 /* Maroon Banner - centered end to end */
 .maroon-banner {
-  width: 100%;
-  background: linear-gradient(90deg, #1b6b47 0%, #2d8659 25%, #d4af37 50%, #c72c3f 75%, #1b6b47 100%);
-  background-size: 200% 100%;
-  animation: bannerGradient 4s ease infinite;
-  padding: 3rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border-top: 3px solid #d4af37;
-  border-bottom: 3px solid #d4af37;
-  position: relative;
-  overflow: hidden;
+    width: 100%;
+    background: linear-gradient(90deg, #1b6b47 0%, #2d8659 25%, #d4af37 50%, #c72c3f 75%, #1b6b47 100%);
+    background-size: 200% 100%;
+    animation: bannerGradient 4s ease infinite;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 4px 30px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-top: 3px solid #d4af37;
+    border-bottom: 3px solid #d4af37;
+    position: relative;
+    overflow: hidden;
 }
 
 .maroon-banner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent);
-  pointer-events: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent);
+    pointer-events: none;
 }
 
 @keyframes bannerGradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* Banner Title - PULSE TRADER */
 .banner-title {
-  font-family: 'Arial', 'Helvetica', sans-serif;
-  font-size: 3.5rem;
-  font-weight: 900;
-  color: #FFFFFF;
-  text-transform: uppercase;
-  letter-spacing: 0.2rem;
-  margin: 0 0 1.5rem 0;
-  text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.6),
-    0 0 20px rgba(212, 175, 55, 0.4),
-    2px 2px 4px rgba(0, 0, 0, 0.8);
-  line-height: 1.2;
-  position: relative;
-  z-index: 1;
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    margin: 0 0 1.5rem 0;
+    text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.6),
+        0 0 20px rgba(212, 175, 55, 0.4),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
 }
 
 /* Banner Message - Connecting to trading server... */
 .banner-message {
-  font-family: 'Arial', 'Helvetica', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 400;
-  color: #FFFFFF;
-  margin: 0 0 2rem 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.05rem;
-  position: relative;
-  z-index: 1;
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #ffffff;
+    margin: 0 0 2rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.05rem;
+    position: relative;
+    z-index: 1;
 }
 
 .progress-wrapper {
-  width: min(600px, 90vw);
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 1;
+    width: min(600px, 90vw);
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .progress-track {
-  position: relative;
-  width: 100%;
-  height: 24px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3) inset, 0 0 15px rgba(212, 175, 55, 0.2);
+    position: relative;
+    width: 100%;
+    height: 24px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.3) inset,
+        0 0 15px rgba(212, 175, 55, 0.2);
 }
 
 .loading-bar-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  border-radius: 9999px;
-  background: linear-gradient(90deg, #c72c3f 0%, #1b6b47 25%, #d4af37 50%, #2d8659 75%, #ff6b6b 100%);
-  background-size: 200% 100%;
-  animation: progressGradient 2.5s ease-in-out infinite;
-  box-shadow: 
-    0 0 15px rgba(212, 175, 55, 0.8),
-    0 0 25px rgba(199, 44, 63, 0.6),
-    0 0 35px rgba(27, 107, 71, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  transition: width 0.05s linear;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #c72c3f 0%, #1b6b47 25%, #d4af37 50%, #2d8659 75%, #ff6b6b 100%);
+    background-size: 200% 100%;
+    animation: progressGradient 2.5s ease-in-out infinite;
+    box-shadow:
+        0 0 15px rgba(212, 175, 55, 0.8),
+        0 0 25px rgba(199, 44, 63, 0.6),
+        0 0 35px rgba(27, 107, 71, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transition: width 0.05s linear;
 }
 
 @keyframes progressGradient {
-  0% {
-    background-position: 0% 50%;
-    box-shadow: 
-      0 0 15px rgba(212, 175, 55, 0.8),
-      0 0 25px rgba(199, 44, 63, 0.6),
-      0 0 35px rgba(27, 107, 71, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  }
-  50% {
-    background-position: 100% 50%;
-    box-shadow: 
-      0 0 20px rgba(212, 175, 55, 1),
-      0 0 30px rgba(199, 44, 63, 0.8),
-      0 0 40px rgba(27, 107, 71, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  }
-  100% {
-    background-position: 0% 50%;
-    box-shadow: 
-      0 0 15px rgba(212, 175, 55, 0.8),
-      0 0 25px rgba(199, 44, 63, 0.6),
-      0 0 35px rgba(27, 107, 71, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  }
+    0% {
+        background-position: 0% 50%;
+        box-shadow:
+            0 0 15px rgba(212, 175, 55, 0.8),
+            0 0 25px rgba(199, 44, 63, 0.6),
+            0 0 35px rgba(27, 107, 71, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        background-position: 100% 50%;
+        box-shadow:
+            0 0 20px rgba(212, 175, 55, 1),
+            0 0 30px rgba(199, 44, 63, 0.8),
+            0 0 40px rgba(27, 107, 71, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+    100% {
+        background-position: 0% 50%;
+        box-shadow:
+            0 0 15px rgba(212, 175, 55, 0.8),
+            0 0 25px rgba(199, 44, 63, 0.6),
+            0 0 35px rgba(27, 107, 71, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
 }
 
 .progress-counter {
-  margin-top: 1rem;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  font-family: 'Arial', 'Helvetica', sans-serif;
-  position: relative;
-  z-index: 1;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow:
+        0 0 8px rgba(212, 175, 55, 0.6),
+        0 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    position: relative;
+    z-index: 1;
 }
-
 
 /* Responsive Design */
 @media (max-width: 640px) {
-  .maroon-banner {
-    padding: 2rem 1.5rem;
-  }
-  
-  .banner-title {
-    font-size: 2.5rem;
-    letter-spacing: 0.1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .banner-message {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .progress-wrapper {
-    width: 95vw;
-  }
-  
-  .progress-track {
-    height: 16px;
-  }
-  
-  .progress-counter {
-    font-size: 1rem;
-  }
+    .maroon-banner {
+        padding: 2rem 1.5rem;
+    }
+
+    .banner-title {
+        font-size: 2.5rem;
+        letter-spacing: 0.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .banner-message {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .progress-wrapper {
+        width: 95vw;
+    }
+
+    .progress-track {
+        height: 16px;
+    }
+
+    .progress-counter {
+        font-size: 1rem;
+    }
 }

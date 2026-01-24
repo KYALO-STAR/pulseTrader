@@ -15,12 +15,12 @@ export const generateDerivApiInstance = (specificAppId = null) => {
     const cleanedServer = getSocketURL().replace(/[^a-zA-Z0-9.]/g, '');
     const appId = specificAppId !== null ? specificAppId : getAppId(); // Use specific app_id or read from localStorage
     const cleanedAppId = appId?.toString()?.replace?.(/[^a-zA-Z0-9]/g, '') ?? appId?.toString();
-    
+
     // Store the app_id used for this connection (only if not a specific app_id)
     if (specificAppId === null) {
         const previousAppId = currentConnectionAppId;
         currentConnectionAppId = appId;
-        
+
         // Log connection creation
         if (previousAppId !== appId) {
             console.log(`🔗 [WEBSOCKET] Creating new connection with App ID ${appId}`);
@@ -28,9 +28,9 @@ export const generateDerivApiInstance = (specificAppId = null) => {
     } else {
         console.log(`🔗 [WEBSOCKET] Creating connection with specific App ID ${appId}`);
     }
-    
+
     const socket_url = `wss://${cleanedServer}/websockets/v3?app_id=${cleanedAppId}&l=${getInitialLanguage()}&brand=${website_name.toLowerCase()}`;
-    
+
     const deriv_socket = new WebSocket(socket_url);
     const deriv_api = new DerivAPIBasic({
         connection: deriv_socket,
@@ -60,7 +60,7 @@ export const getCurrentConnectionAppId = () => {
  * If app_id has changed, returns true indicating a new instance should be created
  * This should be called before making trades to ensure correct app_id is used
  */
-export const shouldRecreateApiInstance = (storedAppId) => {
+export const shouldRecreateApiInstance = storedAppId => {
     const currentAppId = getAppId();
     return storedAppId !== currentAppId;
 };

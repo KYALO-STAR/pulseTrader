@@ -20,7 +20,12 @@ const HybridBots: React.FC = () => {
     return (
         <div className='hybrid-bots'>
             <div className='hybrid-bots__submenu'>
-                <Tabs active_index={active_subtab} className='hybrid-bots__tabs' onTabItemClick={handleSubTabChange} top>
+                <Tabs
+                    active_index={active_subtab}
+                    className='hybrid-bots__tabs'
+                    onTabItemClick={handleSubTabChange}
+                    top
+                >
                     <div
                         label={
                             <>
@@ -77,7 +82,9 @@ const HybridBots: React.FC = () => {
                                 <span className='nav-speedbot-label'>
                                     <Localize i18n_default_text='SpeedBot' />
                                 </span>
-                                <span className='nav-rocket' aria-hidden='true'>🚀</span>
+                                <span className='nav-rocket' aria-hidden='true'>
+                                    🚀
+                                </span>
                             </>
                         }
                         id='id-hybrid-speedbot'
@@ -91,18 +98,3 @@ const HybridBots: React.FC = () => {
 };
 
 export default HybridBots;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

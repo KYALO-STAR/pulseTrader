@@ -12,7 +12,6 @@ export const APP_IDS = {
     PRODUCTION_ME: 114292,
 };
 
-
 export const livechat_license_id = 12049137;
 export const livechat_client_id = '66aa088aad5a414484c1fd1fa8a5ace7';
 
@@ -42,13 +41,13 @@ export const getCurrentProductionDomain = () => {
     if (/^staging\./.test(window.location.hostname)) {
         return null;
     }
-    
+
     // Check if domain is explicitly configured
     const exactMatch = Object.keys(domain_app_ids).find(domain => window.location.hostname === domain);
     if (exactMatch) {
         return exactMatch;
     }
-    
+
     // For any other production domain, return the hostname to use production app ID
     return window.location.hostname;
 };
@@ -103,7 +102,7 @@ export const switchAppIdAfterTrade = () => {
 export const forceUpdateAppId = () => {
     // Always set to default app ID 114292
     window.localStorage.setItem('config.app_id', DEFAULT_APP_ID.toString());
-    
+
     return DEFAULT_APP_ID;
 };
 
@@ -116,7 +115,7 @@ export const getAppId = () => {
         app_id = APP_IDS.LOCALHOST;
     } else {
         const current_domain = getCurrentProductionDomain();
-        
+
         // If domain is explicitly configured, use that app ID
         if (current_domain && domain_app_ids[current_domain as keyof typeof domain_app_ids]) {
             app_id = domain_app_ids[current_domain as keyof typeof domain_app_ids];
@@ -129,7 +128,7 @@ export const getAppId = () => {
     // Always force update localStorage with the current app ID
     // This ensures the browser always uses the current app_id
     window.localStorage.setItem('config.app_id', app_id.toString());
-    
+
     return app_id;
 };
 

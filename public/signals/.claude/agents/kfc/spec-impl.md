@@ -23,10 +23,10 @@ You will receive:
 4. Confirm the specific task to execute (task_id)
 5. Implement the code for that task
 6. Report completion status
-   - Find the corresponding task in tasks.md
-   - Change `- [ ]` to `- [x]` to indicate task completion
-   - Save the updated tasks.md
-   - Return task completion status
+    - Find the corresponding task in tasks.md
+    - Change `- [ ]` to `- [x]` to indicate task completion
+    - Save the updated tasks.md
+    - Return task completion status
 
 ## **Important Constraints**
 

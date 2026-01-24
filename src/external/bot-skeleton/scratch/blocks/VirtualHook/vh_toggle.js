@@ -46,5 +46,3 @@ window.__VH__.enabled = ${enabled};
 `;
     return code;
 };
-
-

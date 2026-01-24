@@ -7,11 +7,10 @@ import React, { useEffect } from 'react';
  * - DevTools detection disabled (too many false positives)
  */
 const SecurityProtection: React.FC = () => {
-
     useEffect(() => {
         // Check if mobile device
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
+
         // Disable right-click (desktop only - mobile needs context menu for some features)
         const disableRightClick = (e: MouseEvent) => {
             if (!isMobile && (e.button === 2 || e.which === 3)) {
@@ -33,7 +32,7 @@ const SecurityProtection: React.FC = () => {
         // Disable keyboard shortcuts for DevTools (desktop only)
         const disableDevToolsShortcuts = (e: KeyboardEvent) => {
             if (isMobile) return; // Skip on mobile
-            
+
             // F12
             if (e.key === 'F12') {
                 e.preventDefault();
@@ -104,4 +103,3 @@ const SecurityProtection: React.FC = () => {
 };
 
 export default SecurityProtection;
-

@@ -35,7 +35,9 @@ window.Blockly.Blocks.touchnotouch_offset_enabler = {
             description: localize('This block enables or disables the barrier offset changer feature.'),
         };
     },
-    customContextMenu(menu) { modifyContextMenu(menu); },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.touchnotouch_offset_enabler = block => {
@@ -47,11 +49,3 @@ window.__TNBarrier.enabled = ${status};
 `;
     return code;
 };
-
-
-
-
-
-
-
-

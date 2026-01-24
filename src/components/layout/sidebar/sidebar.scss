@@ -88,11 +88,7 @@
             }
 
             &--active {
-                background: linear-gradient(
-                    90deg,
-                    rgba(27, 107, 71, 0.15),
-                    rgba(240, 210, 109, 0.08)
-                );
+                background: linear-gradient(90deg, rgba(27, 107, 71, 0.15), rgba(240, 210, 109, 0.08));
                 color: var(--sidebar-accent);
 
                 @include mobile-screen {
@@ -257,11 +253,7 @@
         }
 
         &--active {
-            background: linear-gradient(
-                90deg,
-                rgba(27, 107, 71, 0.15),
-                rgba(240, 210, 109, 0.08)
-            );
+            background: linear-gradient(90deg, rgba(27, 107, 71, 0.15), rgba(240, 210, 109, 0.08));
             color: var(--sidebar-accent);
 
             @include mobile-screen {

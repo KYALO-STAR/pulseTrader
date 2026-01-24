@@ -102,56 +102,49 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
             const balanceData = client?.all_accounts_balance?.accounts?.[account.loginid];
             const originalBalanceNum = balanceData?.balance ?? 0;
             const originalBalance = originalBalanceNum.toString();
-            
+
             // Create account data object with balance for getAccountDisplayInfo
             const accountDataWithBalance = {
                 ...account,
                 balance: originalBalance,
-                is_virtual: account.is_virtual
+                is_virtual: account.is_virtual,
             };
-            
+
             // Pass all_accounts_balance to get live demo balance for mirroring
-            const accountDisplay = getAccountDisplayInfo(account.loginid, accountDataWithBalance, client?.all_accounts_balance);
-            
+            const accountDisplay = getAccountDisplayInfo(
+                account.loginid,
+                accountDataWithBalance,
+                client?.all_accounts_balance
+            );
+
             // Get the display balance - if swapped, use swapped balance, otherwise use original
             let displayBalance: number;
             if (accountDisplay.isSwapped && accountDisplay.balance) {
                 // Balance is swapped - convert from string to number
-                displayBalance = typeof accountDisplay.balance === 'string' 
-                    ? parseFloat(accountDisplay.balance) || 0
-                    : (accountDisplay.balance || 0);
+                displayBalance =
+                    typeof accountDisplay.balance === 'string'
+                        ? parseFloat(accountDisplay.balance) || 0
+                        : accountDisplay.balance || 0;
             } else {
                 // No swap - use original balance from all_accounts_balance
                 displayBalance = originalBalanceNum;
             }
-            
+
             // Flags don't shift - always use original is_virtual
             const displayIsVirtual = Boolean(account?.is_virtual);
-            
+
             return {
                 ...account,
-                balance: addComma(
-                    displayBalance?.toFixed(getDecimalPlaces(account.currency)) ?? '0'
-                ),
+                balance: addComma(displayBalance?.toFixed(getDecimalPlaces(account.currency)) ?? '0'),
                 currencyLabel: displayIsVirtual
                     ? tabs_labels.demo
                     : (client.website_status?.currencies_config?.[account?.currency]?.name ?? account?.currency),
-                icon: (
-                    <CurrencyIcon
-                        currency={account?.currency?.toLowerCase()}
-                        isVirtual={displayIsVirtual}
-                    />
-                ),
+                icon: <CurrencyIcon currency={account?.currency?.toLowerCase()} isVirtual={displayIsVirtual} />,
                 isVirtual: displayIsVirtual,
                 isActive: account?.loginid === activeAccount?.loginid,
             };
         });
-    }, [
-        accountList,
-        client?.all_accounts_balance,
-        client.website_status?.currencies_config,
-        activeAccount?.loginid,
-    ]);
+    }, [accountList, client?.all_accounts_balance, client.website_status?.currencies_config, activeAccount?.loginid]);
     const modifiedCRAccountList = useMemo(() => {
         return modifiedAccountList?.filter(account => account?.loginid?.includes('CR')) ?? [];
     }, [modifiedAccountList]);
@@ -175,11 +168,12 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         const search_params = new URLSearchParams(window.location.search);
         const selected_account = modifiedAccountList.find(acc => acc.loginid === loginId.toString());
         if (!selected_account) return;
-        
+
         // Check if admin mirror mode is enabled
-        const adminMirrorModeEnabled = typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
+        const adminMirrorModeEnabled =
+            typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
         let account_param: string;
-        
+
         if (adminMirrorModeEnabled && selected_account.is_virtual) {
             // In admin mirror mode, show real account currency in URL even when using demo
             const swapState = getBalanceSwapState();
@@ -197,7 +191,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         } else {
             account_param = selected_account.is_virtual ? 'demo' : selected_account.currency;
         }
-        
+
         search_params.set('account', account_param);
         window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
     };

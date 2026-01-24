@@ -47,8 +47,3 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.active_symbol_changer = b
     )}; } catch(e){} })();`;
     return code + '\n';
 };
-
-
-
-
-

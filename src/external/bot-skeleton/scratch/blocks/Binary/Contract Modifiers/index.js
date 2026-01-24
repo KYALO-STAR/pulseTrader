@@ -4,4 +4,3 @@ import './market_symbol_changer';
 import './barrier_settings';
 import './touchnotouch_offset_enabler';
 import './touchnotouch_barrier_changer';
-

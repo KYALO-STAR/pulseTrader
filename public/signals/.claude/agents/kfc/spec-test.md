@@ -40,6 +40,7 @@ You will receive:
 | ------- | ------------------- | ------------- |
 | XX-01   | [Description]       | Positive Test |
 | XX-02   | [Description]       | Error Test    |
+
 [More cases...]
 
 ## Detailed Test Steps
@@ -49,15 +50,18 @@ You will receive:
 **Test Purpose**: [Specific purpose]
 
 **Test Data Preparation**:
+
 - [Mock data preparation]
 - [Environment setup]
 
 **Test Steps**:
+
 1. [Step 1]
 2. [Step 2]
 3. [Verification point]
 
 **Expected Results**:
+
 - [Expected result 1]
 - [Expected result 2]
 
@@ -66,33 +70,36 @@ You will receive:
 ## Test Considerations
 
 ### Mock Strategy
+
 [Explain how to mock dependencies]
 
 ### Boundary Conditions
+
 [List boundary cases that need testing]
 
 ### Asynchronous Operations
+
 [Considerations for async testing]
 ```
 
 ## PROCESS
 
 1. **Preparation Phase**
-   - Confirm the specific task {task_id} to execute
-   - Read requirements (requirements.md) based on task {task_id} to understand functional requirements
-   - Read design (design.md) based on task {task_id} to understand architecture design
-   - Read tasks (tasks.md) based on task {task_id} to understand task list
-   - Read related implementation code based on task {task_id} to understand the implementation
-   - Understand functionality and testing requirements
+    - Confirm the specific task {task_id} to execute
+    - Read requirements (requirements.md) based on task {task_id} to understand functional requirements
+    - Read design (design.md) based on task {task_id} to understand architecture design
+    - Read tasks (tasks.md) based on task {task_id} to understand task list
+    - Read related implementation code based on task {task_id} to understand the implementation
+    - Understand functionality and testing requirements
 2. **Create Tests**
-   - First create test case documentation ({module}.md)
-   - Create corresponding test code ({module}.test.ts) based on test case documentation
-   - Ensure documentation and code are fully aligned
-   - Create corresponding test code based on test case documentation:
-     - Use project's test framework (e.g., Jest)
-     - Each test case corresponds to one test/it block
-     - Use case ID as prefix for test description
-     - Follow AAA pattern (Arrange-Act-Assert)
+    - First create test case documentation ({module}.md)
+    - Create corresponding test code ({module}.test.ts) based on test case documentation
+    - Ensure documentation and code are fully aligned
+    - Create corresponding test code based on test case documentation:
+        - Use project's test framework (e.g., Jest)
+        - Each test case corresponds to one test/it block
+        - Use case ID as prefix for test description
+        - Follow AAA pattern (Arrange-Act-Assert)
 
 ## OUTPUT
 

@@ -18,7 +18,7 @@
     }
 
     /* ensure header doesn't clip popovers */
-    &{
+    & {
         overflow: visible;
     }
 
@@ -45,9 +45,14 @@
         height: 28px;
         border-radius: 6px;
         cursor: pointer;
-        transition: background-color 0.2s ease, opacity 0.2s ease;
+        transition:
+            background-color 0.2s ease,
+            opacity 0.2s ease;
     }
-    .brand-message__btn:hover { background-color: var(--general-hover); opacity: 0.9; }
+    .brand-message__btn:hover {
+        background-color: var(--general-hover);
+        opacity: 0.9;
+    }
 
     /* Ringing animation for red phone */
     .brand-message__btn--phone {
@@ -55,11 +60,21 @@
         transform-origin: 50% 10%;
     }
     @keyframes phoneRing {
-        0% { transform: rotate(0deg); }
-        25% { transform: rotate(-12deg); }
-        50% { transform: rotate(0deg); }
-        75% { transform: rotate(12deg); }
-        100% { transform: rotate(0deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+        25% {
+            transform: rotate(-12deg);
+        }
+        50% {
+            transform: rotate(0deg);
+        }
+        75% {
+            transform: rotate(12deg);
+        }
+        100% {
+            transform: rotate(0deg);
+        }
     }
 
     .brand-message__menu {
@@ -69,10 +84,10 @@
         right: auto;
         min-width: 200px;
         padding: 0.4rem 0.2rem;
-        background: rgba(17,24,39,0.98);
-        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(17, 24, 39, 0.98);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 8px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
         z-index: 1000;
         overflow: visible;
         white-space: nowrap;
@@ -80,7 +95,10 @@
 
     /* If too close to right edge, shift left a bit on small screens */
     @media (max-width: 480px) {
-        .brand-message__menu { left: 8px; right: auto; }
+        .brand-message__menu {
+            left: 8px;
+            right: auto;
+        }
     }
     .brand-message__item {
         display: flex;
@@ -91,8 +109,12 @@
         color: var(--text-prominent);
         transition: background-color 0.15s ease;
     }
-    .brand-message__item:hover { background-color: var(--general-hover); }
-    .brand-message__item svg { flex-shrink: 0; }
+    .brand-message__item:hover {
+        background-color: var(--general-hover);
+    }
+    .brand-message__item svg {
+        flex-shrink: 0;
+    }
 
     .brand-image {
         width: 28px;
@@ -193,11 +215,13 @@
             background-color: var(--general-active);
         }
 
-        svg, img {
+        svg,
+        img {
             transition: opacity 0.2s ease;
         }
 
-        &:hover svg, &:hover img {
+        &:hover svg,
+        &:hover img {
             opacity: 0.8;
         }
     }

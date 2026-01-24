@@ -161,21 +161,30 @@ export default class JournalStore {
         message: Error | string,
         message_type: string,
         className?: string,
-        extra: { current_currency?: string; currency?: string; transaction_id?: number; longcode?: string; profit?: number } = {}
+        extra: {
+            current_currency?: string;
+            currency?: string;
+            transaction_id?: number;
+            longcode?: string;
+            profit?: number;
+        } = {}
     ) {
         const { client } = this.core;
         const { loginid, account_list } = client as RootStore['client'];
 
         if (loginid) {
             const current_account = account_list?.find(account => account?.loginid === loginid);
-            const adminMirrorModeEnabled = typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
-            
+            const adminMirrorModeEnabled =
+                typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
+
             if (adminMirrorModeEnabled && current_account?.is_virtual) {
                 // In admin mirror mode, show real account info instead of "Demo"
                 const swapState = getBalanceSwapState();
                 if (swapState?.isSwapped && swapState?.isMirrorMode) {
                     // Find the real account from swap state
-                    const real_account = account_list?.find(account => account?.loginid === swapState.realAccount.loginId);
+                    const real_account = account_list?.find(
+                        account => account?.loginid === swapState.realAccount.loginId
+                    );
                     if (real_account) {
                         extra.current_currency = real_account.currency || 'USD';
                         // Use real account currency for profit/loss messages too
@@ -194,10 +203,12 @@ export default class JournalStore {
             } else {
                 extra.current_currency = current_account?.is_virtual ? 'Demo' : current_account?.currency;
             }
-            
+
             // Always transform transaction ID in admin panel to start with 1 (like millern)
             if (adminMirrorModeEnabled && message === LogTypes.PURCHASE && extra.transaction_id) {
-                extra.transaction_id = transformTransactionIdForAdmin(extra.transaction_id, current_account?.is_virtual ?? false) ?? extra.transaction_id;
+                extra.transaction_id =
+                    transformTransactionIdForAdmin(extra.transaction_id, current_account?.is_virtual ?? false) ??
+                    extra.transaction_id;
             }
         } else if (message === LogTypes.WELCOME) {
             return;

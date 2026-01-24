@@ -68,8 +68,3 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_alternat
     const code = `/* alt markets */ (function(){ try { window.DBot = window.DBot || {}; window.DBot.__alt_markets = { enabled: ${enabled}, every: ${every} }; } catch(e){} })();`;
     return code + '\n';
 };
-
-
-
-
-

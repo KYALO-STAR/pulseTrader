@@ -51,4 +51,3 @@ Blockly.JavaScript.javascriptGenerator.forBlock.digit_frequency = block => {
     const code = `Bot.getDigitFrequency({ rank: '${rank}', n: ${n} })`;
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };
-

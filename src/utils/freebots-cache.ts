@@ -138,4 +138,3 @@ export const getBotsManifest = async (): Promise<TBotsManifestItem[] | null> => 
         return null;
     }
 };
-

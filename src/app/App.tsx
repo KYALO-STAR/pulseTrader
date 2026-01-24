@@ -25,7 +25,6 @@ import { ConfigProvider } from '@/contexts/ConfigContext';
 import './app-root.scss';
 import AuthCallback from '../pages/authCallback';
 
-
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
 
@@ -48,7 +47,7 @@ const router = createBrowserRouter(
                     </Suspense>
                 }
             />
-            
+
             {/* Main App Routes */}
             <Route
                 path='/'
@@ -76,24 +75,24 @@ const router = createBrowserRouter(
                     </div>
                 }
             >
-            {/* All child routes will be passed as children to Layout */}
-            <Route index element={<AppRoot />} />
-            <Route path='endpoint' element={<Endpoint />} />
-            <Route path='callback' element={<CallbackPage />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            {/* Catch-all route for debugging */}
-            <Route
-                path='*'
-                element={
-                    <div style={{ padding: '20px', textAlign: 'center' }}>
-                        <h1>🔍 Route Debug Info</h1>
-                        <p>Current URL: {window.location.href}</p>
-                        <p>Pathname: {window.location.pathname}</p>
-                        <p>Available routes: /, /endpoint, /callback, /admin</p>
-                        <button onClick={() => (window.location.href = '/')}>Go to Home</button>
-                    </div>
-                }
-            />
+                {/* All child routes will be passed as children to Layout */}
+                <Route index element={<AppRoot />} />
+                <Route path='endpoint' element={<Endpoint />} />
+                <Route path='callback' element={<CallbackPage />} />
+                <Route path='/auth/callback' element={<AuthCallback />} />
+                {/* Catch-all route for debugging */}
+                <Route
+                    path='*'
+                    element={
+                        <div style={{ padding: '20px', textAlign: 'center' }}>
+                            <h1>🔍 Route Debug Info</h1>
+                            <p>Current URL: {window.location.href}</p>
+                            <p>Pathname: {window.location.pathname}</p>
+                            <p>Available routes: /, /endpoint, /callback, /admin</p>
+                            <button onClick={() => (window.location.href = '/')}>Go to Home</button>
+                        </div>
+                    }
+                />
             </Route>
         </>
     )
@@ -112,31 +111,31 @@ function initializeGlobalCopyTrading() {
     if (globalCopyTradingManager) {
         return;
     }
-    
+
     globalCopyTradingManager = new CopyTradingManager();
-    
+
     // Initialize replicator immediately (don't wait)
     globalReplicatorCleanup = initReplicator(globalCopyTradingManager);
-    
+
     // Wait a bit for manager to restore state, then sync tokens
     setTimeout(() => {
         if (!globalCopyTradingManager) return;
-        
+
         // Sync tokens from localStorage
         const syncTokens = async () => {
             if (!globalCopyTradingManager) return;
-            
+
             const isDemoToReal = localStorage.getItem('demo_to_real') === 'true';
             if (isDemoToReal) {
                 const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
                 const keys = Object.keys(accounts_list);
-                const key = keys.find(k => !k.startsWith("VR"));
+                const key = keys.find(k => !k.startsWith('VR'));
                 if (key) {
                     const value = accounts_list[key];
                     globalCopyTradingManager.setMasterToken(value);
                 }
             }
-            
+
             const copyTokensArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
             for (const token of copyTokensArray) {
                 if (!globalCopyTradingManager.copiers.find(c => c.token === token)) {
@@ -148,7 +147,7 @@ function initializeGlobalCopyTrading() {
                 }
             }
         };
-        
+
         syncTokens();
     }, 500);
 }

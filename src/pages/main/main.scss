@@ -10,7 +10,6 @@
 
 // Removed tabs-shadow to fix mobile edge fading issue
 
-
 .main {
     display: flex;
     overflow: hidden;
@@ -253,77 +252,92 @@
 
 /* Flying rocket next to SpeedBots tab in header */
 .nav-speedbots-rocket {
-  display: inline-block;
-  margin-left: 0.4rem;
-  font-size: 1.2em;
-  animation: rocketFly 2s ease-in-out infinite;
-  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.8));
-  vertical-align: middle;
+    display: inline-block;
+    margin-left: 0.4rem;
+    font-size: 1.2em;
+    animation: rocketFly 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.8));
+    vertical-align: middle;
 }
 
 /* Bouncing rocket next to SpeedBot tab (in submenu) */
 .nav-rocket {
-  display: inline-block;
-  margin-left: 0.4rem;
-  animation: rocketBounce 1.8s ease-in-out infinite;
+    display: inline-block;
+    margin-left: 0.4rem;
+    animation: rocketBounce 1.8s ease-in-out infinite;
 }
 
 @keyframes nav-underline {
-  0% { filter: hue-rotate(0deg); }
-  50% { filter: hue-rotate(30deg); }
-  100% { filter: hue-rotate(0deg); }
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        filter: hue-rotate(30deg);
+    }
+    100% {
+        filter: hue-rotate(0deg);
+    }
 }
 
 /* Crown icon next to Matches tab */
 .nav-crown {
-  display: inline-block;
-  margin-left: 0.4rem;
-  font-size: 1.2em;
-  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
-  vertical-align: middle; // Prevent upward movement
-  background: transparent !important; // Ensure no white background
+    display: inline-block;
+    margin-left: 0.4rem;
+    font-size: 1.2em;
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+    vertical-align: middle; // Prevent upward movement
+    background: transparent !important; // Ensure no white background
 }
 
 /* Matches label styling */
 .nav-matches-label {
-  background: transparent !important; // Ensure no white background
-  vertical-align: middle; // Prevent upward movement
+    background: transparent !important; // Ensure no white background
+    vertical-align: middle; // Prevent upward movement
 }
 
 /* SpeedBot label - no background, matches other headings */
 .nav-speedbot-label {
-  display: inline-block;
-  margin-left: 0.2rem;
+    display: inline-block;
+    margin-left: 0.2rem;
 }
 
 @keyframes rocketFly {
-  0% { 
-    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-  25% { 
-    transform: translateY(-8px) translateX(4px) rotate(-15deg) scale(1.1);
-    opacity: 0.9;
-  }
-  50% { 
-    transform: translateY(-12px) translateX(8px) rotate(-25deg) scale(1.2);
-    opacity: 0.8;
-  }
-  75% { 
-    transform: translateY(-8px) translateX(4px) rotate(-15deg) scale(1.1);
-    opacity: 0.9;
-  }
-  100% { 
-    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    25% {
+        transform: translateY(-8px) translateX(4px) rotate(-15deg) scale(1.1);
+        opacity: 0.9;
+    }
+    50% {
+        transform: translateY(-12px) translateX(8px) rotate(-25deg) scale(1.2);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translateY(-8px) translateX(4px) rotate(-15deg) scale(1.1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
 }
 
 @keyframes rocketBounce {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-3px) rotate(-5deg); }
-  50% { transform: translateY(-6px) rotate(0deg); }
-  75% { transform: translateY(-3px) rotate(5deg); }
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-3px) rotate(-5deg);
+    }
+    50% {
+        transform: translateY(-6px) rotate(0deg);
+    }
+    75% {
+        transform: translateY(-3px) rotate(5deg);
+    }
 }
 
 .animation__wrapper {
@@ -870,32 +884,53 @@
     // Inactive tabs use dark grey text
     color: #4a5568 !important; // Dark grey text like Binarytool
     font-weight: 500 !important;
-    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-family:
+        Arial,
+        Helvetica,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif !important;
     font-size: 14px !important;
     background: transparent !important;
 
     * {
         color: #4a5568 !important;
         font-weight: 500 !important;
-        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-family:
+            Arial,
+            Helvetica,
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif !important;
     }
-    
-    span, div, p, label {
+
+    span,
+    div,
+    p,
+    label {
         color: #4a5568 !important;
         font-weight: 500 !important;
-        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-family:
+            Arial,
+            Helvetica,
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif !important;
     }
 
     // Remove glowing effects
     svg {
         position: relative;
         filter: none;
-        
+
         &::before {
             display: none;
         }
     }
-    
+
     svg,
     svg > path,
     svg > g > path {
@@ -909,29 +944,50 @@
         background: #1b6b47 !important; // Professional green background
         color: #ffffff !important; // White text
         font-weight: bold !important;
-        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-family:
+            Arial,
+            Helvetica,
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif !important;
         font-size: 14px !important;
 
         * {
             color: #ffffff !important;
             font-weight: bold !important;
-            font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+            font-family:
+                Arial,
+                Helvetica,
+                -apple-system,
+                BlinkMacSystemFont,
+                'Segoe UI',
+                sans-serif !important;
         }
-        
-        span, div, p, label {
+
+        span,
+        div,
+        p,
+        label {
             color: #ffffff !important;
             font-weight: bold !important;
-            font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+            font-family:
+                Arial,
+                Helvetica,
+                -apple-system,
+                BlinkMacSystemFont,
+                'Segoe UI',
+                sans-serif !important;
         }
 
         svg {
             filter: none;
-            
+
             &::before {
                 display: none;
             }
         }
-        
+
         svg,
         svg > path,
         svg > g > path {
@@ -951,8 +1007,11 @@
             color: #4a5568 !important;
             font-weight: 500 !important;
         }
-        
-        span, div, p, label {
+
+        span,
+        div,
+        p,
+        label {
             color: #4a5568 !important;
             font-weight: 500 !important;
         }
@@ -960,7 +1019,7 @@
         svg {
             filter: none;
         }
-        
+
         svg,
         svg > path,
         svg > g > path {
@@ -974,42 +1033,62 @@
 // Force all tab text and icons - override any default styles to match Binarytool
 .dc-tabs__item {
     color: #4a5568 !important; // Dark grey text like Binarytool
-    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-family:
+        Arial,
+        Helvetica,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif !important;
     font-size: 14px !important;
     font-weight: 500 !important;
-    
-    span, div, p, * {
+
+    span,
+    div,
+    p,
+    * {
         color: #4a5568 !important;
-        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-family:
+            Arial,
+            Helvetica,
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif !important;
         font-weight: 500 !important;
     }
-    
+
     svg {
         position: relative;
         filter: none;
-        
+
         &::before {
             display: none;
         }
     }
-    
-    svg, svg * {
+
+    svg,
+    svg * {
         fill: #4a5568 !important; // Dark grey icons
         stroke: none !important;
         filter: none !important;
     }
-    
+
     // Active tab styling
     &.dc-tabs__active {
         color: #ffffff !important;
         font-weight: bold !important;
-        
-        span, div, p, * {
+
+        span,
+        div,
+        p,
+        * {
             color: #ffffff !important;
             font-weight: bold !important;
         }
-        
-        svg, svg * {
+
+        svg,
+        svg * {
             fill: #ffffff !important; // White icons
         }
     }
@@ -1019,30 +1098,44 @@
 body.theme--light .dc-tabs__item,
 body.theme--dark .dc-tabs__item {
     color: #4a5568 !important; // Dark grey text
-    
-    span, div, p, * {
+
+    span,
+    div,
+    p,
+    * {
         color: #4a5568 !important;
-        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-family:
+            Arial,
+            Helvetica,
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif !important;
         font-weight: 500 !important;
     }
-    
-    svg, svg * {
+
+    svg,
+    svg * {
         fill: #4a5568 !important; // Dark grey icons
         stroke: none !important;
         filter: none !important;
     }
-    
+
     // Active tab
     &.dc-tabs__active {
         color: #ffffff !important;
         font-weight: bold !important;
-        
-        span, div, p, * {
+
+        span,
+        div,
+        p,
+        * {
             color: #ffffff !important;
             font-weight: bold !important;
         }
-        
-        svg, svg * {
+
+        svg,
+        svg * {
             fill: #ffffff !important;
         }
     }

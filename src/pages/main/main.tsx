@@ -321,7 +321,9 @@ const AppWrapper = observer(() => {
                                             fill='var(--text-general)'
                                         />
                                         <Localize i18n_default_text='SpeedBots' />
-                                        <span className='nav-speedbots-rocket' aria-hidden='true'>🚀</span>
+                                        <span className='nav-speedbots-rocket' aria-hidden='true'>
+                                            🚀
+                                        </span>
                                     </>
                                 }
                                 id='id-hybrid-bots'
@@ -397,7 +399,9 @@ const AppWrapper = observer(() => {
                                 id='id-smart-trader'
                             >
                                 <Suspense
-                                    fallback={<ChunkLoader message={localize('Please wait, loading Smart Trader...')} />}
+                                    fallback={
+                                        <ChunkLoader message={localize('Please wait, loading Smart Trader...')} />
+                                    }
                                 >
                                     <SmartTrader />
                                 </Suspense>
@@ -477,9 +481,7 @@ const AppWrapper = observer(() => {
                 {/* Match deriv-insider behaviour: also skip RunStrategy on Matches and SpeedBot tabs */}
                 {active_tab !== DBOT_TABS.DTRADER && (
                     <div className='main__run-strategy-wrapper'>
-                        {active_tab !== DBOT_TABS.MATCHES && active_tab !== DBOT_TABS.SPEEDBOT && (
-                            <RunStrategy />
-                        )}
+                        {active_tab !== DBOT_TABS.MATCHES && active_tab !== DBOT_TABS.SPEEDBOT && <RunStrategy />}
                         <RunPanel />
                     </div>
                 )}

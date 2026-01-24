@@ -5,25 +5,26 @@
 1. **URL**: `http://localhost:3000/admin`
 
 2. **Authentication**:
-   - Password: `PulseTrader@2024` (change this in `src/contexts/AdminAuthContext.tsx`)
+    - Password: `PulseTrader@2024` (change this in `src/contexts/AdminAuthContext.tsx`)
 
 3. **Features**:
-   - Manage bot types (add, edit, delete)
-   - Update contact channels (WhatsApp, Telegram, Email, Discord)
-   - Configure app settings
-   - All changes are saved to `public/config.json`
-   - Changes are visible to all users in real-time
+    - Manage bot types (add, edit, delete)
+    - Update contact channels (WhatsApp, Telegram, Email, Discord)
+    - Configure app settings
+    - All changes are saved to `public/config.json`
+    - Changes are visible to all users in real-time
 
 ## Security
 
 ✅ **Password Protected** - Only authenticated users can access  
 ✅ **Separate App** - Admin panel is isolated at `/admin` route  
 ✅ **Auto-Logout** - Session stored in localStorage  
-✅ **No Access in Main App** - Regular users cannot see or access admin features  
+✅ **No Access in Main App** - Regular users cannot see or access admin features
 
 ## Integration Points
 
 ### Admin Context (AdminAuthContext.tsx)
+
 ```tsx
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
@@ -31,6 +32,7 @@ const { isAuthenticated, login, logout } = useAdminAuth();
 ```
 
 ### Config Context (ConfigContext.tsx)
+
 ```tsx
 import { useConfig } from '@/contexts/ConfigContext';
 
@@ -56,6 +58,6 @@ Once logged in with the admin key, you can:
 ✅ Update WhatsApp, Telegram, Email, Discord  
 ✅ Change app name and support email  
 ✅ Save all changes globally  
-✅ Logout when done  
+✅ Logout when done
 
 All changes are immediately saved and available to all app users.

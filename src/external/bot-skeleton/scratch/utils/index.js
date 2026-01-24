@@ -404,7 +404,9 @@ const getMissingBlocks = (workspace, required_block_types) => {
     return required_block_types.filter(blockType => {
         if (blockType === 'purchase') {
             // Accept either standard purchase or custom apollo_purchase
-            return !workspace.getAllBlocks().some(block => block.type === 'purchase' || block.type === 'apollo_purchase');
+            return !workspace
+                .getAllBlocks()
+                .some(block => block.type === 'purchase' || block.type === 'apollo_purchase');
         }
         return !workspace.getAllBlocks().some(block => block.type === blockType);
     });
