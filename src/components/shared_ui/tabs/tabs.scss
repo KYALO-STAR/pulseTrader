@@ -80,20 +80,20 @@
         font-weight: 500 !important; // Medium weight for inactive tabs like Binarytool
         text-align: center;
         white-space: nowrap;
-        color: #4a5568 !important; // Dark grey text like Binarytool
+        color: #000000 !important; // Dark grey text like Binarytool
         font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
 
         // Tab text - dark grey for inactive like Binarytool
         * {
-            color: #4a5568 !important;
+            color: #0f0c01 !important;
             font-weight: 500 !important;
             font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         }
         
         span, div, p, label {
-            color: #4a5568 !important;
+            color: #110e01 !important;
             font-weight: 500 !important;
             font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         }
@@ -102,7 +102,7 @@
         svg,
         svg > path,
         svg > g > path {
-            fill: #4a5568 !important; // Dark grey icons
+            fill: #000000 !important; // Dark grey icons
             stroke: none !important;
             filter: none !important;
         }
@@ -144,17 +144,17 @@
 
         &:not(.dc-tabs__active) {
             cursor: pointer;
-            color: #4a5568 !important; // Dark grey text like Binarytool
+            color: #000000 !important; // Dark grey text like Binarytool
 
             // Non-active tab text - dark grey
             * {
-                color: #4a5568 !important;
+                color: #1ff104 !important;
                 font-weight: 500 !important;
                 font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
             }
             
             span, div, p, label {
-                color: #4a5568 !important;
+                color: #e77ce4 !important;
                 font-weight: 500 !important;
                 font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
             }
@@ -163,24 +163,24 @@
             svg,
             svg > path,
             svg > g > path {
-                fill: #4a5568 !important; // Dark grey icons
+                fill: #110a10 !important; // Dark grey icons
                 stroke: none !important;
                 filter: none !important;
             }
 
             &:hover {
-                color: #4a5568 !important; // Dark grey text
-                background: rgba(0, 0, 0, 0.05) !important; // Slight grey hover
+                color: #1b1b19 !important; // Dark grey text
+                background: rgb(244, 2, 224) !important; // Slight grey hover
 
                 * {
-                    color: #4a5568 !important;
+                    color: #010c08 !important;
                     font-weight: 500 !important;
                 }
 
                 svg,
                 svg > path,
                 svg > g > path {
-                    fill: #4a5568 !important; // Dark grey icons
+                    fill: #fb3a05 !important; // Dark grey icons
                     stroke: none !important;
                     filter: none !important;
                 }
@@ -194,27 +194,27 @@
 
     &__active {
         font-weight: bold !important;
-        color: #ffffff !important; // White text like Binarytool
-        background-color: #1b6b47 !important; // Professional green background
+        color: #f78b8b !important; // White text like Binarytool
+        background-color: #1ad8a8 !important; // Professional green background
         font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         font-size: 14px !important;
 
         // Active tab text - white and bold
         * {
-            color: #ffffff !important;
+            color: #fdaeae !important;
             font-weight: bold !important;
             font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         }
         
         span, div, p, label {
-            color: #ffffff !important;
+            color: #f7b6b6 !important;
             font-weight: bold !important;
             font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         }
         
         // Override any theme-based active states
         &:hover {
-            color: #ffffff !important;
+            color: #ef17a7 !important;
             background-color: #1e3a8a !important; // Slightly darker blue on hover
             
             * {

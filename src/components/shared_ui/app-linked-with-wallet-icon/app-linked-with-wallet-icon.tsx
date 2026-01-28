@@ -1,8 +1,8 @@
 import React from 'react';
-import { AccountsDerivAccountLightIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 import { WalletIcon } from '../wallet-icon';
 import './app-linked-with-wallet-icon.scss';
+import DemoGlyphIcon from './DemoGlyphIcon';
 
 type TAppIconProps = {
     app_icon: string;
@@ -49,7 +49,18 @@ const AppLinkedWithWalletIcon = ({
         <div className={`app-icon app-icon--${size}`}>
             {/* Top Icon */}
             <div className='app-icon__top-icon'>
-                <AccountsDerivAccountLightIcon iconSize={icon_size} />
+                {type === 'demo' ? (
+                    <DemoGlyphIcon iconSize={icon_size} />
+                ) : (
+                    <WalletIcon
+                        icon={wallet_icon}
+                        gradient_class={gradient_class}
+                        type={type}
+                        size={sizes.top[size]}
+                        has_bg
+                        hide_watermark={hide_watermark}
+                    />
+                )}
             </div>
 
             {/* Bottom Icon */}

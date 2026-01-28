@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect,useState } from 'react';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 import {
-    LegacyHomeNewIcon,
-    LegacyMenuApps2pxIcon,
     LegacyChartsIcon,
+    LegacyClose2pxIcon,
+    LegacyHomeNewIcon,
     LegacyIndicatorActiveIcon,
-    LegacyReportsIcon,
+    LegacyMenuApps2pxIcon,
+    LegacyMenuHamburger2pxIcon,
     LegacyProfitTableIcon,
+    LegacyReportsIcon,
     LegacyTraderSHubIcon,
     LegacyTrendUpIcon,
-    LegacyMenuHamburger2pxIcon,
-    LegacyClose2pxIcon,
 } from '@deriv/quill-icons/Legacy';
 import './sidebar.scss';
 
