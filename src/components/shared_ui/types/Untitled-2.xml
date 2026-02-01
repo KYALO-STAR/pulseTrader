@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20">
+  <!-- Combined $D glyph -->
+  <path d="M10 4h4c6 0 10 4 10 12s-4 12-10 12h-4V4z" fill="#d8b4f8"/>
+  <line x1="10" y1="4" x2="10" y2="28" stroke="#d8b4f8" stroke-width="2"/>
+  <line x1="7" y1="10" x2="13" y2="10" stroke="#d8b4f8" stroke-width="2"/>
+  <line x1="7" y1="22" x2="13" y2="22" stroke="#d8b4f8" stroke-width="2"/>
+</svg>

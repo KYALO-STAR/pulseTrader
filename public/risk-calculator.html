@@ -1,61 +1,78 @@
- <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title id="calc-title"></title>
-  <script>
-  (function(){
-    document.getElementById('calc-title').textContent=atob('TWFydGluZ2FsZSBDYWxjdWxhdG9y');
-  })();
-  </script>
-  <link rel="stylesheet" href="risk-calculator.css">
-  <meta name="mobile-web-app-capable" content="yes">
-</head>
-<body>
-  <div class="calculator-container">
-    <h1 id="calc-h1"></h1>
-    <script>
-    (function(){
-      document.getElementById('calc-h1').textContent=atob('TWFydGluZ2FsZSBDYWxjdWxhdG9y');
-    })();
-    </script>
-    <div class="input-group">
-      <label for="capital">Initial Capital (₹):</label>
-      <input type="number" id="capital" min="0" step="0.01" placeholder="Enter capital" required>
-    </div>
-    <div class="results">
-      <div class="result-item">
-        <span>Stake (2% of Capital):</span>
-        <span id="stake">0.00</span>
-      </div>
-      <div class="result-item">
-        <span>Take Profit (5x Stake):</span>
-        <span id="takeProfit">0.00</span>
-      </div>
-      <div class="result-item">
-        <span>Stop Loss (4 Losses Sum):</span>
-        <span id="stopLoss">0.00</span>
-      </div>
-    </div>
-  </div>
-  <script src="risk-calculator.js"></script>
-  <script>
-  (function(){
-    var colors={
-      bg:atob('MWMyNTJl'),
-      container:atob('MmEzNDQw'),
-      h1:atob('NGZjM2Y3'),
-      label:atob('YjBiZWM1'),
-      input:atob('Mzc0NzRm'),
-      inputFocus:atob('NDU1YTY0'),
-      result:atob('OTBjYWY5'),
-      resultValue:atob('NGZjM2Y3')
-    };
-    var s=document.createElement('style');
-    s.textContent='body{background:#'+colors.bg+';color:#f0f2f5;}.calculator-container{background:#'+colors.container+';}h1{color:#'+colors.h1+';}label{color:#'+colors.label+';}input{background:#'+colors.input+';}input:focus{background:#'+colors.inputFocus+';}.result-item span:first-child{color:#'+colors.result+';}.result-item span:last-child{color:#'+colors.resultValue+';}';
-    document.head.appendChild(s);
-  })();
-  </script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title id="calc-title"></title>
+        <script>
+            (function () {
+                document.getElementById('calc-title').textContent = atob('TWFydGluZ2FsZSBDYWxjdWxhdG9y');
+            })();
+        </script>
+        <link rel="stylesheet" href="risk-calculator.css" />
+        <meta name="mobile-web-app-capable" content="yes" />
+    </head>
+    <body>
+        <div class="calculator-container">
+            <h1 id="calc-h1"></h1>
+            <script>
+                (function () {
+                    document.getElementById('calc-h1').textContent = atob('TWFydGluZ2FsZSBDYWxjdWxhdG9y');
+                })();
+            </script>
+            <div class="input-group">
+                <label for="capital">Initial Capital (₹):</label>
+                <input type="number" id="capital" min="0" step="0.01" placeholder="Enter capital" required />
+            </div>
+            <div class="results">
+                <div class="result-item">
+                    <span>Stake (2% of Capital):</span>
+                    <span id="stake">0.00</span>
+                </div>
+                <div class="result-item">
+                    <span>Take Profit (5x Stake):</span>
+                    <span id="takeProfit">0.00</span>
+                </div>
+                <div class="result-item">
+                    <span>Stop Loss (4 Losses Sum):</span>
+                    <span id="stopLoss">0.00</span>
+                </div>
+            </div>
+        </div>
+        <script src="risk-calculator.js"></script>
+        <script>
+            (function () {
+                var colors = {
+                    bg: atob('MWMyNTJl'),
+                    container: atob('MmEzNDQw'),
+                    h1: atob('NGZjM2Y3'),
+                    label: atob('YjBiZWM1'),
+                    input: atob('Mzc0NzRm'),
+                    inputFocus: atob('NDU1YTY0'),
+                    result: atob('OTBjYWY5'),
+                    resultValue: atob('NGZjM2Y3'),
+                };
+                var s = document.createElement('style');
+                s.textContent =
+                    'body{background:#' +
+                    colors.bg +
+                    ';color:#f0f2f5;}.calculator-container{background:#' +
+                    colors.container +
+                    ';}h1{color:#' +
+                    colors.h1 +
+                    ';}label{color:#' +
+                    colors.label +
+                    ';}input{background:#' +
+                    colors.input +
+                    ';}input:focus{background:#' +
+                    colors.inputFocus +
+                    ';}.result-item span:first-child{color:#' +
+                    colors.result +
+                    ';}.result-item span:last-child{color:#' +
+                    colors.resultValue +
+                    ';}';
+                document.head.appendChild(s);
+            })();
+        </script>
+    </body>
 </html>

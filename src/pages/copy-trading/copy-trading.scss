@@ -19,7 +19,7 @@
         background-color: #1f1f1f;
         border: 1px solid #3a3a3a; // grey boundary
         border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         margin-bottom: 20px;
         font-size: 0.85rem;
         font-weight: 400;
@@ -93,7 +93,8 @@
         min-height: 40px;
     }
 
-    h5, h6 {
+    h5,
+    h6 {
         color: #e0e0e0;
         font-size: 1rem;
         font-weight: 400;
@@ -116,13 +117,17 @@
     }
 
     // Remove YouTube icon and ensure no gap remains
-    .youtube-icon { display: none !important; }
+    .youtube-icon {
+        display: none !important;
+    }
 
     .status-msg {
         color: green;
         opacity: 0;
         transform: translateY(-10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
+        transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
         margin: 4px 0 0;
         display: block;
         font-size: 0.75rem;
@@ -170,7 +175,8 @@
         border-collapse: collapse;
         margin-top: 1rem;
 
-        th, td {
+        th,
+        td {
             padding: 0.5rem;
             text-align: left;
             border-bottom: 1px solid #444;
@@ -215,7 +221,8 @@
             font-size: 1rem;
         }
 
-        h5, h6 {
+        h5,
+        h6 {
             font-size: 1.2rem;
         }
 
@@ -225,7 +232,8 @@
         }
 
         #tokenTable {
-            th, td {
+            th,
+            td {
                 padding: 0.75rem;
             }
         }
@@ -303,7 +311,8 @@
         #tokenTable {
             font-size: 0.85rem;
 
-            th, td {
+            th,
+            td {
                 padding: 0.6rem 0.4rem;
             }
         }
@@ -375,7 +384,8 @@
             align-items: center;
         }
 
-        h5, h6 {
+        h5,
+        h6 {
             font-size: 1rem;
             margin-bottom: 0.75rem;
         }
@@ -383,7 +393,8 @@
         #tokenTable {
             font-size: 0.8rem;
 
-            th, td {
+            th,
+            td {
                 padding: 0.5rem 0.3rem;
                 word-break: break-all;
             }
@@ -484,7 +495,8 @@
             }
         }
 
-        h5, h6 {
+        h5,
+        h6 {
             font-size: 0.9rem;
             margin-bottom: 0.75rem;
         }
@@ -496,7 +508,8 @@
         #tokenTable {
             font-size: 0.75rem;
 
-            th, td {
+            th,
+            td {
                 padding: 0.4rem 0.2rem;
                 word-break: break-all;
             }
@@ -610,7 +623,7 @@
         }
 
         .youtube-icon {
-            color: #FF0000;
+            color: #ff0000;
             font-size: 20px;
         }
 
@@ -630,7 +643,7 @@
         justify-content: center;
 
         .youtube-icon {
-            color: #FF0000;
+            color: #ff0000;
             font-size: 24px;
         }
     }
@@ -666,7 +679,7 @@
 
     .title {
         margin: 1rem 0;
-        
+
         small {
             font-size: 1.1rem;
             color: #e5e7eb;

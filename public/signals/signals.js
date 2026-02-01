@@ -3,24 +3,28 @@ const ticksStorage = {};
 
 const ws = new WebSocket('wss://ws.binaryws.com/websockets/v3?app_id=80058');
 
-const subscribeTicks = (symbol) => {
-    ws.send(JSON.stringify({
-        ticks_history: symbol,
-        count: 255,
-        end: 'latest',
-        style: 'ticks',
-        subscribe: 1
-    }));
+const subscribeTicks = symbol => {
+    ws.send(
+        JSON.stringify({
+            ticks_history: symbol,
+            count: 255,
+            end: 'latest',
+            style: 'ticks',
+            subscribe: 1,
+        })
+    );
 };
 
 ws.onopen = () => {
     console.log('WebSocket connected, requesting active symbols...');
-    
+
     // Request active symbols to get the correct 1s volatility indices
-    ws.send(JSON.stringify({ 
-        active_symbols: 'brief' 
-    }));
-    
+    ws.send(
+        JSON.stringify({
+            active_symbols: 'brief',
+        })
+    );
+
     // Also subscribe to standard volatility indices immediately
     const standardSymbols = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
     standardSymbols.forEach(symbol => {
@@ -45,29 +49,29 @@ const calculateTrendPercentage = (symbol, ticksCount) => {
     const total = riseCount + fallCount;
     return {
         risePercentage: total > 0 ? (riseCount / total) * 100 : 0,
-        fallPercentage: total > 0 ? (fallCount / total) * 100 : 0
+        fallPercentage: total > 0 ? (fallCount / total) * 100 : 0,
     };
 };
 
-ws.onmessage = (event) => {
+ws.onmessage = event => {
     const data = JSON.parse(event.data);
-    
+
     // Log any errors
     if (data.error) {
         console.error('WebSocket error for symbol:', data.echo_req?.ticks_history || 'unknown', data.error);
         return;
     }
-    
+
     // Handle active symbols response
     if (data.active_symbols) {
         console.log('Active symbols received:', data.active_symbols.length, 'symbols');
-        
+
         // Filter for 1-second volatility indices
-        const oneSecondVolatilityIndices = data.active_symbols.filter(symbol => 
-            symbol.display_name && symbol.display_name.includes('(1s)')
+        const oneSecondVolatilityIndices = data.active_symbols.filter(
+            symbol => symbol.display_name && symbol.display_name.includes('(1s)')
         );
         console.log('1-Second Volatility Indices found:', oneSecondVolatilityIndices);
-        
+
         // Subscribe to all 1s volatility indices
         oneSecondVolatilityIndices.forEach(symbolData => {
             const symbol = symbolData.symbol;
@@ -77,7 +81,7 @@ ws.onmessage = (event) => {
         });
         return;
     }
-    
+
     if (data.history && data.history.prices) {
         const symbol = data.echo_req.ticks_history;
         if (!ticksStorage[symbol]) ticksStorage[symbol] = [];
@@ -125,12 +129,11 @@ const executeTrade = (symbol, action) => {
 };
 
 function updateTables() {
-    const riseFallTable = document.getElementById("riseFallTable");
-    const overUnderTable = document.getElementById("overUnderTable");
+    const riseFallTable = document.getElementById('riseFallTable');
+    const overUnderTable = document.getElementById('overUnderTable');
 
-    riseFallTable.innerHTML = "";
-    overUnderTable.innerHTML = "";
-
+    riseFallTable.innerHTML = '';
+    overUnderTable.innerHTML = '';
 
     Object.keys(ticksStorage).forEach(symbol => {
         const ticks = ticksStorage[symbol];
@@ -145,24 +148,25 @@ function updateTables() {
         const isSell = fall255 > 57 && fall55 > 55;
 
         // Execute trades based on signals
-        if (isTrading) { // Ensure trading is active
+        if (isTrading) {
+            // Ensure trading is active
             if (isBuy) executeTrade(symbol, 'buy');
             if (isSell) executeTrade(symbol, 'sell');
         }
 
         // Define status classes for signals
-        const riseClass = isBuy ? "rise" : "neutral";
-        const fallClass = isSell ? "fall" : "neutral";
+        const riseClass = isBuy ? 'rise' : 'neutral';
+        const fallClass = isSell ? 'fall' : 'neutral';
 
         // Generate market label (add (1s) for 1-second indices)
         const isOneSecond = symbol.includes('_1s') || symbol.includes('_1S') || symbol.includes('S');
-        let indexLabel = symbol.replace("R_", "").replace("_1s", "").replace("_1S", "").replace("S", "");
+        let indexLabel = symbol.replace('R_', '').replace('_1s', '').replace('_1S', '').replace('S', '');
 
         // Generate rise/fall table row
         riseFallTable.innerHTML += `<tr>
-            <td>Volatility ${indexLabel}${isOneSecond ? " (1s)" : ""} index</td>
-            <td><span class="signal-box ${riseClass}">${isBuy ? "Rise" : "----"}</span></td>
-            <td><span class="signal-box ${fallClass}">${isSell ? "Fall" : "----"}</span></td>
+            <td>Volatility ${indexLabel}${isOneSecond ? ' (1s)' : ''} index</td>
+            <td><span class="signal-box ${riseClass}">${isBuy ? 'Rise' : '----'}</span></td>
+            <td><span class="signal-box ${fallClass}">${isSell ? 'Fall' : '----'}</span></td>
         </tr>`;
 
         // Last digit analysis
@@ -175,14 +179,16 @@ function updateTables() {
         const totalTicks = ticks.length;
         const digitPercentages = digitCounts.map(count => (count / totalTicks) * 100);
 
-        const overClass = digitPercentages[7] < 10 && digitPercentages[8] < 10 && digitPercentages[9] < 10 ? "over" : "neutral";
-        const underClass = digitPercentages[0] < 10 && digitPercentages[1] < 10 && digitPercentages[2] < 10 ? "under" : "neutral";
+        const overClass =
+            digitPercentages[7] < 10 && digitPercentages[8] < 10 && digitPercentages[9] < 10 ? 'over' : 'neutral';
+        const underClass =
+            digitPercentages[0] < 10 && digitPercentages[1] < 10 && digitPercentages[2] < 10 ? 'under' : 'neutral';
 
         // Generate over/under table row
         overUnderTable.innerHTML += `<tr>
-            <td>Volatility ${indexLabel}${isOneSecond ? " (1s)" : ""} index</td>
-            <td><span class="signal-box ${overClass}">${overClass === "over" ? "Over 2" : "----"}</span></td>
-            <td><span class="signal-box ${underClass}">${underClass === "under" ? "Under 7" : "----"}</span></td>
+            <td>Volatility ${indexLabel}${isOneSecond ? ' (1s)' : ''} index</td>
+            <td><span class="signal-box ${overClass}">${overClass === 'over' ? 'Over 2' : '----'}</span></td>
+            <td><span class="signal-box ${underClass}">${underClass === 'under' ? 'Under 7' : '----'}</span></td>
         </tr>`;
     });
 }

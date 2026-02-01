@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import Tabs from '@/components/shared_ui/tabs/tabs';
-import Matches from '../matches';
-import Hyperbot from '../hyperbot';
-import Diffbot from '../diffbot';
-import SpeedBot from '../speedbot';
-import { Localize } from '@deriv-com/translations';
 import { LabelPairedPuzzlePieceTwoCaptionBoldIcon } from '@deriv/quill-icons/LabelPaired';
+import { Localize } from '@deriv-com/translations';
+import Diffbot from '../diffbot';
+import Hyperbot from '../hyperbot';
+import Matches from '../matches';
+import SpeedBot from '../speedbot';
 import './hybrid-bots.scss';
-
-type HybridBotSubTab = 'matches' | 'diffbot' | 'hyperbot' | 'speedbot';
 
 const HybridBots: React.FC = () => {
     const [active_subtab, setActiveSubtab] = useState<number>(0);
@@ -20,7 +18,12 @@ const HybridBots: React.FC = () => {
     return (
         <div className='hybrid-bots'>
             <div className='hybrid-bots__submenu'>
-                <Tabs active_index={active_subtab} className='hybrid-bots__tabs' onTabItemClick={handleSubTabChange} top>
+                <Tabs
+                    active_index={active_subtab}
+                    className='hybrid-bots__tabs'
+                    onTabItemClick={handleSubTabChange}
+                    top
+                >
                     <div
                         label={
                             <>
@@ -77,7 +80,9 @@ const HybridBots: React.FC = () => {
                                 <span className='nav-speedbot-label'>
                                     <Localize i18n_default_text='SpeedBot' />
                                 </span>
-                                <span className='nav-rocket' aria-hidden='true'>🚀</span>
+                                <span className='nav-rocket' aria-hidden='true'>
+                                    🚀
+                                </span>
                             </>
                         }
                         id='id-hybrid-speedbot'
@@ -91,18 +96,3 @@ const HybridBots: React.FC = () => {
 };
 
 export default HybridBots;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

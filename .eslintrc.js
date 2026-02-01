@@ -1,5 +1,10 @@
 module.exports = {
     parser: '@typescript-eslint/parser',
+    settings: {
+        react: {
+            version: 'detect',
+        },
+    },
     parserOptions: {
         ecmaVersion: 2021,
         sourceType: 'module',

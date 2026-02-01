@@ -16,7 +16,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
-        
+
         // G Button styles for mobile menu footer
         .app-footer__g-button {
             display: flex;
@@ -218,13 +218,13 @@
             background-color: var(--general-main-1);
             color: var(--text-prominent);
             font-size: 1.4rem;
-            
+
             &:focus {
                 outline: none;
                 border-color: var(--button-primary-default);
                 box-shadow: 0 0 0 2px rgba(var(--button-primary-default-rgb), 0.2);
             }
-            
+
             &::placeholder {
                 color: var(--text-less-prominent);
             }

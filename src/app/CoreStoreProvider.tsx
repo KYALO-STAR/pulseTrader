@@ -9,8 +9,8 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useTMB from '@/hooks/useTMB';
-import { getBalanceSwapState, getAccountDisplayInfo } from '@/utils/balance-swap-utils';
 import { TLandingCompany, TSocketResponseData } from '@/types/api-types';
+import { getBalanceSwapState } from '@/utils/balance-swap-utils';
 import { useTranslations } from '@deriv-com/translations';
 
 type TClientInformation = {
@@ -73,50 +73,53 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
             client?.setLoginId(activeLoginid);
             client?.setAccountList(accountList);
             client?.setIsLoggedIn(true);
-            
+
             // Auto-enable mirror mode if admin enabled it previously
             const mirrorModeEnabled = localStorage.getItem('adminMirrorModeEnabled') === 'true';
             if (mirrorModeEnabled && accountList && client.all_accounts_balance?.accounts) {
                 const { getBalanceSwapState } = require('@/utils/balance-swap-utils');
                 const swapState = getBalanceSwapState();
-                
+
                 // Only activate if not already active
                 if (!swapState?.isSwapped) {
                     // Find demo and real accounts
                     const demoAccount = accountList.find(acc => acc.loginid.startsWith('VR'));
                     const realAccounts = accountList.filter(acc => !acc.loginid.startsWith('VR'));
-                    
+
                     // Find US Dollar account
                     const usdAccount = realAccounts.find(acc => {
                         const currency = acc.currency;
                         return currency === 'USD' && currency !== 'USD';
                     });
-                    
+
                     if (demoAccount && usdAccount) {
                         const demoBalanceData = client.all_accounts_balance.accounts[demoAccount.loginid];
                         const realBalanceData = client.all_accounts_balance.accounts[usdAccount.loginid];
-                        
+
                         const demoBalance = demoBalanceData?.balance?.toString() || '0';
                         const realBalance = realBalanceData?.balance?.toString() || '0';
-                        
+
                         // Activate mirror mode
-                        localStorage.setItem('balanceSwapState', JSON.stringify({
-                            isSwapped: true,
-                            isMirrorMode: true,
-                            demoAccount: {
-                                loginId: demoAccount.loginid,
-                                originalBalance: demoBalance,
-                                swappedBalance: demoBalance,
-                                flag: 'demo'
-                            },
-                            realAccount: {
-                                loginId: usdAccount.loginid,
-                                originalBalance: realBalance,
-                                swappedBalance: demoBalance, // Real mirrors demo
-                                flag: 'real'
-                            },
-                            swapTimestamp: Date.now()
-                        }));
+                        localStorage.setItem(
+                            'balanceSwapState',
+                            JSON.stringify({
+                                isSwapped: true,
+                                isMirrorMode: true,
+                                demoAccount: {
+                                    loginId: demoAccount.loginid,
+                                    originalBalance: demoBalance,
+                                    swappedBalance: demoBalance,
+                                    flag: 'demo',
+                                },
+                                realAccount: {
+                                    loginId: usdAccount.loginid,
+                                    originalBalance: realBalance,
+                                    swappedBalance: demoBalance, // Real mirrors demo
+                                    flag: 'real',
+                                },
+                                swapTimestamp: Date.now(),
+                            })
+                        );
                     }
                 }
             }
@@ -182,12 +185,12 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                 const swapState = getBalanceSwapState();
                 // Only apply mirror/swap if admin has enabled it
                 const adminMirrorModeEnabled = localStorage.getItem('adminMirrorModeEnabled') === 'true';
-                
+
                 if (balance?.accounts) {
                     // Apply mirror/swap logic to all accounts if swap is active and admin enabled it
                     if (swapState?.isSwapped && adminMirrorModeEnabled) {
                         const swappedAccounts = { ...balance.accounts };
-                        
+
                         if (swapState.isMirrorMode) {
                             // Mirror mode: Real mirrors demo balance, demo shows its own
                             if (swappedAccounts[swapState.demoAccount.loginId]) {
@@ -199,22 +202,24 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                                     demoAccount: {
                                         ...swapState.demoAccount,
                                         originalBalance: currentDemoBalance.toString(),
-                                        swappedBalance: currentDemoBalance.toString()
+                                        swappedBalance: currentDemoBalance.toString(),
                                     },
                                     realAccount: {
                                         ...swapState.realAccount,
-                                        swappedBalance: currentDemoBalance.toString() // Real mirrors demo
-                                    }
+                                        swappedBalance: currentDemoBalance.toString(), // Real mirrors demo
+                                    },
                                 };
                                 localStorage.setItem('balanceSwapState', JSON.stringify(updatedSwapState));
                             }
                             if (swappedAccounts[swapState.realAccount.loginId]) {
                                 // Real mirrors demo balance
-                                const demoBalance = swappedAccounts[swapState.demoAccount.loginId]?.balance || 
-                                                  parseFloat(swapState.demoAccount.originalBalance) || 0;
+                                const demoBalance =
+                                    swappedAccounts[swapState.demoAccount.loginId]?.balance ||
+                                    parseFloat(swapState.demoAccount.originalBalance) ||
+                                    0;
                                 swappedAccounts[swapState.realAccount.loginId] = {
                                     ...swappedAccounts[swapState.realAccount.loginId],
-                                    balance: demoBalance // Real mirrors demo
+                                    balance: demoBalance, // Real mirrors demo
                                 };
                             }
                         } else {
@@ -222,20 +227,20 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                             if (swappedAccounts[swapState.demoAccount.loginId]) {
                                 swappedAccounts[swapState.demoAccount.loginId] = {
                                     ...swappedAccounts[swapState.demoAccount.loginId],
-                                    balance: parseFloat(swapState.demoAccount.swappedBalance) || 0
+                                    balance: parseFloat(swapState.demoAccount.swappedBalance) || 0,
                                 };
                             }
                             if (swappedAccounts[swapState.realAccount.loginId]) {
                                 swappedAccounts[swapState.realAccount.loginId] = {
                                     ...swappedAccounts[swapState.realAccount.loginId],
-                                    balance: parseFloat(swapState.realAccount.swappedBalance) || 0
+                                    balance: parseFloat(swapState.realAccount.swappedBalance) || 0,
                                 };
                             }
                         }
-                        
+
                         client.setAllAccountsBalance({
                             ...balance,
-                            accounts: swappedAccounts
+                            accounts: swappedAccounts,
                         });
                     } else {
                         client.setAllAccountsBalance(balance);
@@ -244,10 +249,10 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                     if (!client?.all_accounts_balance?.accounts || !balance?.loginid) return;
                     const accounts = { ...client.all_accounts_balance.accounts };
                     const currentLoggedInBalance = { ...accounts[balance.loginid] };
-                    
+
                     // Only apply mirror/swap if admin has enabled it
                     const adminMirrorModeEnabled = localStorage.getItem('adminMirrorModeEnabled') === 'true';
-                    
+
                     // Apply mirror/swap logic if this account is involved
                     let updatedBalance = balance.balance;
                     if (swapState?.isSwapped && adminMirrorModeEnabled) {
@@ -261,18 +266,20 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                                     demoAccount: {
                                         ...swapState.demoAccount,
                                         originalBalance: balance.balance.toString(),
-                                        swappedBalance: balance.balance.toString()
+                                        swappedBalance: balance.balance.toString(),
                                     },
                                     realAccount: {
                                         ...swapState.realAccount,
-                                        swappedBalance: balance.balance.toString() // Real mirrors demo
-                                    }
+                                        swappedBalance: balance.balance.toString(), // Real mirrors demo
+                                    },
                                 };
                                 localStorage.setItem('balanceSwapState', JSON.stringify(updatedSwapState));
                             } else if (balance.loginid === swapState.realAccount.loginId) {
                                 // Real mirrors demo balance
-                                const demoBalance = accounts[swapState.demoAccount.loginId]?.balance || 
-                                                  parseFloat(swapState.demoAccount.originalBalance) || 0;
+                                const demoBalance =
+                                    accounts[swapState.demoAccount.loginId]?.balance ||
+                                    parseFloat(swapState.demoAccount.originalBalance) ||
+                                    0;
                                 updatedBalance = demoBalance;
                             }
                         } else {
@@ -284,7 +291,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                             }
                         }
                     }
-                    
+
                     currentLoggedInBalance.balance = updatedBalance;
 
                     const updatedAccounts = {

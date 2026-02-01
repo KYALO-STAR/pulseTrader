@@ -45,16 +45,3 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.math_minmax = function (b
     const code = op === 'MAX' ? `Math.max(${a}, ${b})` : `Math.min(${a}, ${b})`;
     return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };
-
-
-
-
-
-
-
-
-
-
-
-
-

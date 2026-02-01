@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import Flyout from '@/components/flyout';
-import { useStore } from '@/hooks/useStore';
-import { load } from '@/external/bot-skeleton/scratch/utils';
-import { save_types } from '@/external/bot-skeleton/constants/save-type';
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
+import Flyout from '@/components/flyout';
+import { save_types } from '@/external/bot-skeleton/constants/save-type';
+import { load } from '@/external/bot-skeleton/scratch/utils';
+import { useStore } from '@/hooks/useStore';
 import StopBotModal from '../dashboard/stop-bot-modal';
 import Toolbar from './toolbar';
 import Toolbox from './toolbox';

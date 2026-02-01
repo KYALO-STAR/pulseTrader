@@ -1,20 +1,16 @@
 import { useTranslations } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
+import { useConfig } from '@/contexts/ConfigContext'; // New import
 
 // Custom WhatsApp Icon - using your uploaded image
 const CustomWhatsAppIcon = () => (
-    <img
-        src="/whatsapp icon.png"
-        alt="WhatsApp"
-        width="16"
-        height="16"
-        style={{ objectFit: 'contain' }}
-    />
+    <img src='/whatsapp icon.png' alt='WhatsApp' width='16' height='16' style={{ objectFit: 'contain' }} />
 );
 
 const WhatsApp = () => {
     const { localize } = useTranslations();
+    const { config } = useConfig(); // Use useConfig hook
 
     // Get current domain for WhatsApp link
     const getCurrentDomain = () => {
@@ -26,6 +22,11 @@ const WhatsApp = () => {
 
     // Domain-specific WhatsApp channel links
     const getWhatsAppLink = () => {
+        // Prioritize configurable WhatsApp number if available
+        if (config.channels.whatsapp) {
+            return `https://wa.me/${config.channels.whatsapp}`;
+        }
+
         const currentDomain = getCurrentDomain();
 
         const domainWhatsAppLinks: Record<string, string> = {

@@ -1,5 +1,5 @@
 import { localize } from '@deriv-com/translations';
-import { modifyContextMenu, excludeOptionFromContextMenu } from '../../../utils';
+import { excludeOptionFromContextMenu, modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.apollo_purchase = {
     init() {
@@ -73,14 +73,14 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.apollo_purchase = block =
 
     // Generate code that behaves like standard purchase but with additional options
     let code = `Bot.purchase('${purchaseList}');\n`;
-    
+
     // Add logging for the additional options
     if (multipleContracts === 'TRUE' && contractQuantity > 1) {
         code = `// Apollo Purchase: Multiple contracts (${contractQuantity})\n` + code;
         // For now, we'll just purchase once but log the intent
         // In a full implementation, this could loop or use different logic
     }
-    
+
     return code;
 };
 

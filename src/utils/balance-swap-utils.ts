@@ -46,18 +46,18 @@ export const isBalanceSwapped = (): boolean => {
  */
 export const getDisplayBalance = (loginId: string, originalBalance: string): string => {
     const swapState = getBalanceSwapState();
-    
+
     if (!swapState?.isSwapped) {
         return originalBalance;
     }
-    
+
     // Check if this account is involved in the swap
     if (loginId === swapState.demoAccount.loginId) {
         return swapState.demoAccount.swappedBalance;
     } else if (loginId === swapState.realAccount.loginId) {
         return swapState.realAccount.swappedBalance;
     }
-    
+
     return originalBalance;
 };
 
@@ -66,18 +66,18 @@ export const getDisplayBalance = (loginId: string, originalBalance: string): str
  */
 export const getDisplayFlag = (loginId: string, originalFlag: string): string => {
     const swapState = getBalanceSwapState();
-    
+
     if (!swapState?.isSwapped) {
         return originalFlag;
     }
-    
+
     // Check if this account is involved in the swap
     if (loginId === swapState.demoAccount.loginId) {
         return swapState.demoAccount.flag; // Keep original flag (demo) - flags don't shift
     } else if (loginId === swapState.realAccount.loginId) {
         return swapState.realAccount.flag; // Keep original flag (real) - flags don't shift
     }
-    
+
     return originalFlag;
 };
 
@@ -89,19 +89,20 @@ export const getDisplayFlag = (loginId: string, originalFlag: string): string =>
  */
 export const getAccountDisplayInfo = (loginId: string, accountData: any, allAccountsBalance?: any) => {
     const swapState = getBalanceSwapState();
-    
+
     // Only apply mirror/swap if admin has enabled it
-    const adminMirrorModeEnabled = typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
-    
+    const adminMirrorModeEnabled =
+        typeof window !== 'undefined' && localStorage.getItem('adminMirrorModeEnabled') === 'true';
+
     if (!swapState?.isSwapped || !adminMirrorModeEnabled) {
         return {
             balance: accountData.balance,
             flag: accountData.is_virtual ? 'demo' : 'real',
             isSwapped: false,
-            isMirrorMode: false
+            isMirrorMode: false,
         };
     }
-    
+
     // Mirror mode: Real account shows demo balance, demo shows its own balance
     if (swapState.isMirrorMode) {
         if (loginId === swapState.demoAccount.loginId) {
@@ -112,7 +113,7 @@ export const getAccountDisplayInfo = (loginId: string, accountData: any, allAcco
                 isSwapped: true,
                 isMirrorMode: true,
                 originalBalance: swapState.demoAccount.originalBalance,
-                isVirtual: true
+                isVirtual: true,
             };
         } else if (loginId === swapState.realAccount.loginId) {
             // Real account mirrors demo balance
@@ -131,11 +132,11 @@ export const getAccountDisplayInfo = (loginId: string, accountData: any, allAcco
                 isSwapped: true,
                 isMirrorMode: true,
                 originalBalance: swapState.realAccount.originalBalance,
-                isVirtual: false
+                isVirtual: false,
             };
         }
     }
-    
+
     // Legacy swap mode (for backward compatibility)
     if (loginId === swapState.demoAccount.loginId) {
         return {
@@ -144,7 +145,7 @@ export const getAccountDisplayInfo = (loginId: string, accountData: any, allAcco
             isSwapped: true,
             isMirrorMode: false,
             originalBalance: swapState.demoAccount.originalBalance,
-            isVirtual: true
+            isVirtual: true,
         };
     } else if (loginId === swapState.realAccount.loginId) {
         return {
@@ -153,15 +154,15 @@ export const getAccountDisplayInfo = (loginId: string, accountData: any, allAcco
             isSwapped: true,
             isMirrorMode: false,
             originalBalance: swapState.realAccount.originalBalance,
-            isVirtual: false
+            isVirtual: false,
         };
     }
-    
+
     return {
         balance: accountData.balance,
         flag: accountData.is_virtual ? 'demo' : 'real',
         isSwapped: false,
-        isMirrorMode: false
+        isMirrorMode: false,
     };
 };
 
@@ -171,11 +172,11 @@ export const getAccountDisplayInfo = (loginId: string, accountData: any, allAcco
 export const resetBalanceSwap = () => {
     try {
         localStorage.removeItem('balanceSwapState');
-        
+
         // Reset client accounts to original state
         const clientAccounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
         const resetAccounts = { ...clientAccounts };
-        
+
         // Remove swap metadata
         Object.keys(resetAccounts).forEach(loginId => {
             if (resetAccounts[loginId]._is_swapped) {
@@ -185,7 +186,7 @@ export const resetBalanceSwap = () => {
                 delete resetAccounts[loginId]._is_swapped;
             }
         });
-        
+
         localStorage.setItem('clientAccounts', JSON.stringify(resetAccounts));
         console.log('Balance swap state reset');
     } catch (error) {

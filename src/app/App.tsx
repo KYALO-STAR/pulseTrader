@@ -6,25 +6,23 @@ import AppLoaderWrapper from '@/components/app-loader/app-loader-wrapper';
 import { getLoaderDuration, isLoaderEnabled } from '@/components/app-loader/loader-config';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
-import { getBotsManifest, prefetchAllXmlInBackground } from '@/utils/freebots-cache';
+import SecurityProtection from '@/components/security/security-protection';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
 import { forceUpdateAppId } from '@/components/shared/utils/config/config';
-import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
+import { AdminAuthProvider } from '@/contexts/AdminAuthContext';
+import { ConfigProvider, useConfig } from '@/contexts/ConfigContext'; // Import useConfig
 import { StoreProvider } from '@/hooks/useStore';
+import AdminApp from '@/pages/admin-app/AdminApp';
 import CallbackPage from '@/pages/callback';
-import Endpoint from '@/pages/endpoint';
-import { TAuthData } from '@/types/api-types';
-import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
-import CoreStoreProvider from './CoreStoreProvider';
-import SecurityProtection from '@/components/security/security-protection';
 import CopyTradingManager from '@/pages/copy-trading/copy-trading-manager';
 import { initReplicator } from '@/pages/copy-trading/replicator';
-import AdminApp from '@/pages/admin-app/AdminApp';
-import { AdminAuthProvider } from '@/contexts/AdminAuthContext';
-import { ConfigProvider } from '@/contexts/ConfigContext';
-import './app-root.scss';
+import Endpoint from '@/pages/endpoint';
+import { TAuthData } from '@/types/api-types';
+import { prefetchAllXmlInBackground } from '@/utils/freebots-cache'; // Removed getBotsManifest
+import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
 import AuthCallback from '../pages/authCallback';
-
+import CoreStoreProvider from './CoreStoreProvider';
+import './app-root.scss';
 
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
@@ -48,7 +46,7 @@ const router = createBrowserRouter(
                     </Suspense>
                 }
             />
-            
+
             {/* Main App Routes */}
             <Route
                 path='/'
@@ -76,24 +74,24 @@ const router = createBrowserRouter(
                     </div>
                 }
             >
-            {/* All child routes will be passed as children to Layout */}
-            <Route index element={<AppRoot />} />
-            <Route path='endpoint' element={<Endpoint />} />
-            <Route path='callback' element={<CallbackPage />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            {/* Catch-all route for debugging */}
-            <Route
-                path='*'
-                element={
-                    <div style={{ padding: '20px', textAlign: 'center' }}>
-                        <h1>🔍 Route Debug Info</h1>
-                        <p>Current URL: {window.location.href}</p>
-                        <p>Pathname: {window.location.pathname}</p>
-                        <p>Available routes: /, /endpoint, /callback, /admin</p>
-                        <button onClick={() => (window.location.href = '/')}>Go to Home</button>
-                    </div>
-                }
-            />
+                {/* All child routes will be passed as children to Layout */}
+                <Route index element={<AppRoot />} />
+                <Route path='endpoint' element={<Endpoint />} />
+                <Route path='callback' element={<CallbackPage />} />
+                <Route path='/auth/callback' element={<AuthCallback />} />
+                {/* Catch-all route for debugging */}
+                <Route
+                    path='*'
+                    element={
+                        <div style={{ padding: '20px', textAlign: 'center' }}>
+                            <h1>🔍 Route Debug Info</h1>
+                            <p>Current URL: {window.location.href}</p>
+                            <p>Pathname: {window.location.pathname}</p>
+                            <p>Available routes: /, /endpoint, /callback, /admin</p>
+                            <button onClick={() => (window.location.href = '/')}>Go to Home</button>
+                        </div>
+                    }
+                />
             </Route>
         </>
     )
@@ -112,31 +110,31 @@ function initializeGlobalCopyTrading() {
     if (globalCopyTradingManager) {
         return;
     }
-    
+
     globalCopyTradingManager = new CopyTradingManager();
-    
+
     // Initialize replicator immediately (don't wait)
     globalReplicatorCleanup = initReplicator(globalCopyTradingManager);
-    
+
     // Wait a bit for manager to restore state, then sync tokens
     setTimeout(() => {
         if (!globalCopyTradingManager) return;
-        
+
         // Sync tokens from localStorage
         const syncTokens = async () => {
             if (!globalCopyTradingManager) return;
-            
+
             const isDemoToReal = localStorage.getItem('demo_to_real') === 'true';
             if (isDemoToReal) {
                 const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
                 const keys = Object.keys(accounts_list);
-                const key = keys.find(k => !k.startsWith("VR"));
+                const key = keys.find(k => !k.startsWith('VR'));
                 if (key) {
                     const value = accounts_list[key];
                     globalCopyTradingManager.setMasterToken(value);
                 }
             }
-            
+
             const copyTokensArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
             for (const token of copyTokensArray) {
                 if (!globalCopyTradingManager.copiers.find(c => c.token === token)) {
@@ -148,7 +146,7 @@ function initializeGlobalCopyTrading() {
                 }
             }
         };
-        
+
         syncTokens();
     }, 500);
 }
@@ -157,6 +155,8 @@ function initializeGlobalCopyTrading() {
 export const getGlobalCopyTradingManager = () => globalCopyTradingManager;
 
 function App() {
+    const { config } = useConfig(); // Use useConfig hook
+
     React.useEffect(() => {
         // Force update app ID in localStorage to ensure we use the current config value
         forceUpdateAppId();
@@ -176,7 +176,7 @@ function App() {
         if (shouldPrefetch) {
             setTimeout(async () => {
                 try {
-                    const manifest = (await getBotsManifest()) || [];
+                    const manifest = config.bots || []; // Use config.bots directly
                     if (manifest.length) {
                         prefetchAllXmlInBackground(manifest.map(m => m.file));
                     }
@@ -194,7 +194,7 @@ function App() {
             }
             // Note: We DON'T cleanup the replicator here - it should persist
         };
-    }, []);
+    }, [config.bots]); // Add config.bots to dependency array
 
     React.useEffect(() => {
         const accounts_list = localStorage.getItem('accountsList');

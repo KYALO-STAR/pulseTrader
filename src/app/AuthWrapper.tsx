@@ -6,6 +6,7 @@ import { observer as globalObserver } from '@/external/bot-skeleton/utils/observ
 import { clearAuthData } from '@/utils/auth-utils';
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
+import { ConfigProvider } from '@/contexts/ConfigContext'; // Added import for ConfigProvider
 import App from './App';
 
 // Extend Window interface to include is_tmb_enabled property
@@ -85,8 +86,18 @@ export const AuthWrapper = () => {
     const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
 
     React.useEffect(() => {
+        // Bypass authentication in development to avoid issues with local redirect URLs.
+        if (process.env.APP_ENV === 'development') {
+            setIsAuthComplete(true);
+            return; // Skip the actual authentication logic
+        }
+
         const initializeAuth = async () => {
-            await setLocalStorageToken(loginInfo, paramsToDelete, setIsAuthComplete);
+            try {
+                await setLocalStorageToken(loginInfo, paramsToDelete, setIsAuthComplete);
+            } catch (error) {
+                console.error('Error during authentication initialization:', error);
+            }
             URLUtils.filterSearchParams(['lang']);
             setIsAuthComplete(true);
         };
@@ -98,5 +109,9 @@ export const AuthWrapper = () => {
         return <ChunkLoader message={localize('Initializing...')} />;
     }
 
-    return <App />;
+    return (
+        <ConfigProvider>
+            <App />
+        </ConfigProvider>
+    );
 };

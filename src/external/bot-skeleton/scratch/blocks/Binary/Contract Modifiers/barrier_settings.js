@@ -52,5 +52,3 @@ window.__Barrier = { first: { type: '${t1}', value: ${v1} }, second: { type: '${
 `;
     return code;
 };
-
-

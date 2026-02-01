@@ -1,11 +1,11 @@
 import { LogTypes } from '../../../constants/messages';
+import { observer as globalObserver } from '../../../utils/observer';
 import { api_base } from '../../api/api-base';
 import ApiHelpers from '../../api/api-helpers';
 import { contractStatus, info, log } from '../utils/broadcast';
 import { doUntilDone, getUUID, recoverFromError, tradeOptionToBuy } from '../utils/helpers';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
-import { observer as globalObserver } from '../../../utils/observer';
 
 let delayIndex = 0;
 let purchase_reference;
@@ -88,7 +88,9 @@ export default Engine =>
                     // Rebuild proposals with the possibly-updated symbol
                     this.makeProposals({ ...this.options, ...this.tradeOptions });
                     this.checkProposalReady && this.checkProposalReady();
-                } catch {}
+                } catch (e) {
+                    // noop
+                }
 
                 const { id, askPrice } = this.selectProposal(contract_type);
 
@@ -110,7 +112,9 @@ export default Engine =>
                             account_id: this.accountInfo?.loginid,
                         });
                     }
-                } catch {}
+                } catch (e) {
+                    // noop
+                }
 
                 const action = () => api_base.api.send({ buy: id, price: askPrice });
 

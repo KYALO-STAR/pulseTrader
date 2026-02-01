@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { Outlet } from 'react-router-dom';
@@ -15,6 +15,7 @@ import './layout.scss';
 
 const Layout = () => {
     const { isDesktop } = useDevice();
+    const mounted = useRef(false);
 
     const isCallbackPage = window.location.pathname === '/callback';
     const { onRenderTMBCheck, is_tmb_enabled: tmb_enabled_from_hook, isTmbEnabled } = useTMB();
@@ -36,6 +37,13 @@ const Layout = () => {
         currency === '';
     const [clientHasCurrency, setClientHasCurrency] = useState(ifClientAccountHasCurrency);
     const [isAuthenticating, setIsAuthenticating] = useState(true); // Start with true to prevent flashing
+
+    useEffect(() => {
+        mounted.current = true;
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
     // Expose setClientHasCurrency to window for global access
     useEffect(() => {
@@ -89,7 +97,7 @@ const Layout = () => {
             }
 
             if (hasMissingCurrency || hasMissingToken) {
-                setClientHasCurrency(false);
+                if (mounted.current) setClientHasCurrency(false);
             } else {
                 const account_list_ =
                     account_list_filter?.find((acc: { currency: string }) => acc.currency === currency) ||
@@ -99,12 +107,12 @@ const Layout = () => {
                     sessionStorage.getItem('query_param_currency') || account_list_?.currency || 'USD';
 
                 session_storage_currency = `account=${session_storage_currency}`;
-                setClientHasCurrency(true);
+                if (mounted.current) setClientHasCurrency(true);
                 if (!new URLSearchParams(window.location.search).has('account')) {
                     window.history.pushState({}, '', `${window.location.pathname}?${session_storage_currency}`);
                 }
 
-                setClientHasCurrency(true);
+                if (mounted.current) setClientHasCurrency(true);
             }
 
             if (subscription) {
@@ -115,12 +123,14 @@ const Layout = () => {
 
     useEffect(() => {
         if (isCurrencyValid && api_base.api) {
-            // Subscribe to the onMessage event
             const is_valid_currency = currency && validCurrencies.includes(currency.toUpperCase());
             if (!is_valid_currency) return;
-            subscription = api_base.api.onMessage().subscribe(validateApiAccounts);
+            const subscription = api_base.api.onMessage().subscribe(validateApiAccounts);
+            return () => {
+                subscription.unsubscribe();
+            };
         }
-    }, []);
+    }, [isCurrencyValid, currency, validCurrencies, validateApiAccounts]);
 
     useEffect(() => {
         // Always set the currency in session storage, even if the user is not logged in
@@ -142,40 +152,41 @@ const Layout = () => {
                 // This ensures we have the correct TMB status before proceeding
                 const tmbEnabled = await isTmbEnabled();
 
-                // Now use the result of the explicit check
-                if (tmbEnabled) {
-                    await onRenderTMBCheck();
-                } else if (shouldAuthenticate) {
-                    const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
-
-                    // Make sure we have the currency in session storage before redirecting
-                    if (query_param_currency) {
-                        sessionStorage.setItem('query_param_currency', query_param_currency);
-                    }
-                    try {
-                        await requestOidcAuthentication({
-                            redirectCallbackUri: `${window.location.origin}/callback`,
-                            ...(query_param_currency
-                                ? {
-                                      state: {
-                                          account: query_param_currency,
-                                      },
-                                  }
-                                : {}),
-                        });
-                    } catch (err) {
-                        setIsAuthenticating(false);
-                        handleOidcAuthFailure(err);
-                    }
-                }
-            } catch (err) {
-                // eslint-disable-next-line no-console
-                setIsAuthenticating(false);
-                console.error('Authentication error:', err);
-            } finally {
-                setIsAuthenticating(false);
-            }
-        })();
+                            // Now use the result of the explicit check
+                            if (tmbEnabled) {
+                                if (mounted.current) {
+                                    await onRenderTMBCheck();
+                                }
+                            } else if (shouldAuthenticate) {
+                                const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
+                
+                                // Make sure we have the currency in session storage before redirecting
+                                if (query_param_currency) {
+                                    sessionStorage.setItem('query_param_currency', query_param_currency);
+                                }
+                                try {
+                                    await requestOidcAuthentication({
+                                        redirectCallbackUri: `${window.location.origin}/callback`,
+                                        ...(query_param_currency
+                                            ? {
+                                                  state: {
+                                                      account: query_param_currency,
+                                                  },
+                                              }
+                                            : {}),
+                                    });
+                                } catch (err) {
+                                    if (mounted.current) setIsAuthenticating(false);
+                                    handleOidcAuthFailure(err);
+                                }
+                            }
+                        } catch (err) {
+                            // eslint-disable-next-line no-console
+                            if (mounted.current) setIsAuthenticating(false);
+                            console.error('Authentication error:', err);
+                        } finally {
+                            if (mounted.current) setIsAuthenticating(false);
+                        }        })();
     }, [
         isLoggedInCookie,
         isClientAccountsPopulated,
@@ -196,7 +207,7 @@ const Layout = () => {
         if (!isAuthenticating && !isInitialAuthCheckComplete) {
             // Wait a bit to ensure all state updates have propagated
             const timer = setTimeout(() => {
-                setIsInitialAuthCheckComplete(true);
+                if (mounted.current) setIsInitialAuthCheckComplete(true);
             }, 500); // Give it enough time to stabilize
 
             return () => clearTimeout(timer);

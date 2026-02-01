@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { WalletIcon } from '../wallet-icon';
-import './app-linked-with-wallet-icon.scss';
 import DemoGlyphIcon from './DemoGlyphIcon';
+import './app-linked-with-wallet-icon.scss';
 
 type TAppIconProps = {
     app_icon: string;

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { getAppId, getSocketURL } from '@/components/shared/utils/config/config';
-import CopyTradingManager from './copy-trading-manager';
 import { getGlobalCopyTradingManager } from '@/app/App';
+import { getAppId, getSocketURL } from '@/components/shared/utils/config/config';
 import Dialog from '@/components/shared_ui/dialog';
+import CopyTradingManager from './copy-trading-manager';
+import { useConfig } from '@/contexts/ConfigContext'; // New import
 import './copy-trading.scss';
 
 const CopyTrading = observer(() => {
@@ -18,6 +19,13 @@ const CopyTrading = observer(() => {
     const [copyTradingActive, setCopyTradingActive] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [successMessage2, setSuccessMessage2] = useState('');
+    const { config } = useConfig(); // Use useConfig hook
+
+    const updateClientCounts = (manager: CopyTradingManager) => {
+        // Placeholder function to prevent parsing error
+        console.log('updateClientCounts called', manager);
+        // Implement actual logic here later
+    };
 
     useEffect(() => {
         if (htmlContentRef.current) {
@@ -30,7 +38,7 @@ const CopyTrading = observer(() => {
                 }
                 return false;
             };
-            
+
             // Try immediately
             if (!setupManager()) {
                 // If not available, wait a bit and try again (global might still be initializing)
@@ -39,7 +47,7 @@ const CopyTrading = observer(() => {
                         clearInterval(retryInterval);
                     }
                 }, 100);
-                
+
                 // Stop retrying after 2 seconds
                 setTimeout(() => {
                     clearInterval(retryInterval);
@@ -48,27 +56,27 @@ const CopyTrading = observer(() => {
                     }
                 }, 2000);
             }
-            
+
             // Sync existing tokens from localStorage to manager
             const syncTokensToManager = async () => {
                 const manager = managerRef.current;
                 if (!manager) return;
-                
+
                 // Wait for manager to restore state
                 await new Promise(resolve => setTimeout(resolve, 100));
-                
+
                 // Sync demo to real token
                 const isDemoToReal = localStorage.getItem('demo_to_real') === 'true';
                 if (isDemoToReal) {
                     const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
                     const keys = Object.keys(accounts_list);
-                    const key = keys.find(k => !k.startsWith("VR"));
+                    const key = keys.find(k => !k.startsWith('VR'));
                     if (key) {
                         const value = accounts_list[key];
                         manager.setMasterToken(value);
                     }
                 }
-                
+
                 // Sync copier tokens
                 const copyTokensArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
                 for (const token of copyTokensArray) {
@@ -76,38 +84,38 @@ const CopyTrading = observer(() => {
                     if (isDemoToReal) {
                         const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
                         const keys = Object.keys(accounts_list);
-                        const key = keys.find(k => !k.startsWith("VR"));
+                        const key = keys.find(k => !k.startsWith('VR'));
                         if (key && accounts_list[key] === token) {
                             continue; // Skip master token
                         }
                     }
-                    
+
                     // Add to manager if not already present
                     if (!manager.copiers.find(c => c.token === token)) {
                         try {
                             manager.addCopier(token);
-                        } catch (e) {
+                        } catch (e: unknown) {
                             // Token might already exist, ignore
                         }
                     }
                 }
             };
-            
+
             // Sync tokens after a short delay to allow manager to initialize
             setTimeout(syncTokensToManager, 200);
-            
+
             // Check initial states
             const isDemoToReal = localStorage.getItem('demo_to_real') === 'true';
             const isCopyTrading = localStorage.getItem('iscopyTrading') === 'true';
             setDemoToRealActive(isDemoToReal);
             setCopyTradingActive(isCopyTrading);
-            
+
             // Initialize render table after React renders
             setTimeout(() => {
                 renderTable();
             }, 100);
         }
-        
+
         // Note: We DON'T cleanup the manager or replicator here
         // The global manager persists across tab changes so copy trading continues working
         // even when you're on Bot Builder or other tabs
@@ -125,25 +133,25 @@ const CopyTrading = observer(() => {
 
         if (isStart) {
             const keys = Object.keys(accounts_list);
-            const key = keys.find(k => !k.startsWith("VR"));
+            const key = keys.find(k => !k.startsWith('VR'));
             if (key) {
                 const value = accounts_list[key];
-                let storedArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
+                const storedArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
                 if (!storedArray.includes(value)) {
                     storedArray.push(value);
                 }
                 localStorage.setItem('copyTokensArray', JSON.stringify(storedArray));
                 localStorage.setItem('demo_to_real', 'true');
-                
+
                 // Set master token in manager
                 manager.setMasterToken(value);
-                
+
                 // If copy trading is already running, connect master
                 const isCopyTrading = localStorage.getItem('iscopyTrading') === 'true';
                 if (isCopyTrading) {
                     try {
                         await manager.connectMaster();
-                    } catch (e) {
+                    } catch (e: unknown) {
                         // Connection failed, continue anyway
                     }
                 }
@@ -157,14 +165,14 @@ const CopyTrading = observer(() => {
             }
         } else {
             const keys = Object.keys(accounts_list);
-            const key = keys.find(k => !k.startsWith("VR"));
+            const key = keys.find(k => !k.startsWith('VR'));
             if (key) {
                 const value = accounts_list[key];
                 let storedArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
                 storedArray = storedArray.filter((token: string) => token !== value);
                 localStorage.setItem('copyTokensArray', JSON.stringify(storedArray));
                 localStorage.setItem('demo_to_real', 'false');
-                
+
                 // Disconnect master
                 manager.disconnectMaster();
                 manager.setMasterToken('');
@@ -183,27 +191,26 @@ const CopyTrading = observer(() => {
         const isStart = !copyTradingActive;
         const manager = managerRef.current;
         if (!manager) return;
-        
+
         if (isStart) {
             try {
                 // Enable replication
                 manager.enableReplication(true);
-                
+
                 // Connect master (demo to real) if enabled
                 const isDemoToReal = localStorage.getItem('demo_to_real') === 'true';
                 if (isDemoToReal && manager.master.token) {
                     try {
                         await manager.connectMaster();
-                    } catch (e) {
+                    } catch (e: unknown) {
                         // Connection failed, continue anyway
                     }
                 }
-                
+
                 // Connect all copiers
                 const copyTokensArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
-                let connectedCount = 0;
-                let failedCount = 0;
-                
+
+
                 for (const token of copyTokensArray) {
                     try {
                         // Check if copier already exists
@@ -213,17 +220,12 @@ const CopyTrading = observer(() => {
                         }
                         if (copier.enabled && copier.status !== 'connected') {
                             await manager.connectCopier(copier.id);
-                            connectedCount++;
-                        } else if (copier.status === 'connected') {
-                            connectedCount++;
+
                         }
-                    } catch (e) {
-                        failedCount++;
+
                     }
                 }
-                
-                const totalConnected = (manager.master.status === 'connected' ? 1 : 0) + connectedCount;
-                
+
                 localStorage.setItem('iscopyTrading', 'true');
                 setCopyTradingActive(true);
                 setSuccessMessage2(`Copy trading started successfully for all ${copyTokensArray.length} tokens!`);
@@ -235,13 +237,13 @@ const CopyTrading = observer(() => {
         } else {
             // Disable replication
             manager.enableReplication(false);
-            
+
             // Disconnect all clients
             manager.disconnectMaster();
             manager.copiers.forEach(copier => {
                 manager.disconnectCopier(copier.id);
             });
-            
+
             localStorage.setItem('iscopyTrading', 'false');
             setCopyTradingActive(false);
             setSuccessMessage2('Copy trading stopped successfully');
@@ -253,15 +255,15 @@ const CopyTrading = observer(() => {
     const handleAddToken = async () => {
         const tokenInput = document.getElementById('tokenInput') as HTMLInputElement;
         if (!tokenInput) return;
-        
+
         const the_new = tokenInput.value.trim();
         const manager = managerRef.current;
         if (!manager) {
-            setErrorMessage('It seems you haven\'t logged in, please login in and try adding the token again.');
+            setErrorMessage("It seems you haven't logged in, please login in and try adding the token again.");
             setErrorModalVisible(true);
             return;
         }
-        
+
         const storedArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
         if (storedArray.includes(the_new)) {
             setErrorMessage('Token already exists');
@@ -270,24 +272,24 @@ const CopyTrading = observer(() => {
             try {
                 // Add to manager
                 const copier = manager.addCopier(the_new);
-                
+
                 // Add to localStorage
                 storedArray.push(the_new);
                 localStorage.setItem('copyTokensArray', JSON.stringify(storedArray));
-                
+
                 // If copy trading is running, connect immediately
                 const isCopyTrading = localStorage.getItem('iscopyTrading') === 'true';
                 if (isCopyTrading) {
                     try {
                         await manager.connectCopier(copier.id);
-                    } catch (e) {
+                    } catch (e: unknown) {
                         // Connection failed, continue anyway
                     }
                 }
-                
+
                 tokenInput.value = '';
                 renderTable();
-            } catch (e: any) {
+            } catch (e: unknown) {
                 setErrorMessage(e?.error?.message || e?.message || 'Failed to add token');
                 setErrorModalVisible(true);
             }
@@ -333,21 +335,21 @@ const CopyTrading = observer(() => {
                 if (noTokensEl) {
                     noTokensEl.style.display = 'none';
                 }
-                
+
                 sArray.forEach((token: string, index: number) => {
                     const li = document.createElement('li');
                     li.className = 'token-item';
-                    
+
                     const tokenNumber = document.createElement('span');
                     tokenNumber.className = 'token-number';
                     tokenNumber.textContent = `${index + 1}. `;
                     li.appendChild(tokenNumber);
-                    
+
                     const tokenText = document.createElement('span');
                     tokenText.className = 'token-text';
                     tokenText.textContent = token;
                     li.appendChild(tokenText);
-                    
+
                     const deleteBtn = document.createElement('button');
                     deleteBtn.className = 'trash-btn';
                     deleteBtn.innerHTML = '🗑️';
@@ -355,7 +357,7 @@ const CopyTrading = observer(() => {
                         const manager = managerRef.current;
                         const tokens = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
                         const tokenToRemove = tokens[index];
-                        
+
                         // Remove from manager
                         if (manager) {
                             const copier = manager.copiers.find(c => c.token === tokenToRemove);
@@ -363,14 +365,14 @@ const CopyTrading = observer(() => {
                                 manager.removeCopier(copier.id);
                             }
                         }
-                        
+
                         // Remove from localStorage
                         tokens.splice(index, 1);
                         localStorage.setItem('copyTokensArray', JSON.stringify(tokens));
                         renderTable();
                     };
                     li.appendChild(deleteBtn);
-                    
+
                     tokenListEl.appendChild(li);
                 });
             } else {
@@ -392,12 +394,16 @@ const CopyTrading = observer(() => {
                 const el = document.getElementById('login-id');
                 if (el) el.textContent = cr || 'CR — not linked yet';
             }
-        } catch {}
+        } catch {
+            /* do nothing */
+        }
 
         const webSS = () => {
             // Build token list from localStorage accounts mapping
             const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
-            const tokens: string[] = Object.keys(accounts_list).map(k => accounts_list[k]).filter(Boolean);
+            const tokens: string[] = Object.keys(accounts_list)
+                .map(k => accounts_list[k])
+                .filter(Boolean);
 
             // Also check for tokens in copyTokensArray as fallback
             const copyTokensArray = JSON.parse(localStorage.getItem('copyTokensArray') || '[]');
@@ -425,7 +431,7 @@ const CopyTrading = observer(() => {
 
             const startPing = () => {
                 stopPing();
-                // @ts-ignore
+                // @ts-expect-error: TypeScript doesn't recognize setInterval on window object without explicit typing
                 pingTimer = window.setInterval(() => {
                     if (ws && ws.readyState === WebSocket.OPEN) {
                         ws.send(JSON.stringify({ ping: 1 }));
@@ -473,7 +479,10 @@ const CopyTrading = observer(() => {
                         const list = ms.authorize.account_list as Array<any>;
                         let realLogin: string | null = null;
                         for (const acc of list) {
-                            if ((acc.currency_type === 'fiat' || String(acc.loginid).startsWith('CR')) && acc.is_virtual === 0) {
+                            if (
+                                (acc.currency_type === 'fiat' || String(acc.loginid).startsWith('CR')) &&
+                                acc.is_virtual === 0
+                            ) {
                                 realLogin = acc.loginid;
                                 break;
                             }
@@ -482,7 +491,13 @@ const CopyTrading = observer(() => {
                             localStorage.setItem('cr_loginid', String(realLogin));
                         }
                         const active_loginid = localStorage.getItem('active_loginid') || '';
-                        setLoginId(realLogin ? (active_loginid?.startsWith('VR') ? `CR: ${realLogin}` : String(realLogin)) : null);
+                        setLoginId(
+                            realLogin
+                                ? active_loginid?.startsWith('VR')
+                                    ? `CR: ${realLogin}`
+                                    : String(realLogin)
+                                : null
+                        );
                         if (realLogin) getBalance(realLogin);
                     }
                     if (req_id === 2112 && ms.balance) {
@@ -520,32 +535,36 @@ const CopyTrading = observer(() => {
 
             connect();
         };
-        
+
         // Update counts periodically
-            const updateInterval = setInterval(() => {
-                if (managerRef.current) {
-                    updateClientCounts(managerRef.current);
-                }
-            }, 2000);
-            
-            // Initialize everything
-            renderTable();
-            webSS();
-            
-            // Initial update
-            setTimeout(() => {
-                if (managerRef.current) {
-                    updateClientCounts(managerRef.current);
-                }
-            }, 500);
-            
-            // Cleanup
-            return () => {
-                clearInterval(updateInterval);
-            };
+        const updateInterval = setInterval(() => {
+            if (managerRef.current) {
+                updateClientCounts(managerRef.current);
+            }
+        }, 2000);
+
+        // Initialize everything
+        renderTable();
+        webSS();
+
+        // Initial update
+        setTimeout(() => {
+            if (managerRef.current) {
+                updateClientCounts(managerRef.current);
+            }
+        }, 500);
+
+        // Cleanup
+        return () => {
+            clearInterval(updateInterval);
+        };
     }, []);
 
     const openTutorial = () => {
+        // To make this dynamic, AppConfig in src/contexts/ConfigContext.tsx needs to be extended
+        // with a field like 'youtubeTutorialUrl', and then the admin panel needs to provide
+        // a way to update that field in the 'app_config' Supabase table.
+        // For now, it remains hardcoded, but should ideally be config.youtubeTutorialUrl
         setTutorialUrl('https://www.youtube.com/embed/gsWzKmslEnY');
         setIsTutorialOpen(true);
     };
@@ -556,12 +575,16 @@ const CopyTrading = observer(() => {
     };
 
     return (
-        <div className='copy-trading main_copy' ref={htmlContentRef} style={{width: '100%', height: '100vh', minHeight: '100vh'}}>
+        <div
+            className='copy-trading main_copy'
+            ref={htmlContentRef}
+            style={{ width: '100%', height: '100vh', minHeight: '100vh' }}
+        >
             {/* Error Modal */}
             <Dialog
                 is_visible={errorModalVisible}
-                title="Error while adding new token!"
-                confirm_button_text="OK"
+                title='Error while adding new token!'
+                confirm_button_text='OK'
                 onConfirm={() => setErrorModalVisible(false)}
                 onClose={() => setErrorModalVisible(false)}
                 portal_element_id='modal_root'
@@ -572,17 +595,19 @@ const CopyTrading = observer(() => {
 
             {/* Tutorial Modal */}
             {isTutorialOpen && (
-                <div className="tutorial-modal-overlay" onClick={closeTutorial}>
-                    <div className="tutorial-modal-content" onClick={(e) => e.stopPropagation()}>
-                        <span className="tutorial-close" onClick={closeTutorial}>×</span>
-                        <h2 className="tutorial-title">Copytrading Tutorial</h2>
+                <div className='tutorial-modal-overlay' onClick={closeTutorial}>
+                    <div className='tutorial-modal-content' onClick={e => e.stopPropagation()}>
+                        <span className='tutorial-close' onClick={closeTutorial}>
+                            ×
+                        </span>
+                        <h2 className='tutorial-title'>Copytrading Tutorial</h2>
                         <iframe
-                            width="100%"
-                            height="100%"
+                            width='100%'
+                            height='100%'
                             src={tutorialUrl}
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            title='YouTube video player'
+                            frameBorder='0'
+                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                             allowFullScreen
                         />
                     </div>
@@ -590,82 +615,81 @@ const CopyTrading = observer(() => {
             )}
 
             {/* Demo to Real Section */}
-            <div className="ena_DC">
-                <div className="enable_disable">
-                    <button 
-                        id="copy-trading-btn" 
+            <div className='ena_DC'>
+                <div className='enable_disable'>
+                    <button
+                        id='copy-trading-btn'
                         className={`copy-trading-btn ${demoToRealActive ? 'stop' : 'start'}`}
                         onClick={handleDemoToReal}
                     >
                         {demoToRealActive ? 'Stop Demo to Real Copy Trading' : 'Start Demo to Real Copy Trading'}
                     </button>
-                    <div className="tutorial-btn" onClick={openTutorial}>
-                        <span className="youtube-icon">▶️</span>
+                    <div className='tutorial-btn' onClick={openTutorial}>
+                        <span className='youtube-icon'>▶️</span>
                         <span>Tutorial</span>
                     </div>
                 </div>
-                
-                <div className="realaccount-card">
-                    <span className="realaccount-label" id="login-id">CR*****</span>
-                    <span className="realaccount-amount" id="bal-id">******</span>
+
+                <div className='realaccount-card'>
+                    <span className='realaccount-label' id='login-id'>
+                        CR*****
+                    </span>
+                    <span className='realaccount-amount' id='bal-id'>
+                        ******
+                    </span>
                 </div>
-                
-                {successMessage && (
-                    <div className="success-message">
-                        {successMessage}
-                    </div>
-                )}
+
+                {successMessage && <div className='success-message'>{successMessage}</div>}
             </div>
 
             {/* Add Tokens Section */}
-            <header className="title">
+            <header className='title'>
                 <small>Add tokens to Replicator</small>
             </header>
 
-            <div className="copytrading">
-                <div className="input_content">
-                    <div className="input_items">
-                        <input 
-                            id="tokenInput" 
-                            type="text" 
-                            className="tokens-input" 
-                            placeholder="Enter Client token" 
-                        />
-                        <button id="btn-add" className="token-action-btn" onClick={handleAddToken}>Add</button>
-                        <button id="btn-refresh" className="token-action-btn" disabled={isSyncing} onClick={handleSyncTokens}>
+            <div className='copytrading'>
+                <div className='input_content'>
+                    <div className='input_items'>
+                        <input id='tokenInput' type='text' className='tokens-input' placeholder='Enter Client token' />
+                        <button id='btn-add' className='token-action-btn' onClick={handleAddToken}>
+                            Add
+                        </button>
+                        <button
+                            id='btn-refresh'
+                            className='token-action-btn'
+                            disabled={isSyncing}
+                            onClick={handleSyncTokens}
+                        >
                             {isSyncing ? 'Syncing...' : 'Sync ↻'}
                         </button>
                     </div>
-                    
-                    <div className="enable_disable">
-                        <button 
-                            id="start-token" 
+
+                    <div className='enable_disable'>
+                        <button
+                            id='start-token'
                             className={`copy-trading-btn ${copyTradingActive ? 'stop' : 'start'}`}
                             onClick={handleStartCopyTrading}
                         >
                             {copyTradingActive ? 'Stop Copy Trading' : 'Start Copy Trading'}
                         </button>
-                        <button className="tutorial-btn-small" onClick={openTutorial}>
-                            <span className="youtube-icon">▶️</span>
+                        <button className='tutorial-btn-small' onClick={openTutorial}>
+                            <span className='youtube-icon'>▶️</span>
                         </button>
                     </div>
-                    
-                    {successMessage2 && (
-                        <div className="success-message">
-                            {successMessage2}
-                        </div>
-                    )}
+
+                    {successMessage2 && <div className='success-message'>{successMessage2}</div>}
                 </div>
 
                 {/* Tokens List */}
-                <div className="tokens_container">
-                    <h2 id="tokens-num">Total Clients added: 0</h2>
-                    <ul id="tokens-list" className="tokens-list">
-                        <li id="no-tokens" className="token_info">No tokens added yet</li>
+                <div className='tokens_container'>
+                    <h2 id='tokens-num'>Total Clients added: 0</h2>
+                    <ul id='tokens-list' className='tokens-list'>
+                        <li id='no-tokens' className='token_info'>
+                            No tokens added yet
+                        </li>
                     </ul>
                 </div>
             </div>
-
         </div>
     );
 });

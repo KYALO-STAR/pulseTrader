@@ -23,7 +23,7 @@ import {
     LabelPairedObjectsColumnCaptionRegularIcon,
     LabelPairedPuzzlePieceTwoCaptionBoldIcon,
 } from '@deriv/quill-icons/LabelPaired';
-import { LegacyChartsIcon, LegacyGuide1pxIcon, LegacyIndicatorsIcon } from '@deriv/quill-icons/Legacy';
+import { LegacyChartsIcon, LegacyIndicatorsIcon } from '@deriv/quill-icons/Legacy';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -41,7 +41,7 @@ const AnalysisTool = lazy(() => import('../analysis-tool'));
 const CopyTrading = lazy(() => import('../copy-trading'));
 const SmartTrader = lazy(() => import('../smart-trader'));
 const DpTools = lazy(() => import('../dp-tools'));
-const ProTool = lazy(() => import('../pro-tool'));
+
 const Dtrader = lazy(() => import('../dtrader'));
 // Import FreeBots directly instead of lazy loading for faster access
 import FreeBots from '../free-bots';
@@ -76,7 +76,7 @@ const AppWrapper = observer(() => {
         [key: string]: string;
     };
     const { clear } = summary_card;
-    const { DASHBOARD, BOT_BUILDER, SMART_TRADER, HYBRID_BOTS } = DBOT_TABS;
+    const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
     const hash = [
         'dashboard',
@@ -321,7 +321,9 @@ const AppWrapper = observer(() => {
                                             fill='var(--text-general)'
                                         />
                                         <Localize i18n_default_text='SpeedBots' />
-                                        <span className='nav-speedbots-rocket' aria-hidden='true'>🚀</span>
+                                        <span className='nav-speedbots-rocket' aria-hidden='true'>
+                                            🚀
+                                        </span>
                                     </>
                                 }
                                 id='id-hybrid-bots'
@@ -397,7 +399,9 @@ const AppWrapper = observer(() => {
                                 id='id-smart-trader'
                             >
                                 <Suspense
-                                    fallback={<ChunkLoader message={localize('Please wait, loading Smart Trader...')} />}
+                                    fallback={
+                                        <ChunkLoader message={localize('Please wait, loading Smart Trader...')} />
+                                    }
                                 >
                                     <SmartTrader />
                                 </Suspense>
@@ -477,9 +481,7 @@ const AppWrapper = observer(() => {
                 {/* Match deriv-insider behaviour: also skip RunStrategy on Matches and SpeedBot tabs */}
                 {active_tab !== DBOT_TABS.DTRADER && (
                     <div className='main__run-strategy-wrapper'>
-                        {active_tab !== DBOT_TABS.MATCHES && active_tab !== DBOT_TABS.SPEEDBOT && (
-                            <RunStrategy />
-                        )}
+                        {active_tab !== DBOT_TABS.MATCHES && active_tab !== DBOT_TABS.SPEEDBOT && <RunStrategy />}
                         <RunPanel />
                     </div>
                 )}

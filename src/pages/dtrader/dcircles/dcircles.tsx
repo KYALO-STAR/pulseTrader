@@ -5,11 +5,7 @@ import './dcircles.scss';
 const Dcircles = () => {
     return (
         <div className='dcircles'>
-            <IframeWrapper
-                src="https://dcircles.vercel.app/"
-                title="Dcircles"
-                className='dcircles-container'
-            />
+            <IframeWrapper src='https://dcircles.vercel.app/' title='Dcircles' className='dcircles-container' />
         </div>
     );
 };

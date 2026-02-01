@@ -1,9 +1,11 @@
 import localforage from 'localforage';
 import LZString from 'lz-string';
+import { getAllBots, getBotXmlPublicUrl } from '@/services/adminSupabase'; // Import from service
 
 export type TBotsManifestItem = {
+    id: string; // Add id
     name: string;
-    file: string; // xml filename in /public/xml
+    file: string; // Path to XML in Supabase Storage
     description?: string;
     difficulty?: string;
     strategy?: string;
@@ -15,12 +17,7 @@ const XML_CACHE_PREFIX = 'freebots:xml:';
 // In-memory cache for faster access
 const memoryCache = new Map<string, string>();
 
-// Domain-aware XML base path: defaults to /xml/, but can switch to /xml/<domain>/ after manifest resolution
-let XML_BASE = '/xml/';
-export const getXmlBase = () => XML_BASE;
-const setXmlBase = (base: string) => {
-    XML_BASE = base.endsWith('/') ? base : `${base}/`;
-};
+// Removed XML_BASE and related functions as we'll use Supabase Storage URLs
 
 const decompress = (data: string | null) => (data ? LZString.decompressFromUTF16(data) : null);
 const compress = (data: string) => LZString.compressToUTF16(data);
@@ -61,22 +58,20 @@ export const fetchXmlWithCache = async (file: string): Promise<string | null> =>
     }
 
     try {
-        // 1) Try domain-specific base (set after manifest) else default /xml/
-        const primaryUrl = `${getXmlBase()}${encodeURIComponent(file)}`;
-        let res = await fetch(primaryUrl);
-
-        // 2) Fallback: try default /xml/ if domain-specific path 404s
-        if (!res.ok) {
-            const fallbackUrl = `/xml/${encodeURIComponent(file)}`;
-            res = await fetch(fallbackUrl);
+        const publicUrl = getBotXmlPublicUrl(file);
+        if (!publicUrl) {
+            console.warn(`freebots-cache: No public URL found for bot XML: ${file}`);
+            return null;
         }
+
+        const res = await fetch(publicUrl);
 
         if (!res.ok) {
             // Silently handle 404s for missing files (don't spam console)
             if (res.status === 404) {
                 return null;
             }
-            throw new Error(`Failed to fetch ${file}: ${res.status}`);
+            throw new Error(`Failed to fetch ${file} from Supabase Storage: ${res.status}`);
         }
         const xml = await res.text();
 
@@ -109,33 +104,23 @@ export const prefetchAllXmlInBackground = async (files: string[]) => {
 
 export const getBotsManifest = async (): Promise<TBotsManifestItem[] | null> => {
     try {
-        const hostname = window.location.hostname.toLowerCase();
-        const urlParams = new URLSearchParams(window.location.search);
-        const override = (urlParams.get('bots_domain') || '').toLowerCase().replace(/^www\./, '');
-        const domain = (override || hostname).replace(/^www\./, '');
+        const botsData = await getAllBots(); // Fetch from Supabase
+        if (!botsData) return null;
 
-        // Try domain-specific manifest first
-        let res = await fetch(`/xml/${encodeURIComponent(domain)}/bots.json`, { cache: 'force-cache' });
-        if (!res.ok) {
-            // Fallback to generic manifest
-            res = await fetch('/xml/bots.json', { cache: 'force-cache' });
-        }
-        if (!res.ok) return null;
+        // Map SupabaseBot to TBotsManifestItem (SupabaseBot is a superset)
+        const manifest: TBotsManifestItem[] = botsData.map(bot => ({
+            id: bot.id,
+            name: bot.name,
+            file: bot.file,
+            description: bot.description,
+            difficulty: bot.difficulty,
+            strategy: bot.strategy,
+            features: bot.features,
+        }));
 
-        const data = (await res.json()) as TBotsManifestItem[];
-
-        // If we loaded a domain-specific file, set base for XML fetches
-        if (res.url.includes(`/${domain}/bots.json`)) {
-            setXmlBase(`/xml/${domain}/`);
-        } else {
-            setXmlBase('/xml/');
-        }
-
-        return data;
+        return manifest;
     } catch (e) {
-        // eslint-disable-next-line no-console
         console.warn('freebots-cache:getBotsManifest error', e);
         return null;
     }
 };
-

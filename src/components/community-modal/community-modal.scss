@@ -115,14 +115,26 @@
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 0.8rem 0;
-    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
 }
 
 .community-modal__subtitle {
     font-size: 1rem;
     color: #d1d5db;
     margin: 0;
-    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
 }
 
 .community-modal__content {
@@ -142,7 +154,13 @@
         font-size: 1rem;
         line-height: 1.6;
         margin: 0;
-        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-family:
+            Arial,
+            Helvetica,
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif;
     }
 }
 
@@ -168,7 +186,13 @@
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
     display: inline-block;
 
     &--whatsapp {
@@ -215,7 +239,13 @@
         color: #ffffff;
         font-size: 0.9rem;
         margin: 0 0 0.8rem 0;
-        font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-family:
+            Arial,
+            Helvetica,
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif;
     }
 }
 
@@ -225,7 +255,13 @@
     font-weight: 600;
     font-size: 0.95rem;
     transition: color 0.2s ease;
-    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
 
     &:hover {
         color: #0056b3;
@@ -299,4 +335,3 @@ body.community-modal-open .community-modal * {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
 }
-

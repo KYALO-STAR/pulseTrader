@@ -13,7 +13,6 @@ import './Binary/Tools/Misc';
 import './Binary/Tools/Time';
 import './Binary/Contract Modifiers';
 import './Binary/Binarytools';
-
 import './Binary/Trade Definition';
 import './Logic';
 import './Math';

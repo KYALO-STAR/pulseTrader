@@ -179,13 +179,22 @@ class DBot {
                 if (typeof window.Blockly.derivWorkspace.strategy_to_load === 'string') {
                     let s = window.Blockly.derivWorkspace.strategy_to_load;
                     // Alias notify -> btnotify
-                    s = s.replace(/type=\"notify\"/g, 'type=\"btnotify\"');
+                    s = s.replace(/type="notify"/g, 'type="btnotify"');
                     // Alias math_number_positive -> math_number
-                    s = s.replace(/type=\"math_number_positive\"/g, 'type=\"math_number\"');
+                    s = s.replace(/type="math_number_positive"/g, 'type="math_number"');
                     // Strip nested xmlns on mutation nodes
-                    s = s.replace(/<mutation\s+xmlns=\"[^\"]*\"/g, '<mutation');
+                    s = s.replace(/<mutation\s+xmlns="[^"]*"/g, '<mutation');
                     // Remove control characters
-                    s = s.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
+                    s = s
+                        .split('')
+                        .filter(
+                            char =>
+                                char.charCodeAt(0) >= 32 ||
+                                char.charCodeAt(0) === 9 ||
+                                char.charCodeAt(0) === 10 ||
+                                char.charCodeAt(0) === 13
+                        )
+                        .join('');
                     window.Blockly.derivWorkspace.strategy_to_load = s;
                 }
                 window.Blockly.Xml.domToWorkspace(

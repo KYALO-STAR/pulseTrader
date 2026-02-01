@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -149,18 +149,14 @@ const Sidebar: React.FC = () => {
                     <LegacyMenuHamburger2pxIcon height='20px' width='20px' />
                 </button>
             )}
-            
+
             {isOpen && <div className='sidebar__overlay' onClick={() => setIsOpen(false)} />}
-            
+
             <nav className={clsx('sidebar', { 'sidebar--open': isOpen })}>
                 {isMobile && (
                     <div className='sidebar__header'>
                         <h2 className='sidebar__title'>Menu</h2>
-                        <button
-                            className='sidebar__close'
-                            onClick={() => setIsOpen(false)}
-                            aria-label='Close menu'
-                        >
+                        <button className='sidebar__close' onClick={() => setIsOpen(false)} aria-label='Close menu'>
                             <LegacyClose2pxIcon height='20px' width='20px' />
                         </button>
                     </div>

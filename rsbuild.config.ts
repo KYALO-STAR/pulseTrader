@@ -1,7 +1,6 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
-import { pluginBasicSsl } from '@rsbuild/plugin-basic-ssl';
 
 const path = require('path');
 
@@ -43,13 +42,18 @@ export default defineConfig({
                 RUDDERSTACK_KEY: JSON.stringify(process.env.RUDDERSTACK_KEY),
                 GROWTHBOOK_CLIENT_KEY: JSON.stringify(process.env.GROWTHBOOK_CLIENT_KEY),
                 GROWTHBOOK_DECRYPTION_KEY: JSON.stringify(process.env.GROWTHBOOK_DECRYPTION_KEY),
+                VITE_SUPABASE_URL: JSON.stringify(process.env.VITE_SUPABASE_URL),
+                VITE_SUPABASE_ANON_KEY: JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY),
             },
         },
         alias: {
             react: path.resolve('./node_modules/react'),
             'react-dom': path.resolve('./node_modules/react-dom'),
             // Temporary shim for malformed @deriv-com/ui import path "Submenu /index.js"
-            './components/AppLayout/Submenu /index.js': path.resolve(__dirname, './src/components/shims/ui-submenu/index.js'),
+            './components/AppLayout/Submenu /index.js': path.resolve(
+                __dirname,
+                './src/components/shims/ui-submenu/index.js'
+            ),
             '../Submenu /index.js': path.resolve(__dirname, './src/components/shims/ui-submenu/index.js'),
             '@/external': path.resolve(__dirname, './src/external'),
             '@/components': path.resolve(__dirname, './src/components'),

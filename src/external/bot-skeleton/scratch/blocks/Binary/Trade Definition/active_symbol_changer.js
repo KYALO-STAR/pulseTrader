@@ -1,5 +1,5 @@
 import { localize } from '@deriv-com/translations';
-import { modifyContextMenu, excludeOptionFromContextMenu } from '../../../utils';
+import { excludeOptionFromContextMenu, modifyContextMenu } from '../../../utils';
 
 // Block to request a symbol change at runtime (used in procedures like "Switch Markets")
 window.Blockly.Blocks.active_symbol_changer = {
@@ -47,8 +47,3 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.active_symbol_changer = b
     )}; } catch(e){} })();`;
     return code + '\n';
 };
-
-
-
-
-

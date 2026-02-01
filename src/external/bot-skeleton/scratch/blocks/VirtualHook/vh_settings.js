@@ -69,5 +69,3 @@ window.__VH__.config = {
 `;
     return code;
 };
-
-

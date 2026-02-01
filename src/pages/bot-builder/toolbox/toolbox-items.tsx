@@ -102,7 +102,9 @@ export const ToolboxItems = () =>
                                                                             deletable='false'
                                                                             movable='false'
                                                                         >
-                                                                            <Field name='ALT_MARKETS_ENABLED'>FALSE</Field>
+                                                                            <Field name='ALT_MARKETS_ENABLED'>
+                                                                                FALSE
+                                                                            </Field>
                                                                             <Field name='ALT_MARKETS_EVERY'>1</Field>
                                                                         </Block>
                                                                     </Next>
@@ -440,9 +442,6 @@ export const ToolboxItems = () =>
                     <Block type='total_profit' />
                     <Block type='total_runs' />
                 </Category>
-
-                
-
             </Category>
 
             <Category id='utility' name={localize('Utility')}>

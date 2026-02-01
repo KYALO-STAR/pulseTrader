@@ -6,14 +6,14 @@
 
 /* ✅ Declared locally instead of importing from constants */
 $sidebar-light-purple: #d8b4f8; // light purple
-$sidebar-goldenrod: #d4af37;    // goldenrod
-$sidebar-green: #1b6b47;        // green
+$sidebar-goldenrod: #d4af37; // goldenrod
+$sidebar-green: #1b6b47; // green
 
 .sidebar {
     --sidebar-bg: #{$sidebar-light-purple}; /* background for mobile drawer */
     --sidebar-border: var(--border-normal);
     --sidebar-hover: #{$sidebar-goldenrod}; /* hover color */
-    --sidebar-active: #{$sidebar-green};    /* active tab color */
+    --sidebar-active: #{$sidebar-green}; /* active tab color */
     --sidebar-text: var(--text-prominent);
     --sidebar-accent: #{$sidebar-light-purple}; /* accent matches base */
 
@@ -97,11 +97,7 @@ $sidebar-green: #1b6b47;        // green
             }
 
             &--active {
-                background: linear-gradient(
-                    90deg,
-                    rgba(27, 107, 71, 0.15), /* green tint */
-                    rgba(27, 107, 71, 0.08)
-                );
+                background: linear-gradient(90deg, rgba(27, 107, 71, 0.15), /* green tint */ rgba(27, 107, 71, 0.08));
                 color: var(--sidebar-active);
 
                 @include mobile-screen {
@@ -147,11 +143,7 @@ $sidebar-green: #1b6b47;        // green
         }
 
         &--active {
-            background: linear-gradient(
-                90deg,
-                rgba(27, 107, 71, 0.15),
-                rgba(27, 107, 71, 0.08)
-            );
+            background: linear-gradient(90deg, rgba(27, 107, 71, 0.15), rgba(27, 107, 71, 0.08));
             color: var(--sidebar-active);
 
             @include mobile-screen {
