@@ -212,7 +212,6 @@ const CopyTrading = observer(() => {
 
 
                 for (const token of copyTokensArray) {
-                    try {
                         // Check if copier already exists
                         let copier = manager.copiers.find(c => c.token === token);
                         if (!copier) {
@@ -221,9 +220,7 @@ const CopyTrading = observer(() => {
                         if (copier.enabled && copier.status !== 'connected') {
                             await manager.connectCopier(copier.id);
                         }
-
-                    }
-                }
+                } 
                 localStorage.setItem('iscopyTrading', 'true');
                 setCopyTradingActive(true);
                 setSuccessMessage2(`Copy trading started successfully for all ${copyTokensArray.length} tokens!`);
