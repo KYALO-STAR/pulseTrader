@@ -225,6 +225,7 @@ const CopyTrading = observer(() => {
 
                     }
                 }
+                
 
                 localStorage.setItem('iscopyTrading', 'true');
                 setCopyTradingActive(true);
