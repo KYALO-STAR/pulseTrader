@@ -45,7 +45,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                     as: 'button',
                     label: localize('Dark theme'),
                     LeftComponent: LegacyTheme1pxIcon,
-                    RightComponent: <ToggleSwitch value={is_dark_mode_on} onChange={toggleTheme} />,
+                    RightComponent: <span>TOGGLE</span>,
                     removeBorderBottom: true,
                 },
             ].filter(Boolean) as TMenuConfig,

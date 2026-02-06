@@ -51,7 +51,7 @@ const MobileMenu = forwardRef<MobileMenuRef>((props, ref) => {
                 </Drawer.Header>
 
                 <Drawer.Content>
-                    isLanguageSettingVisible ? (
+                    {isLanguageSettingVisible ? (
                     <>
                         <div className='mobile-menu__back-btn'>
                             <BackButton buttonText={localize('Language')} onClick={hideModal} />
